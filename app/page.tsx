@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
@@ -71,35 +72,24 @@ export default function Home() {
               </p>
             </div>
 
-            <div
-              className={styles.capturePlaceholder}
-              role="img"
-              aria-label="Development placeholder for a future real MyPepProtocol product capture"
-            >
-              <div className={styles.desktopPlaceholderCopy}>
-                <strong>Real MyPepProtocol capture required</strong>
-                <span>A current product capture exists in the project library</span>
-                <span>
-                  Exact share-safe homepage asset is not exportable in this
-                  environment
-                </span>
-              </div>
-
-              <div className={styles.mobilePlaceholderCopy}>
-                <strong>Real MyPepProtocol capture required</strong>
-                <span>Share-safe mobile or responsive capture pending</span>
-                <span>No simulated UI</span>
-              </div>
+            <div className={styles.projectMedia}>
+              <Image
+                className={`${styles.projectImage} ${styles.desktopMedia}`}
+                src="/projects/mypepprotocol/overview-desktop.png"
+                alt="MyPepProtocol Today view showing demo summary metrics and active protocol records."
+                width={2048}
+                height={1342}
+                sizes="(max-width: 760px) 1px, 1120px"
+              />
+              <Image
+                className={`${styles.projectImage} ${styles.mobileMedia}`}
+                src="/projects/mypepprotocol/overview-mobile.png"
+                alt="MyPepProtocol mobile Today view showing demo summary metrics and active protocols."
+                width={780}
+                height={1888}
+                sizes="(max-width: 760px) calc(100vw - 48px), 1px"
+              />
             </div>
-
-            <p className={styles.desktopAssetNote}>
-              Asset substitution pending. No simulated interface has been
-              introduced.
-            </p>
-            <p className={styles.mobileAssetNote}>
-              Asset substitution pending. Screenshot readability must be
-              rechecked with the final capture.
-            </p>
 
             <Link className={styles.textLink} href="/work/mypepprotocol">
               Explore the case study <span aria-hidden="true">→</span>

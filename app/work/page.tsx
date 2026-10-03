@@ -82,7 +82,7 @@ export default function WorkPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                Visit MyPepProtocol <span aria-hidden="true">→</span>
+                Visit MyPepProtocol <span aria-hidden="true">&rarr;</span>
               </a>
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function WorkPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                View live project <span aria-hidden="true">→</span>
+                View live project <span aria-hidden="true">&rarr;</span>
               </a>
               <a
                 className={styles.textLink}
@@ -131,7 +131,7 @@ export default function WorkPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                GitHub <span aria-hidden="true">→</span>
+                GitHub <span aria-hidden="true">&rarr;</span>
               </a>
             </div>
           </div>
@@ -159,16 +159,21 @@ export default function WorkPage() {
             </div>
 
             <div className={styles.actions}>
-              <span className={styles.unavailableStatus}>
-                Demo currently unavailable
-              </span>
+              <a
+                className={styles.textLink}
+                href="https://lighthouse-alpha-two.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View demo <span aria-hidden="true">&rarr;</span>
+              </a>
               <a
                 className={styles.textLink}
                 href="https://github.com/raf0x/lighthouse"
                 target="_blank"
                 rel="noreferrer"
               >
-                GitHub <span aria-hidden="true">→</span>
+                GitHub <span aria-hidden="true">&rarr;</span>
               </a>
             </div>
           </div>

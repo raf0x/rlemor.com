@@ -186,8 +186,8 @@ export default function WorkPage() {
                 className={styles.projectImage}
                 src="/projects/lighthouse/showcase.webp"
                 alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
-                width={800}
-                height={600}
+                width={960}
+                height={653}
                 sizes="(max-width: 760px) calc(100vw - 48px), 800px"
               />
             </div>

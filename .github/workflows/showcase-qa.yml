@@ -1,4 +1,4 @@
-name: Showcase QA
+name: Homepage Selected Work QA
 
 on:
   push:
@@ -9,27 +9,34 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out final production commit
+      - name: Check out production candidate
         uses: actions/checkout@v4
         with:
-          ref: 6cd56f583307d9fff3dcfba6dfaafbcdb036efaa
+          ref: 0713c62e8d42f3a76e5dba441e88ddca285497af
           fetch-depth: 2
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+
       - name: Install dependencies
         run: npm ci
+
       - name: Lint
         run: npm run lint
+
       - name: TypeScript
         run: npx tsc --noEmit
+
       - name: Build
         run: npm run build
+
       - name: Diff check
         run: git diff --check HEAD^ HEAD
-      - name: Responsive overflow check
+
+      - name: Responsive layout and screenshot QA
         shell: bash
         run: |
           npm install --no-save --package-lock=false chrome-remote-interface@0.33.3
@@ -38,6 +45,7 @@ jobs:
             if curl -fsS http://127.0.0.1:3000/ > /dev/null; then break; fi
             sleep 1
           done
+          curl -fsS http://127.0.0.1:3000/ > /dev/null || { cat /tmp/rlemor-next.log; exit 1; }
 
           CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser)"
           echo "Using Chrome: $CHROME"
@@ -48,24 +56,26 @@ jobs:
           done
           curl -fsS http://127.0.0.1:9222/json/version > /dev/null || { cat /tmp/rlemor-chrome.log; exit 1; }
 
+          mkdir -p screenshots
+
           node <<'NODE'
           const CDP = require("chrome-remote-interface");
+          const fs = require("fs");
 
-          const checks = [
-            [390, 1600, "/"],
-            [1440, 1600, "/"],
-            [390, 2200, "/work"],
-            [1440, 1800, "/work"],
-            [390, 2200, "/work/mypepprotocol"],
-            [1440, 1800, "/work/mypepprotocol"],
-          ];
+          const targetUrl = "http://127.0.0.1:3000/";
+          const baselineUrl = "https://rlemor-kkhtgbsl5-rafael-lemors-projects.vercel.app/";
+          const widths = [1440, 1024, 768, 390];
+
+          async function wait(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+          }
 
           (async () => {
             const client = await CDP();
             const { Page, Runtime, Emulation } = client;
             await Page.enable();
 
-            for (const [width, height, path] of checks) {
+            async function navigate(url, width, height = 1800) {
               await Emulation.setDeviceMetricsOverride({
                 width,
                 height,
@@ -74,31 +84,138 @@ jobs:
               });
 
               const loaded = new Promise((resolve) => Page.loadEventFired(resolve));
-              await Page.navigate({ url: `http://127.0.0.1:3000${path}` });
+              await Page.navigate({ url });
               await loaded;
+              await wait(700);
+            }
 
-              await new Promise((resolve) => setTimeout(resolve, 500));
+            async function measure() {
+              const result = await Runtime.evaluate({
+                expression: `(() => {
+                  const work = document.querySelector("#work");
+                  const articles = Array.from(work.querySelectorAll("article"));
+                  const primary = articles[0];
+                  const secondary = articles[1];
 
-              const measurement = await Runtime.evaluate({
-                expression: `({
-                  htmlScrollWidth: document.documentElement.scrollWidth,
-                  htmlClientWidth: document.documentElement.clientWidth,
-                  bodyScrollWidth: document.body.scrollWidth,
-                  viewportWidth: window.innerWidth
-                })`,
+                  const rect = (el) => {
+                    const r = el.getBoundingClientRect();
+                    return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height };
+                  };
+
+                  const articleData = (article) => ({
+                    article: rect(article),
+                    heading: rect(article.querySelector("h3")),
+                    paragraph: rect(article.querySelector("p")),
+                    link: rect(article.querySelector("a")),
+                    media: rect(article.querySelector("img")),
+                    imageNaturalWidth: article.querySelector("img").naturalWidth,
+                    imageNaturalHeight: article.querySelector("img").naturalHeight,
+                    imageComplete: article.querySelector("img").complete,
+                  });
+
+                  return {
+                    viewportWidth: window.innerWidth,
+                    htmlScrollWidth: document.documentElement.scrollWidth,
+                    bodyScrollWidth: document.body.scrollWidth,
+                    work: rect(work),
+                    primary: articleData(primary),
+                    secondary: articleData(secondary),
+                  };
+                })()`,
+                returnByValue: true,
+              });
+              return result.result.value;
+            }
+
+            async function screenshotWork(filename) {
+              const result = await Runtime.evaluate({
+                expression: `(() => {
+                  const r = document.querySelector("#work").getBoundingClientRect();
+                  return { x: r.left + window.scrollX, y: r.top + window.scrollY, width: r.width, height: r.height };
+                })()`,
                 returnByValue: true,
               });
 
-              const value = measurement.result.value;
-              console.log(`${width}px ${path}`, value);
+              const clip = result.result.value;
+              const shot = await Page.captureScreenshot({
+                format: "png",
+                fromSurface: true,
+                captureBeyondViewport: true,
+                clip: { ...clip, scale: 1 },
+              });
+              fs.writeFileSync(filename, Buffer.from(shot.data, "base64"));
+            }
+
+            const measurements = {};
+
+            for (const width of widths) {
+              await navigate(targetUrl, width);
+              const value = await measure();
+              measurements[width] = value;
+              console.log(`TARGET_${width}=${JSON.stringify(value)}`);
 
               if (
                 value.htmlScrollWidth > value.viewportWidth + 1 ||
                 value.bodyScrollWidth > value.viewportWidth + 1
               ) {
-                throw new Error(`Horizontal overflow at ${width}px on ${path}`);
+                throw new Error(`Horizontal overflow at ${width}px`);
+              }
+
+              if (!value.primary.imageComplete || !value.secondary.imageComplete) {
+                throw new Error(`Image did not complete loading at ${width}px`);
+              }
+
+              if (value.primary.imageNaturalWidth < 1 || value.secondary.imageNaturalWidth < 1) {
+                throw new Error(`Image has invalid natural dimensions at ${width}px`);
+              }
+
+              if (width >= 1024) {
+                if (value.primary.media.left <= value.primary.heading.right) {
+                  throw new Error(`MyPepProtocol media is not to the right at ${width}px`);
+                }
+                if (value.secondary.media.right >= value.secondary.heading.left) {
+                  throw new Error(`World Cup media is not to the left at ${width}px`);
+                }
+              } else {
+                if (value.primary.media.top <= value.primary.link.bottom) {
+                  throw new Error(`MyPepProtocol mobile/tablet stack order is wrong at ${width}px`);
+                }
+                if (value.secondary.media.top <= value.secondary.link.bottom) {
+                  throw new Error(`World Cup mobile/tablet stack order is wrong at ${width}px`);
+                }
+              }
+
+              if (value.primary.paragraph.width > 500 || value.secondary.paragraph.width > 500) {
+                throw new Error(`Project text measure is too wide at ${width}px`);
+              }
+
+              if (width === 1440) {
+                await screenshotWork("screenshots/home-selected-work-1440.png");
+              }
+
+              if (width === 390) {
+                await screenshotWork("screenshots/home-selected-work-390.png");
               }
             }
+
+            await navigate(baselineUrl, 1440);
+            const baseline = await measure();
+            const before = baseline.work.height;
+            const after = measurements[1440].work.height;
+            const reduction = ((before - after) / before) * 100;
+
+            console.log(`SELECTED_WORK_BEFORE_1440=${before.toFixed(2)}`);
+            console.log(`SELECTED_WORK_AFTER_1440=${after.toFixed(2)}`);
+            console.log(`SELECTED_WORK_REDUCTION_PERCENT=${reduction.toFixed(2)}`);
+
+            if (after >= before) {
+              throw new Error(`Selected work height did not decrease: before ${before}, after ${after}`);
+            }
+
+            fs.writeFileSync(
+              "screenshots/measurements.json",
+              JSON.stringify({ baseline1440: baseline, targets: measurements, before, after, reduction }, null, 2)
+            );
 
             await client.close();
           })().catch((error) => {
@@ -106,3 +223,11 @@ jobs:
             process.exit(1);
           });
           NODE
+
+      - name: Upload implementation screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: homepage-selected-work-qa
+          path: screenshots/
+          if-no-files-found: warn

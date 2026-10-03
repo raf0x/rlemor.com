@@ -70,13 +70,20 @@ export default function Home() {
         <section className={styles.work} id="work">
           <h2>Selected work</h2>
 
-          <article className={styles.primaryProject} id="mypepprotocol">
-            <div className={styles.projectIntro}>
+          <article
+            className={`${styles.projectRow} ${styles.primaryProject}`}
+            id="mypepprotocol"
+          >
+            <div className={styles.projectCopy}>
               <h3>MyPepProtocol</h3>
               <p>
                 A working product for health and protocol tracking, built with
                 AI and modern development tools.
               </p>
+
+              <Link className={styles.textLink} href="/work/mypepprotocol">
+                Explore the case study <span aria-hidden="true">→</span>
+              </Link>
             </div>
 
             <div className={styles.projectMedia}>
@@ -86,28 +93,40 @@ export default function Home() {
                 alt="MyPepProtocol Today view showing demo summary metrics and active protocol records."
                 width={640}
                 height={800}
-                sizes="(max-width: 760px) calc(100vw - 48px), 430px"
+                sizes="(max-width: 900px) calc(100vw - 48px), 620px"
                 unoptimized
               />
             </div>
-
-            <Link className={styles.textLink} href="/work/mypepprotocol">
-              Explore the case study <span aria-hidden="true">→</span>
-            </Link>
           </article>
 
-          <article className={styles.secondaryProject}>
-            <h3>World Cup Tracker</h3>
-            <p>
-              Built to make the 2026 FIFA World Cup easier to follow in one
-              place, combining the full 104-match schedule, tournament bracket,
-              filters, knockout-stage tracking, and scoring. With the tournament
-              complete, it now serves as a historical reference.
-            </p>
+          <article
+            className={`${styles.projectRow} ${styles.secondaryProject}`}
+          >
+            <div className={styles.projectCopy}>
+              <h3>World Cup Tracker</h3>
+              <p>
+                Built to make the 2026 FIFA World Cup easier to follow in one
+                place, combining the full 104-match schedule, tournament bracket,
+                filters, knockout-stage tracking, and scoring. With the tournament
+                complete, it now serves as a historical reference.
+              </p>
 
-            <Link className={styles.textLink} href="/work#world-cup-tracker">
-              Explore the project <span aria-hidden="true">→</span>
-            </Link>
+              <Link className={styles.textLink} href="/work#world-cup-tracker">
+                Explore the project <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+
+            <div className={styles.projectMedia}>
+              <Image
+                className={styles.projectImage}
+                src="/projects/world-cup-tracker/showcase.webp"
+                alt="World Cup Tracker overview showing tournament stats, the Road to the Final bracket, and group-stage standings."
+                width={600}
+                height={750}
+                sizes="(max-width: 900px) calc(100vw - 48px), 520px"
+                unoptimized
+              />
+            </div>
           </article>
         </section>
 

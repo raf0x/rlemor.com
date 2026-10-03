@@ -123,8 +123,6 @@
 
 .experienceRow p,
 .thinkingRow p,
-.projectIntro p,
-.secondaryProject p,
 .prose p,
 .contactCopy {
   font-size: 16px;
@@ -132,38 +130,54 @@
 }
 
 .work {
-  padding: 36px 0 88px;
+  padding: 36px 0 72px;
   border-bottom: 1px solid var(--color-rule);
 }
 
-.primaryProject {
-  margin-top: 46px;
-}
-
-.projectIntro {
+.projectRow {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 64px;
   align-items: start;
+  column-gap: 56px;
 }
 
-.projectIntro h3,
-.secondaryProject h3 {
+.primaryProject {
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+  margin-top: 46px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.secondaryProject {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-top: 48px;
+}
+
+.projectCopy {
+  min-width: 0;
+  padding-top: 4px;
+}
+
+.projectCopy h3 {
   font-size: 31px;
   line-height: 1.1;
   font-weight: 400;
 }
 
-.projectIntro p {
-  max-width: 510px;
+.projectCopy p {
+  max-width: 470px;
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.projectCopy .textLink {
+  margin-top: 26px;
 }
 
 .projectMedia {
-  display: flex;
-  justify-content: center;
-  margin-top: 38px;
-  margin-bottom: 20px;
-  padding: 20px;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   border: 1px solid #cfd3c8;
   border-radius: 2px;
@@ -172,19 +186,21 @@
 
 .projectImage {
   display: block;
-  width: min(100%, 430px);
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 
-.secondaryProject {
-  margin-top: 72px;
-  padding-top: 34px;
-  border-top: 1px solid var(--color-rule);
+.secondaryProject .projectMedia {
+  grid-column: 1;
+  grid-row: 1;
+  max-width: 600px;
 }
 
-.secondaryProject p {
-  max-width: 780px;
-  margin: 20px 0 28px;
+.secondaryProject .projectCopy {
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .thinkingList {
@@ -202,6 +218,17 @@
 
 .contactCopy {
   margin: 28px 0;
+}
+
+
+@media (max-width: 900px) {
+  .projectRow {
+    display: block;
+  }
+
+  .projectMedia {
+    margin-top: 30px;
+  }
 }
 
 @media (max-width: 760px) {
@@ -282,8 +309,6 @@
 
   .experienceRow p,
   .thinkingRow p,
-  .projectIntro p,
-  .secondaryProject p,
   .prose p,
   .contactCopy {
     font-size: 16px;
@@ -296,43 +321,38 @@
   }
 
   .work {
-    padding: 34px 0 64px;
+    padding: 34px 0 58px;
   }
 
   .primaryProject {
     margin-top: 38px;
-  }
-
-  .projectIntro {
-    display: block;
-  }
-
-  .projectIntro h3,
-  .secondaryProject h3 {
-    font-size: 30px;
-  }
-
-  .projectIntro p {
-    margin-top: 14px;
-  }
-
-  .projectMedia {
-    margin-top: 30px;
-    margin-bottom: 18px;
-    padding: 0;
-  }
-
-  .projectImage {
-    width: 100%;
+    padding-bottom: 38px;
   }
 
   .secondaryProject {
-    margin-top: 52px;
-    padding-top: 30px;
+    padding-top: 38px;
   }
 
-  .secondaryProject p {
-    margin: 16px 0 26px;
+  .projectCopy {
+    padding-top: 0;
+  }
+
+  .projectCopy h3 {
+    font-size: 30px;
+  }
+
+  .projectCopy p {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .projectCopy .textLink {
+    margin-top: 22px;
+  }
+
+  .projectMedia {
+    margin-top: 28px;
   }
 
   .prose {

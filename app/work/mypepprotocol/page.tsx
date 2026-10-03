@@ -68,22 +68,13 @@ export default function MyPepProtocolCaseStudy() {
 
           <figure className={styles.overviewFigure}>
             <Image
-              className={`${styles.productImage} ${styles.desktopImage}`}
-              src="/projects/mypepprotocol/overview-desktop.png"
+              className={styles.productImage}
+              src="/projects/mypepprotocol/overview-current.webp"
               alt="MyPepProtocol Today view with demo summary metrics and active protocol records."
-              width={2048}
-              height={1342}
+              width={500}
+              height={750}
               priority
-              sizes="(max-width: 760px) 1px, 1120px"
-            />
-            <Image
-              className={`${styles.productImage} ${styles.mobileImage} ${styles.mobileOverview}`}
-              src="/projects/mypepprotocol/overview-mobile.png"
-              alt="MyPepProtocol mobile Today view with demo summary metrics and active protocols."
-              width={780}
-              height={1888}
-              priority
-              sizes="(max-width: 760px) calc(100vw - 48px), 1px"
+              sizes="(max-width: 760px) calc(100vw - 48px), 560px"
             />
           </figure>
 

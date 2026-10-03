@@ -81,20 +81,12 @@ export default function Home() {
 
             <div className={styles.projectMedia}>
               <Image
-                className={`${styles.projectImage} ${styles.desktopMedia}`}
-                src="/projects/mypepprotocol/overview-desktop.png"
+                className={styles.projectImage}
+                src="/projects/mypepprotocol/overview-current.webp"
                 alt="MyPepProtocol Today view showing demo summary metrics and active protocol records."
-                width={2048}
-                height={1342}
-                sizes="(max-width: 760px) 1px, 1120px"
-              />
-              <Image
-                className={`${styles.projectImage} ${styles.mobileMedia}`}
-                src="/projects/mypepprotocol/overview-mobile.png"
-                alt="MyPepProtocol mobile Today view showing demo summary metrics and active protocols."
-                width={780}
-                height={1888}
-                sizes="(max-width: 760px) calc(100vw - 48px), 1px"
+                width={500}
+                height={750}
+                sizes="(max-width: 760px) calc(100vw - 48px), 430px"
               />
             </div>
 

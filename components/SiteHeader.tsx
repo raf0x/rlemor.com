@@ -10,9 +10,9 @@ export default function SiteHeader() {
         </Link>
 
         <nav className={styles.nav} aria-label="Primary navigation">
-          <Link href="/#work">Work</Link>
-          <Link href="/#about">About</Link>
-          <Link href="/#contact">Contact</Link>
+          <Link href="/work">Work</Link>
+          <Link href="/about">About</Link>
+          <Link href="/contact">Contact</Link>
         </nav>
       </div>
     </header>

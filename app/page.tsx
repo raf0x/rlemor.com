@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./page.module.css";
 
@@ -114,14 +115,9 @@ export default function Home() {
               complete, it now serves as a historical reference.
             </p>
 
-            <a
-              className={styles.textLink}
-              href="https://fifa-world-cup-predictor-jet.vercel.app/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Explore on Work <span aria-hidden="true">→</span>
-            </a>
+            <Link className={styles.textLink} href="/work#world-cup-tracker">
+              Explore the project <span aria-hidden="true">→</span>
+            </Link>
           </article>
         </section>
 
@@ -169,9 +165,9 @@ export default function Home() {
               </p>
             </div>
 
-            <a className={styles.textLink} href="#about">
+            <Link className={styles.textLink} href="/about">
               More about me <span aria-hidden="true">→</span>
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -193,14 +189,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <span>Rafael Lemor</span>
-        <nav className={styles.footerNav} aria-label="Footer navigation">
-          <Link href="/#work">Work</Link>
-          <Link href="/#about">About</Link>
-          <Link href="/#contact">Contact</Link>
-        </nav>
-      </footer>
+      <SiteFooter />
     </>
   );
 }

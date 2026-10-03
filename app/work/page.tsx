@@ -70,11 +70,12 @@ export default function WorkPage() {
             <div className={`${styles.projectMedia} ${styles.portraitMedia}`}>
               <Image
                 className={styles.projectImage}
-                src="/projects/mypepprotocol/showcase.avif"
+                src="/projects/mypepprotocol/showcase.webp"
                 alt="MyPepProtocol dashboard showing summary metrics, active protocols, and active compound details."
                 width={640}
                 height={800}
                 sizes="(max-width: 760px) calc(100vw - 48px), 600px"
+                unoptimized
               />
             </div>
 
@@ -127,11 +128,12 @@ export default function WorkPage() {
             <div className={`${styles.projectMedia} ${styles.portraitMedia}`}>
               <Image
                 className={styles.projectImage}
-                src="/projects/world-cup-tracker/showcase.avif"
+                src="/projects/world-cup-tracker/showcase.webp"
                 alt="World Cup Tracker overview showing tournament stats, the Road to the Final bracket, and group-stage standings."
                 width={600}
                 height={750}
                 sizes="(max-width: 760px) calc(100vw - 48px), 600px"
+                unoptimized
               />
             </div>
 
@@ -184,11 +186,12 @@ export default function WorkPage() {
             <div className={`${styles.projectMedia} ${styles.landscapeMedia}`}>
               <Image
                 className={styles.projectImage}
-                src="/projects/lighthouse/showcase.avif"
+                src="/projects/lighthouse/showcase.webp"
                 alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
                 width={800}
                 height={600}
                 sizes="(max-width: 760px) calc(100vw - 48px), 800px"
+                unoptimized
               />
             </div>
 

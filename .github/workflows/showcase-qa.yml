@@ -29,3 +29,78 @@ jobs:
         run: npm run build
       - name: Diff check
         run: git diff --check HEAD^ HEAD
+      - name: Responsive overflow check
+        shell: bash
+        run: |
+          npm install --no-save --package-lock=false chrome-remote-interface@0.33.3
+          npm start -- -p 3000 > /tmp/rlemor-next.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:3000/ > /dev/null; then break; fi
+            sleep 1
+          done
+
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --remote-debugging-port=9222 about:blank > /tmp/rlemor-chrome.log 2>&1 &
+          sleep 2
+
+          node <<'NODE'
+          const CDP = require("chrome-remote-interface");
+
+          const checks = [
+            [390, 1600, "/"],
+            [1440, 1600, "/"],
+            [390, 2200, "/work"],
+            [1440, 1800, "/work"],
+            [390, 2200, "/work/mypepprotocol"],
+            [1440, 1800, "/work/mypepprotocol"],
+          ];
+
+          (async () => {
+            const client = await CDP();
+            const { Page, Runtime, Emulation } = client;
+            await Page.enable();
+
+            for (const [width, height, path] of checks) {
+              await Emulation.setDeviceMetricsOverride({
+                width,
+                height,
+                deviceScaleFactor: 1,
+                mobile: width <= 390,
+              });
+
+              const loaded = new Promise((resolve) => Page.loadEventFired(resolve));
+              await Page.navigate({ url: `http://127.0.0.1:3000${path}` });
+              await loaded;
+
+              await Runtime.evaluate({
+                expression: `Promise.all(Array.from(document.images).map((img) => img.complete ? true : new Promise((resolve) => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); })))`,
+                awaitPromise: true,
+              });
+
+              const measurement = await Runtime.evaluate({
+                expression: `({
+                  htmlScrollWidth: document.documentElement.scrollWidth,
+                  htmlClientWidth: document.documentElement.clientWidth,
+                  bodyScrollWidth: document.body.scrollWidth,
+                  viewportWidth: window.innerWidth
+                })`,
+                returnByValue: true,
+              });
+
+              const value = measurement.result.value;
+              console.log(`${width}px ${path}`, value);
+
+              if (
+                value.htmlScrollWidth > value.viewportWidth + 1 ||
+                value.bodyScrollWidth > value.viewportWidth + 1
+              ) {
+                throw new Error(`Horizontal overflow at ${width}px on ${path}`);
+              }
+            }
+
+            await client.close();
+          })().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE

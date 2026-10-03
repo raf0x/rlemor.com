@@ -1,10 +1,15 @@
-.page,
+﻿.page {
+  width: 100%;
+}
+
+.hero,
+.labeledSection,
+.work,
 .footer {
-  width: min(
-    var(--page-max-width),
-    calc(100% - (var(--page-gutter) * 2))
-  );
-  margin: 0 auto;
+  width: calc(100% - 48px);
+  max-width: 1120px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .hero {
@@ -20,7 +25,7 @@
 }
 
 .hero h1 {
-  max-width: 760px;
+  max-width: 680px;
   margin-top: 22px;
   font-size: 74px;
   line-height: 0.99;
@@ -28,7 +33,7 @@
 }
 
 .heroCopy {
-  max-width: 720px;
+  max-width: 680px;
   margin-top: 38px;
   font-size: 19px;
   line-height: 1.55;
@@ -212,7 +217,7 @@
 
 .prose {
   max-width: 760px;
-  margin: 28px 0 28px;
+  margin: 28px 0;
 }
 
 .prose p + p {
@@ -220,7 +225,7 @@
 }
 
 .contactCopy {
-  margin: 28px 0 28px;
+  margin: 28px 0;
 }
 
 .footer {

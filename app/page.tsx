@@ -195,6 +195,11 @@ export default function Home() {
 
       <footer className={styles.footer}>
         <span>Rafael Lemor</span>
+        <nav className={styles.footerNav} aria-label="Footer navigation">
+          <Link href="/#work">Work</Link>
+          <Link href="/#about">About</Link>
+          <Link href="/#contact">Contact</Link>
+        </nav>
       </footer>
     </>
   );

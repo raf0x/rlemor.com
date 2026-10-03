@@ -3,8 +3,8 @@
 }
 
 .story {
-  width: calc(100% - 48px);
-  max-width: 1120px;
+  width: calc(100% - (var(--page-gutter) * 2));
+  max-width: var(--page-max-width);
   margin: 0 auto;
   padding: 66px 0 64px;
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SiteHeader from "@/components/SiteHeader";
 import styles from "./case-study.module.css";
 
 export const metadata: Metadata = {
@@ -9,7 +10,10 @@ export const metadata: Metadata = {
 
 export default function MyPepProtocolSetupJourney() {
   return (
-    <main className={styles.page}>
+    <>
+      <SiteHeader />
+
+      <main className={styles.page}>
       <section className={styles.story}>
         <p className={styles.eyebrow}>MyPepProtocol / Setup journey</p>
 
@@ -79,6 +83,7 @@ export default function MyPepProtocolSetupJourney() {
           </div>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

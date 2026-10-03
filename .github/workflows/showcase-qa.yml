@@ -199,8 +199,11 @@ jobs:
             }
 
             await navigate(baselineUrl, 1440);
-            const baseline = await measure();
-            const before = baseline.work.height;
+            const baselineResult = await Runtime.evaluate({
+              expression: 'document.querySelector("#work").getBoundingClientRect().height',
+              returnByValue: true,
+            });
+            const before = baselineResult.result.value;
             const after = measurements[1440].work.height;
             const reduction = ((before - after) / before) * 100;
 
@@ -214,7 +217,7 @@ jobs:
 
             fs.writeFileSync(
               "screenshots/measurements.json",
-              JSON.stringify({ baseline1440: baseline, targets: measurements, before, after, reduction }, null, 2)
+              JSON.stringify({ baseline1440: { workHeight: before }, targets: measurements, before, after, reduction }, null, 2)
             );
 
             await client.close();

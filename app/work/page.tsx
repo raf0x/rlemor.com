@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
@@ -66,6 +67,17 @@ export default function WorkPage() {
               </p>
             </div>
 
+            <div className={`${styles.projectMedia} ${styles.portraitMedia}`}>
+              <Image
+                className={styles.projectImage}
+                src="/projects/mypepprotocol/showcase.webp"
+                alt="MyPepProtocol dashboard showing summary metrics, active protocols, and active compound details."
+                width={640}
+                height={800}
+                sizes="(max-width: 760px) calc(100vw - 48px), 600px"
+              />
+            </div>
+
             <p className={styles.statement}>
               This is the project where my product judgment and execution are
               most developed.
@@ -112,6 +124,17 @@ export default function WorkPage() {
               </p>
             </div>
 
+            <div className={`${styles.projectMedia} ${styles.portraitMedia}`}>
+              <Image
+                className={styles.projectImage}
+                src="/projects/world-cup-tracker/showcase.webp"
+                alt="World Cup Tracker overview showing tournament stats, the Road to the Final bracket, and group-stage standings."
+                width={600}
+                height={750}
+                sizes="(max-width: 760px) calc(100vw - 48px), 600px"
+              />
+            </div>
+
             <p className={styles.disclosure}>
               Independent project. Not affiliated with or endorsed by FIFA.
             </p>
@@ -156,6 +179,17 @@ export default function WorkPage() {
                 portfolio experiment in a domain I already knew well. It remains
                 intentionally smaller and less mature than the projects above.
               </p>
+            </div>
+
+            <div className={`${styles.projectMedia} ${styles.landscapeMedia}`}>
+              <Image
+                className={styles.projectImage}
+                src="/projects/lighthouse/showcase.webp"
+                alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
+                width={800}
+                height={600}
+                sizes="(max-width: 760px) calc(100vw - 48px), 800px"
+              />
             </div>
 
             <div className={styles.actions}>

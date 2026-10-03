@@ -97,6 +97,28 @@
   line-height: 1.5;
 }
 
+.projectMedia {
+  margin-top: 32px;
+  overflow: hidden;
+  border: 1px solid var(--color-rule);
+  border-radius: 2px;
+  background: #090d14;
+}
+
+.projectImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.portraitMedia {
+  max-width: 600px;
+}
+
+.landscapeMedia {
+  max-width: 800px;
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -230,6 +252,15 @@
   .statement {
     margin-top: 34px;
     font-size: 34px;
+  }
+
+  .projectMedia {
+    margin-top: 26px;
+  }
+
+  .portraitMedia,
+  .landscapeMedia {
+    max-width: none;
   }
 
   .actions {

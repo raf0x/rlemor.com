@@ -82,10 +82,10 @@ export default function Home() {
             <div className={styles.projectMedia}>
               <Image
                 className={styles.projectImage}
-                src="/projects/mypepprotocol/overview-current.webp"
+                src="/projects/mypepprotocol/showcase.webp"
                 alt="MyPepProtocol Today view showing demo summary metrics and active protocol records."
-                width={500}
-                height={750}
+                width={640}
+                height={800}
                 sizes="(max-width: 760px) calc(100vw - 48px), 430px"
               />
             </div>

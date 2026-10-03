@@ -69,10 +69,10 @@ export default function MyPepProtocolCaseStudy() {
           <figure className={styles.overviewFigure}>
             <Image
               className={styles.productImage}
-              src="/projects/mypepprotocol/overview-current.webp"
+              src="/projects/mypepprotocol/showcase.webp"
               alt="MyPepProtocol Today view with demo summary metrics and active protocol records."
-              width={500}
-              height={750}
+              width={640}
+              height={800}
               priority
               sizes="(max-width: 760px) calc(100vw - 48px), 560px"
             />

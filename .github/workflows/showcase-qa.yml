@@ -77,10 +77,7 @@ jobs:
               await Page.navigate({ url: `http://127.0.0.1:3000${path}` });
               await loaded;
 
-              await Runtime.evaluate({
-                expression: `Promise.all(Array.from(document.images).map((img) => img.complete ? true : new Promise((resolve) => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); })))`,
-                awaitPromise: true,
-              });
+              await new Promise((resolve) => setTimeout(resolve, 500));
 
               const measurement = await Runtime.evaluate({
                 expression: `({

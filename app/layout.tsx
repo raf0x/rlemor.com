@@ -14,10 +14,26 @@ const sourceSans = Source_Sans_3({
   display: "swap",
 });
 
+const siteDescription =
+  "Operations, customer experience, product judgment, and practical AI execution.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://rlemor.com"),
   title: "Rafael Lemor",
-  description:
-    "Rafael Lemor. Operations, customer experience, and product-minded work.",
+  description: siteDescription,
+  openGraph: {
+    title: "Rafael Lemor",
+    description: siteDescription,
+    url: "/",
+    siteName: "Rafael Lemor",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Rafael Lemor",
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({

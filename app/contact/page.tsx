@@ -3,10 +3,28 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./contact.module.css";
 
+const description =
+  "Contact Rafael Lemor about operations, customer understanding, product judgment, and practical AI execution.";
+
 export const metadata: Metadata = {
   title: "Contact | Rafael Lemor",
-  description:
-    "Contact Rafael Lemor about operations, customer understanding, product judgment, and practical AI execution.",
+  description,
+  alternates: {
+    canonical: "/contact",
+  },
+  openGraph: {
+    title: "Contact | Rafael Lemor",
+    description,
+    url: "/contact",
+    siteName: "Rafael Lemor",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Contact | Rafael Lemor",
+    description,
+  },
 };
 
 export default function ContactPage() {

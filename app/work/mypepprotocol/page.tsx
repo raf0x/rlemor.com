@@ -5,10 +5,28 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./case-study.module.css";
 
+const description =
+  "How MyPepProtocol uses product rules, evidence, and explicit constraints to manage complex health records.";
+
 export const metadata: Metadata = {
   title: "MyPepProtocol Case Study | Rafael Lemor",
-  description:
-    "How MyPepProtocol uses product rules, evidence, and explicit constraints to manage complex health records.",
+  description,
+  alternates: {
+    canonical: "/work/mypepprotocol",
+  },
+  openGraph: {
+    title: "MyPepProtocol Case Study | Rafael Lemor",
+    description,
+    url: "/work/mypepprotocol",
+    siteName: "Rafael Lemor",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "MyPepProtocol Case Study | Rafael Lemor",
+    description,
+  },
 };
 
 export default function MyPepProtocolCaseStudy() {

@@ -3,10 +3,28 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./about.module.css";
 
+const description =
+  "About Rafael Lemor: customer-facing operations, major events, product building, and travel.";
+
 export const metadata: Metadata = {
   title: "About | Rafael Lemor",
-  description:
-    "About Rafael Lemor: customer-facing operations, major events, product building, and travel.",
+  description,
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About | Rafael Lemor",
+    description,
+    url: "/about",
+    siteName: "Rafael Lemor",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "About | Rafael Lemor",
+    description,
+  },
 };
 
 export default function AboutPage() {

@@ -4,10 +4,28 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./work.module.css";
 
+const description =
+  "Selected product work by Rafael Lemor, including MyPepProtocol, World Cup Tracker, and Lighthouse.";
+
 export const metadata: Metadata = {
   title: "Work | Rafael Lemor",
-  description:
-    "Selected product work by Rafael Lemor, including MyPepProtocol, World Cup Tracker, and Lighthouse.",
+  description,
+  alternates: {
+    canonical: "/work",
+  },
+  openGraph: {
+    title: "Work | Rafael Lemor",
+    description,
+    url: "/work",
+    siteName: "Rafael Lemor",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Work | Rafael Lemor",
+    description,
+  },
 };
 
 export default function WorkPage() {
@@ -141,7 +159,9 @@ export default function WorkPage() {
             </div>
 
             <div className={styles.actions}>
-              <span className={styles.unresolvedLink}>View demo →</span>
+              <span className={styles.unavailableStatus}>
+                Demo currently unavailable
+              </span>
               <a
                 className={styles.textLink}
                 href="https://github.com/raf0x/lighthouse"

@@ -117,8 +117,7 @@
   text-decoration: none;
 }
 
-.textLink,
-.unresolvedLink {
+.textLink {
   display: inline-flex;
   align-items: center;
   width: fit-content;
@@ -131,9 +130,10 @@
   text-decoration: none;
 }
 
-.unresolvedLink {
-  border-bottom-color: var(--color-rule);
+.unavailableStatus {
   color: var(--color-muted);
+  font-size: 16px;
+  line-height: 1.3;
 }
 
 .primaryAction:focus-visible,
@@ -255,7 +255,7 @@
   }
 
   .textLink,
-  .unresolvedLink {
+  .unavailableStatus {
     font-size: 15px;
   }
 

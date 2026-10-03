@@ -1,0 +1,31 @@
+name: Showcase QA
+
+on:
+  push:
+    branches:
+      - qa/lighthouse-showcase-fix
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out final production commit
+        uses: actions/checkout@v4
+        with:
+          ref: 6cd56f583307d9fff3dcfba6dfaafbcdb036efaa
+          fetch-depth: 2
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: TypeScript
+        run: npx tsc --noEmit
+      - name: Build
+        run: npm run build
+      - name: Diff check
+        run: git diff --check HEAD^ HEAD

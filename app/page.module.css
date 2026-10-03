@@ -136,8 +136,8 @@
 
 .projectRow {
   display: grid;
-  align-items: start;
-  column-gap: 56px;
+  align-items: center;
+  column-gap: 48px;
 }
 
 .primaryProject {
@@ -154,7 +154,9 @@
 
 .projectCopy {
   min-width: 0;
-  padding-top: 4px;
+  max-width: 480px;
+  align-self: center;
+  padding-top: 0;
 }
 
 .projectCopy h3 {
@@ -165,19 +167,18 @@
 
 .projectCopy p {
   max-width: 470px;
-  margin-top: 18px;
+  margin-top: 20px;
   font-size: 16px;
   line-height: 1.55;
 }
 
 .projectCopy .textLink {
-  margin-top: 26px;
+  margin-top: 28px;
 }
 
 .projectMedia {
   width: 100%;
   max-width: 640px;
-  aspect-ratio: 3 / 2;
   overflow: hidden;
   border: 1px solid #cfd3c8;
   border-radius: 2px;
@@ -187,21 +188,21 @@
 .projectImage {
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
+  height: auto;
 }
 
 .secondaryProject .projectMedia {
   grid-column: 1;
   grid-row: 1;
   max-width: 600px;
-  aspect-ratio: 8 / 5;
 }
 
 .secondaryProject .projectCopy {
   grid-column: 2;
   grid-row: 1;
+  width: 100%;
+  max-width: 480px;
+  justify-self: center;
 }
 
 .thinkingList {
@@ -221,7 +222,6 @@
   margin: 28px 0;
 }
 
-
 @media (max-width: 900px) {
   .projectRow {
     display: block;
@@ -232,7 +232,7 @@
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 800px) {
   .hero {
     padding: 44px 0 64px;
   }
@@ -353,7 +353,9 @@
   }
 
   .projectMedia {
-    margin-top: 28px;
+    margin-top: 26px;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .prose {

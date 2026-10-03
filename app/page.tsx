@@ -119,7 +119,7 @@ export default function Home() {
             <div className={styles.projectMedia}>
               <Image
                 className={styles.projectImage}
-                src="/projects/world-cup-tracker/showcase.webp"
+                src="/projects/world-cup-tracker/world-cup-overview-desktop.png"
                 alt="World Cup Tracker overview showing tournament stats, the Road to the Final bracket, and group-stage standings."
                 width={600}
                 height={750}

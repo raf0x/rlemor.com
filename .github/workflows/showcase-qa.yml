@@ -63,7 +63,6 @@ jobs:
           const fs = require("fs");
 
           const targetUrl = "http://127.0.0.1:3000/";
-          const baselineUrl = "https://rlemor-kkhtgbsl5-rafael-lemors-projects.vercel.app/";
           const widths = [1440, 1024, 768, 390];
 
           async function wait(ms) {
@@ -198,13 +197,56 @@ jobs:
               }
             }
 
-            await navigate(baselineUrl, 1440);
-            const baselineResult = await Runtime.evaluate({
+            fs.writeFileSync(
+              "screenshots/measurements.json",
+              JSON.stringify({ targets: measurements, after: measurements[1440].work.height }, null, 2)
+            );
+
+            await client.close();
+          })().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+          pkill -f "next-server" || true
+          git checkout HEAD^ -- app/page.tsx app/page.module.css
+          npm run build
+          npm start -- -p 3001 > /tmp/rlemor-baseline.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:3001/ > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:3001/ > /dev/null || { cat /tmp/rlemor-baseline.log; exit 1; }
+
+          node <<'NODE'
+          const CDP = require("chrome-remote-interface");
+          const fs = require("fs");
+
+          (async () => {
+            const client = await CDP();
+            const { Page, Runtime, Emulation } = client;
+            await Page.enable();
+            await Emulation.setDeviceMetricsOverride({
+              width: 1440,
+              height: 1800,
+              deviceScaleFactor: 1,
+              mobile: false,
+            });
+
+            const loaded = new Promise((resolve) => Page.loadEventFired(resolve));
+            await Page.navigate({ url: "http://127.0.0.1:3001/" });
+            await loaded;
+            await new Promise((resolve) => setTimeout(resolve, 700));
+
+            const result = await Runtime.evaluate({
               expression: 'document.querySelector("#work").getBoundingClientRect().height',
               returnByValue: true,
             });
-            const before = baselineResult.result.value;
-            const after = measurements[1440].work.height;
+
+            const before = result.result.value;
+            const data = JSON.parse(fs.readFileSync("screenshots/measurements.json", "utf8"));
+            const after = data.after;
             const reduction = ((before - after) / before) * 100;
 
             console.log(`SELECTED_WORK_BEFORE_1440=${before.toFixed(2)}`);
@@ -215,10 +257,9 @@ jobs:
               throw new Error(`Selected work height did not decrease: before ${before}, after ${after}`);
             }
 
-            fs.writeFileSync(
-              "screenshots/measurements.json",
-              JSON.stringify({ baseline1440: { workHeight: before }, targets: measurements, before, after, reduction }, null, 2)
-            );
+            data.before = before;
+            data.reduction = reduction;
+            fs.writeFileSync("screenshots/measurements.json", JSON.stringify(data, null, 2));
 
             await client.close();
           })().catch((error) => {

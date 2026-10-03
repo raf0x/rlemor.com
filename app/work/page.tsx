@@ -184,26 +184,10 @@ export default function WorkPage() {
             <div className={`${styles.projectMedia} ${styles.landscapeMedia}`}>
               <Image
                 className={styles.projectImage}
-                src="/projects/lighthouse/showcase-1.webp"
+                src="/projects/lighthouse/showcase.webp"
                 alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
-                width={960}
-                height={218}
-                sizes="(max-width: 760px) calc(100vw - 48px), 800px"
-              />
-              <Image
-                className={styles.projectImage}
-                src="/projects/lighthouse/showcase-2.webp"
-                alt=""
-                width={960}
-                height={218}
-                sizes="(max-width: 760px) calc(100vw - 48px), 800px"
-              />
-              <Image
-                className={styles.projectImage}
-                src="/projects/lighthouse/showcase-3.webp"
-                alt=""
-                width={960}
-                height={217}
+                width={800}
+                height={600}
                 sizes="(max-width: 760px) calc(100vw - 48px), 800px"
               />
             </div>

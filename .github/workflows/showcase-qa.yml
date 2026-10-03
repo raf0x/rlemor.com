@@ -39,9 +39,14 @@ jobs:
             sleep 1
           done
 
-          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
-          "$CHROME" --headless=new --no-sandbox --disable-gpu --remote-debugging-port=9222 about:blank > /tmp/rlemor-chrome.log 2>&1 &
-          sleep 2
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser)"
+          echo "Using Chrome: $CHROME"
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 --user-data-dir=/tmp/rlemor-chrome-profile about:blank > /tmp/rlemor-chrome.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:9222/json/version > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:9222/json/version > /dev/null || { cat /tmp/rlemor-chrome.log; exit 1; }
 
           node <<'NODE'
           const CDP = require("chrome-remote-interface");

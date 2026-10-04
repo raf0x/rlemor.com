@@ -6,7 +6,7 @@
 }
 
 .intro {
-  padding: 84px 0 56px;
+  padding: 84px 0 48px;
   border-bottom: 1px solid var(--color-rule);
 }
 
@@ -16,11 +16,28 @@
   letter-spacing: -0.02em;
 }
 
-.intro p {
-  max-width: 960px;
+.introLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 680px) 304px;
+  gap: 72px;
+  align-items: center;
   margin-top: 34px;
+}
+
+.introLayout p {
   font-size: 20px;
   line-height: 1.55;
+}
+
+.portraitFrame {
+  position: relative;
+  width: 304px;
+  height: 380px;
+}
+
+.portrait {
+  object-fit: cover;
+  object-position: center center;
 }
 
 .paragraphSection {
@@ -30,9 +47,44 @@
 
 .paragraphSection p {
   max-width: 760px;
-  margin-left: 192px;
   font-size: 17px;
   line-height: 1.62;
+}
+
+.storyRow {
+  display: grid;
+  grid-template-columns: 144px minmax(0, 760px);
+  column-gap: 48px;
+  align-items: center;
+}
+
+.storyImage {
+  display: block;
+  width: 144px;
+  height: 144px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.fifaImage {
+  object-fit: contain;
+}
+
+@media (max-width: 900px) {
+  .storyRow {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+  }
+
+  .introLayout {
+    display: block;
+  }
+
+  .portraitFrame {
+    width: 288px;
+    height: 360px;
+    margin-top: 30px;
+  }
 }
 
 @media (max-width: 760px) {
@@ -41,17 +93,25 @@
   }
 
   .intro {
-    padding: 46px 0 42px;
+    padding: 46px 0 36px;
   }
 
   .intro h1 {
     font-size: 46px;
   }
 
-  .intro p {
+  .introLayout {
     margin-top: 22px;
+  }
+
+  .introLayout p {
     font-size: 18px;
     line-height: 1.55;
+  }
+
+  .portraitFrame {
+    margin-top: 28px;
+    margin-bottom: 0;
   }
 
   .paragraphSection {
@@ -60,8 +120,12 @@
 
   .paragraphSection p {
     max-width: none;
-    margin-left: 0;
     font-size: 16px;
     line-height: 1.58;
+  }
+
+  .storyImage {
+    width: 128px;
+    height: 128px;
   }
 }

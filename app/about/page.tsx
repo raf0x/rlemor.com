@@ -109,7 +109,7 @@ export default function AboutPage() {
           <div className={styles.storyRow}>
             <Image
               className={styles.storyImage}
-              src="/images/about-travel.jpg"
+              src="/images/about-travel2.jpg"
               alt="Rafael Lemor traveling"
               width={144}
               height={144}

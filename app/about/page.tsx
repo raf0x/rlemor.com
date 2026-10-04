@@ -39,12 +39,15 @@ export default function AboutPage() {
 
           <div className={styles.introLayout}>
             <p>
-              I&apos;ve spent more than seven years in customer-facing and
-              operational roles across SaaS, major events, and complex service
-              environments. The settings changed, but the job was often similar:
-              understand what the customer needs, make sense of a complicated
-              system, coordinate the people involved, and keep things moving when
-              the plan meets reality.
+              Rafael is a seasoned professional with more than seven years across
+              enterprise SaaS and global sports operations. He has managed customer
+              and partner relationships for Fortune 500 companies including
+              Coca-Cola, Bank of America, and Qualcomm, with experience spanning
+              Customer Success, account management, technology implementation, and
+              large-scale CRM and ticketing operations. Today, he is applying AI to
+              how work gets done, building workflows and agentic systems that reduce
+              repetitive work, make complex information easier to use, and improve
+              execution.
             </p>
 
             <div className={styles.portraitFrame}>

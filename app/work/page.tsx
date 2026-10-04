@@ -38,10 +38,10 @@ export default function WorkPage() {
         <section className={styles.intro}>
           <h1>Work</h1>
           <p>
-            These are a few products I have built while learning how to turn
-            real problems and ideas into working software. The emphasis is on
-            the problem, the decisions, and what shipped, not the technology for
-            its own sake.
+            These projects reflect how Rafael approaches real problems through
+            product thinking, practical execution, and modern tools. The emphasis
+            is on the problem, the decisions, and what shipped, not the technology
+            for its own sake.
           </p>
         </section>
 
@@ -80,8 +80,8 @@ export default function WorkPage() {
             </div>
 
             <p className={styles.statement}>
-              This is the project where my product judgment and execution are
-              most developed.
+              MyPepProtocol is the clearest example of how I approach product
+              decisions, tradeoffs, and execution around a real, complex problem.
             </p>
 
             <div className={styles.actions}>
@@ -112,11 +112,11 @@ export default function WorkPage() {
 
             <div className={styles.copy}>
               <p>
-                I built World Cup Tracker to make the expanded 48-team 2026
-                World Cup easier to understand and follow in one place. It
-                brings the tournament&apos;s 104-match schedule, group
-                standings, knockout bracket, and prediction logic into a single
-                interface.
+                World Cup Tracker was built to make the expanded 48-team 2026
+                World Cup easier to navigate. It brings the full 104-match
+                schedule, group standings, knockout bracket, filters, and
+                prediction logic into a single interface designed to make a
+                complex tournament structure easier to follow.
               </p>
 
               <p>
@@ -176,10 +176,11 @@ export default function WorkPage() {
               </p>
 
               <p>
-                The project combines account-health signals, a portfolio view,
-                and AI-generated executive briefs. I built it as an early
-                portfolio experiment in a domain I already knew well. It remains
-                intentionally smaller and less mature than the projects above.
+                Lighthouse explores how account-health signals can be turned
+                into clearer action. It combines portfolio health, renewal risk,
+                account context, and AI-generated executive briefs to help
+                surface what deserves attention. It remains a focused experiment
+                rather than a full production product.
               </p>
             </div>
 

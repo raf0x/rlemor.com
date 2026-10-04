@@ -38,7 +38,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.labeledSection}>
+        <section className={`${styles.labeledSection} ${styles.experienceSection}`}>
           <p className={styles.sectionLabel}>Experience</p>
 
           <div className={styles.sectionContent}>

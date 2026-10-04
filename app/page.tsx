@@ -42,25 +42,38 @@ export default function Home() {
           <p className={styles.sectionLabel}>Experience</p>
 
           <div className={styles.sectionContent}>
-            <h2>Complex operations, global scale.</h2>
+            <h2>Complex environments. Consistent execution.</h2>
 
             <div className={styles.experienceList}>
               <article className={styles.experienceRow}>
-                <h3>FIFA / Global Ticketing Operations</h3>
+                <h3>FIFA / Global Sports Operations</h3>
                 <p>
-                  Managed ticketing operations across four global FIFA
-                  tournaments, supporting 30+ commercial partners and culminating
-                  in the 2026 FIFA World Cup.
+                  Managed ticketing operations across four FIFA tournaments,
+                  culminating in the 2026 World Cup. Work spanned CRM operations,
+                  allocations, fulfillment, partner training, and high-stakes
+                  delivery across commercial partners and host-city stakeholders.
                 </p>
               </article>
 
               <article className={styles.experienceRow}>
-                <h3>Commercial Partnerships</h3>
+                <h3>SaaS / Customer Success</h3>
                 <p>
-                  Managed high-stakes relationships with partners including
-                  Coca-Cola and Bank of America, coordinating allocations,
-                  contracts, distribution, payments, escalations, and tournament
-                  closeout across internal and external teams.
+                  Worked across Shibumi, an enterprise strategic portfolio
+                  management platform, and CHEQ by Cantaloupe, a mobile-first
+                  commerce platform for stadiums and live venues. Experience
+                  spanned Customer Success, implementation, technology, and
+                  operational problem solving.
+                </p>
+              </article>
+
+              <article className={styles.experienceRow}>
+                <h3>Commercial Partnerships / B2B</h3>
+                <p>
+                  Managed complex customer and partner relationships across SaaS
+                  and global sports, including Fortune 500 organizations such as
+                  Coca-Cola, Bank of America, and Qualcomm. The common thread was
+                  translating commercial priorities into coordinated execution
+                  across teams, systems, and operations.
                 </p>
               </article>
             </div>

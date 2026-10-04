@@ -98,28 +98,24 @@
 .experienceList {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
   margin-top: 44px;
 }
 
 .experienceRow {
+  display: flex;
   min-width: 0;
-  padding: 0 28px;
-}
-
-.experienceRow:first-child {
-  padding-left: 0;
-}
-
-.experienceRow:last-child {
-  padding-right: 0;
-}
-
-.experienceRow + .experienceRow {
-  border-left: 1px solid var(--color-rule);
+  min-height: 292px;
+  flex-direction: column;
+  padding: 28px 26px 30px;
+  border: 1px solid var(--color-rule);
+  border-top: 3px solid var(--color-accent);
+  border-radius: 2px;
+  background: var(--color-media);
 }
 
 .experienceRow p {
-  margin-top: 16px;
+  margin-top: 22px;
 }
 
 .thinkingRow {
@@ -314,7 +310,9 @@
   }
 
   .experienceList {
-    display: block;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .experienceRow,
@@ -323,14 +321,12 @@
   }
 
   .experienceRow {
-    padding: 0;
+    min-height: 0;
+    padding: 24px 22px 26px;
   }
 
   .experienceRow + .experienceRow {
-    margin-top: 34px;
-    padding-top: 28px;
-    border-top: 1px solid var(--color-rule);
-    border-left: 0;
+    margin-top: 0;
   }
 
   .thinkingRow + .thinkingRow {

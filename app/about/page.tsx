@@ -73,9 +73,9 @@ export default function AboutPage() {
               sizes="(max-width: 760px) 128px, 144px"
             />
             <p>
-              Most recently, at FIFA, I managed commercial-partner ticketing
+              Most recently, at FIFA, Rafael managed commercial-partner ticketing
               relationships across four global tournaments, including the 2026
-              World Cup. Earlier roles gave me other sides of the same problem:
+              World Cup. Earlier roles gave him other sides of the same problem:
               enterprise Customer Success, technology implementation, and
               operations leadership.
             </p>
@@ -93,11 +93,11 @@ export default function AboutPage() {
               sizes="(max-width: 760px) 128px, 144px"
             />
             <p>
-              Building products is a newer extension of how I already worked. AI
-              and modern development tools gave me a practical way to move from
-              noticing a problem to building and testing a working solution. I
-              approach that work like an operator: understand the user, make the
-              tradeoffs explicit, simplify aggressively, and keep improving the
+              Building products is a newer extension of how Rafael already worked.
+              AI and modern development tools gave him a practical way to move from
+              noticing a problem to building and testing a working solution. He
+              approaches that work with the same mindset: understand the user, make
+              the tradeoffs explicit, simplify aggressively, and keep improving the
               parts that matter. MyPepProtocol is the clearest expression of that
               so far.
             </p>
@@ -115,11 +115,11 @@ export default function AboutPage() {
               sizes="(max-width: 760px) 128px, 144px"
             />
             <p>
-              Outside work, travel is one of the things I care about most.
-              I&apos;ve visited roughly 25–30 countries, including a three-month
+              Outside work, travel is one of the things Rafael cares about most.
+              He has visited roughly 25–30 countries, including a three-month
               backpacking trip through Southeast Asia that covered about eight
-              countries and 25 cities. Football has been another constant, which
-              made working around the World Cup a particularly memorable chapter.
+              countries and 25 cities. Football has been another constant, making
+              his work around the World Cup a particularly memorable chapter.
             </p>
           </div>
         </section>

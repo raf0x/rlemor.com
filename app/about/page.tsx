@@ -87,11 +87,13 @@ export default function AboutPage() {
           <div className={styles.storyRow}>
             <Image
               className={styles.storyImage}
-              src="/images/about-product-building.png"
-              alt="Product-building workspace"
+              src="/images/rlemor-orbit-animation.gif"
+              alt="Product building and iteration loop"
               width={144}
               height={144}
               sizes="(max-width: 760px) 128px, 144px"
+              style={{ objectFit: "contain" }}
+              unoptimized
             />
             <p>
               More recently, Rafael has extended that experience into product

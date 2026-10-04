@@ -42,25 +42,25 @@ export default function Home() {
           <p className={styles.sectionLabel}>Experience</p>
 
           <div className={styles.sectionContent}>
-            <h2>Experience at a global scale.</h2>
+            <h2>Complex operations, global scale.</h2>
 
             <div className={styles.experienceList}>
               <article className={styles.experienceRow}>
                 <h3>FIFA / Global Ticketing Operations</h3>
                 <p>
-                  Managed ticketing operations for 30+ commercial partners
-                  across four global tournaments, culminating in the 2026 FIFA
-                  World Cup.
+                  Managed ticketing operations across four global FIFA
+                  tournaments, supporting 30+ commercial partners and culminating
+                  in the 2026 FIFA World Cup.
                 </p>
               </article>
 
               <article className={styles.experienceRow}>
                 <h3>Commercial Partnerships</h3>
                 <p>
-                  Owned day-to-day ticketing relationships with major partners
-                  including Coca-Cola and Bank of America, spanning allocations,
+                  Managed high-stakes relationships with partners including
+                  Coca-Cola and Bank of America, coordinating allocations,
                   contracts, distribution, payments, escalations, and tournament
-                  closeout.
+                  closeout across internal and external teams.
                 </p>
               </article>
             </div>
@@ -134,23 +134,24 @@ export default function Home() {
           <p className={styles.sectionLabel}>How I think</p>
 
           <div className={styles.sectionContent}>
-            <h2>A practical approach.</h2>
+            <h2>A practical operating mindset.</h2>
 
             <div className={styles.thinkingList}>
               <article className={styles.thinkingRow}>
                 <h3>Reduce repeat work.</h3>
                 <p>
-                  In MyPepProtocol, recorded inventory details carry into
-                  protocol setup, while the user reviews the choices.
+                  Design workflows so information entered once can support the
+                  next decision. In MyPepProtocol, inventory data carries directly
+                  into protocol setup instead of asking the user to recreate it.
                 </p>
               </article>
 
               <article className={styles.thinkingRow}>
-                <h3>Make uncertainty visible.</h3>
+                <h3>Keep facts separate from assumptions.</h3>
                 <p>
-                  MyPepProtocol’s product rules distinguish recorded facts from
-                  explanations, without treating a change over time as proof of
-                  cause.
+                  When information is incomplete, make the uncertainty explicit.
+                  MyPepProtocol separates recorded facts from interpretation rather
+                  than presenting correlation as causation.
                 </p>
               </article>
             </div>
@@ -161,16 +162,18 @@ export default function Home() {
           <p className={styles.sectionLabel}>About</p>
 
           <div className={styles.sectionContent}>
-            <h2>A newer chapter.</h2>
+            <h2>A broader picture.</h2>
 
             <div className={styles.prose}>
               <p>
                 Customer relationships and large-scale operations have shaped my
-                career. Product building is a newer chapter.
+                career. More recently, I’ve been applying AI and modern tools to
+                build products and rethink how work gets done.
               </p>
               <p>
-                Beyond work, I’ve spent three months backpacking through
-                Southeast Asia.
+                Outside work, travel and football have been constants. I’ve
+                visited roughly 25–30 countries, including a three-month
+                backpacking trip through Southeast Asia.
               </p>
             </div>
 

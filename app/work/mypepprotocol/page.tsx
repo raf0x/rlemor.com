@@ -43,21 +43,21 @@ export default function MyPepProtocolCaseStudy() {
 
             <div className={styles.introCopy}>
               <p>
-                MyPepProtocol is a private health product for people managing
-                complex protocols and the records that accumulate around them.
+                MyPepProtocol is a private health-tracking product designed to
+                keep complex protocols, schedules, inventory, labs, and
+                longitudinal records coherent over time.
               </p>
 
               <p>
-                I started with a practical problem: the same information was
-                being repeated across setup, schedules, inventory, labs and
-                notes, while the context connecting those records was easy to
-                lose.
+                I built it around a practical systems problem: the same
+                information was being repeated across different workflows, while
+                the context needed to understand those records was easy to lose.
               </p>
 
               <p>
-                The product is built around a simple idea: record facts once,
-                reuse them carefully, and keep the evidence behind any summary
-                close enough to inspect.
+                The product follows a simple rule: capture facts once, reuse
+                them where appropriate, and keep the underlying evidence and
+                uncertainty visible so every summary can be inspected.
               </p>
             </div>
 

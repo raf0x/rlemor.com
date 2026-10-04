@@ -73,11 +73,12 @@ export default function AboutPage() {
               sizes="(max-width: 760px) 128px, 144px"
             />
             <p>
-              Most recently, at FIFA, Rafael managed commercial-partner ticketing
-              relationships across four global tournaments, including the 2026
-              World Cup. Earlier roles gave him other sides of the same problem:
-              enterprise Customer Success, technology implementation, and
-              operations leadership.
+              At FIFA, Rafael managed ticketing operations and commercial-partner
+              relationships across four global tournaments, culminating in the 2026
+              World Cup. His work spanned allocations, contracts, distribution,
+              payments, escalations, and tournament closeout, coordinating across
+              partners and internal teams in an environment where accuracy, timing,
+              and execution mattered at global scale.
             </p>
           </div>
         </section>
@@ -93,13 +94,13 @@ export default function AboutPage() {
               sizes="(max-width: 760px) 128px, 144px"
             />
             <p>
-              Building products is a newer extension of how Rafael already worked.
-              AI and modern development tools gave him a practical way to move from
-              noticing a problem to building and testing a working solution. He
-              approaches that work with the same mindset: understand the user, make
-              the tradeoffs explicit, simplify aggressively, and keep improving the
-              parts that matter. MyPepProtocol is the clearest expression of that
-              so far.
+              More recently, Rafael has extended that experience into product
+              building. Using AI and modern development tools, he moves from
+              identifying a real problem to designing, building, and testing a
+              working solution. His focus is not technology for its own sake, but
+              practical systems that reduce friction, make information more useful,
+              and improve execution. MyPepProtocol is the clearest example of that
+              approach.
             </p>
           </div>
         </section>
@@ -115,11 +116,12 @@ export default function AboutPage() {
               sizes="(max-width: 760px) 128px, 144px"
             />
             <p>
-              Outside work, travel is one of the things Rafael cares about most.
-              He has visited roughly 25–30 countries, including a three-month
-              backpacking trip through Southeast Asia that covered about eight
-              countries and 25 cities. Football has been another constant, making
-              his work around the World Cup a particularly memorable chapter.
+              Outside work, Rafael has traveled to roughly 25–30 countries,
+              including a three-month backpacking trip through Southeast Asia
+              spanning about eight countries and 25 cities. Travel remains one of
+              his biggest personal interests, alongside football, which made the
+              opportunity to work around the World Cup a particularly meaningful
+              chapter.
             </p>
           </div>
         </section>

@@ -175,23 +175,26 @@ export default function Home() {
           <p className={styles.sectionLabel}>About</p>
 
           <div className={styles.sectionContent}>
-            <h2>A broader picture.</h2>
+            <h2>More than the résumé.</h2>
 
             <div className={styles.prose}>
               <p>
-                Customer relationships and large-scale operations have shaped my
-                career. More recently, I’ve been applying AI and modern tools to
-                build products and rethink how work gets done.
+                Rafael’s career has moved between enterprise software, global
+                sport, and now building products with AI. The common thread is a
+                preference for complex problems, useful systems, and work where
+                thoughtful execution matters.
               </p>
               <p>
-                Outside work, travel and football have been constants. I’ve
-                visited roughly 25–30 countries, including a three-month
-                backpacking trip through Southeast Asia.
+                Outside work, travel and football are constants. He has explored
+                30 countries so far, including an extended backpacking trip
+                through Southeast Asia, and is usually most interested in
+                experiences that expose him to different people, places, and
+                ways of thinking.
               </p>
             </div>
 
             <Link className={styles.textLink} href="/about">
-              More about me <span aria-hidden="true">→</span>
+              More about Rafael <span aria-hidden="true">→</span>
             </Link>
           </div>
         </section>

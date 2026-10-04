@@ -96,17 +96,38 @@
 }
 
 .experienceList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 44px;
 }
 
-.experienceRow,
+.experienceRow {
+  min-width: 0;
+  padding: 0 28px;
+}
+
+.experienceRow:first-child {
+  padding-left: 0;
+}
+
+.experienceRow:last-child {
+  padding-right: 0;
+}
+
+.experienceRow + .experienceRow {
+  border-left: 1px solid var(--color-rule);
+}
+
+.experienceRow p {
+  margin-top: 16px;
+}
+
 .thinkingRow {
   display: grid;
   grid-template-columns: minmax(250px, 320px) minmax(0, 1fr);
   gap: 64px;
 }
 
-.experienceRow + .experienceRow,
 .thinkingRow + .thinkingRow {
   margin-top: 38px;
   padding-top: 30px;
@@ -292,12 +313,26 @@
     margin-top: 32px;
   }
 
+  .experienceList {
+    display: block;
+  }
+
   .experienceRow,
   .thinkingRow {
     display: block;
   }
 
-  .experienceRow + .experienceRow,
+  .experienceRow {
+    padding: 0;
+  }
+
+  .experienceRow + .experienceRow {
+    margin-top: 34px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-rule);
+    border-left: 0;
+  }
+
   .thinkingRow + .thinkingRow {
     margin-top: 34px;
     padding-top: 28px;

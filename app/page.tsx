@@ -61,6 +61,9 @@ export default function Home() {
 
               <article className={styles.experienceRow}>
                 <h3>SaaS / Customer Success</h3>
+                <p className={styles.experienceMeta}>
+                  Shibumi · CHEQ by Cantaloupe
+                </p>
                 <p>
                   Worked across Shibumi, an enterprise strategic portfolio
                   management platform, and CHEQ by Cantaloupe, a mobile-first
@@ -72,6 +75,9 @@ export default function Home() {
 
               <article className={styles.experienceRow}>
                 <h3>Commercial Partnerships / B2B</h3>
+                <p className={styles.experienceMeta}>
+                  Coca-Cola · Bank of America · Qualcomm
+                </p>
                 <p>
                   Managed complex customer and partner relationships across SaaS
                   and global sports, including Fortune 500 organizations such as

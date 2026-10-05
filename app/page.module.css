@@ -146,6 +146,18 @@
   line-height: 1.55;
 }
 
+.experienceRow .experienceMeta {
+  margin-top: 16px;
+  color: var(--color-accent);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.experienceMeta + p {
+  margin-top: 18px;
+}
+
 .work {
   padding: 36px 0 64px;
   border-bottom: 1px solid var(--color-rule);

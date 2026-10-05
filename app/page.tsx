@@ -29,8 +29,8 @@ export default function Home() {
           </p>
 
           <div className={styles.heroActions}>
-            <a className={styles.primaryAction} href="#work">
-              View selected work
+            <a className={styles.primaryAction} href="#projects">
+              View projects
             </a>
             <a className={styles.textLink} href="#contact">
               Get in touch
@@ -80,8 +80,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.work} id="work">
-          <h2>Selected work</h2>
+        <section className={styles.work} id="projects">
+          <h2>Selected projects</h2>
 
           <article
             className={`${styles.projectRow} ${styles.primaryProject}`}
@@ -96,7 +96,7 @@ export default function Home() {
                 deserves attention.
               </p>
 
-              <Link className={styles.textLink} href="/work#lighthouse">
+              <Link className={styles.textLink} href="/projects#lighthouse">
                 Explore the project <span aria-hidden="true">→</span>
               </Link>
             </div>
@@ -127,7 +127,7 @@ export default function Home() {
                 uncertainty.
               </p>
 
-              <Link className={styles.textLink} href="/work/mypepprotocol">
+              <Link className={styles.textLink} href="/projects/mypepprotocol">
                 Explore the case study <span aria-hidden="true">→</span>
               </Link>
             </div>
@@ -155,7 +155,7 @@ export default function Home() {
               </p>
             </div>
 
-            <Link className={styles.textLink} href="/work#world-cup-tracker">
+            <Link className={styles.textLink} href="/projects#world-cup-tracker">
               Explore the project <span aria-hidden="true">→</span>
             </Link>
           </article>

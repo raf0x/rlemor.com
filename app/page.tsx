@@ -46,12 +46,16 @@ export default function Home() {
 
             <div className={styles.experienceList}>
               <article className={styles.experienceRow}>
-                <h3>FIFA / Global Sports Operations</h3>
+                <h3>Global Sports Operations</h3>
+                <p className={styles.experienceMeta}>
+                  FIFA · Miami Open · Formula 1 · Hard Rock Stadium
+                </p>
                 <p>
-                  Managed ticketing operations across four FIFA tournaments,
-                  culminating in the 2026 World Cup. Work spanned CRM operations,
-                  allocations, fulfillment, partner training, and high-stakes
-                  delivery across commercial partners and host-city stakeholders.
+                  Managed ticketing operations across four FIFA tournaments and
+                  four editions of the Miami Open. Work spanned CRM operations,
+                  ticket allocations and fulfillment, partner workshops and
+                  training, and high-stakes delivery across commercial partners
+                  and host-city stakeholders.
                 </p>
               </article>
 

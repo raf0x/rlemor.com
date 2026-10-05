@@ -6,7 +6,7 @@ import SiteHeader from "@/components/SiteHeader";
 import styles from "./work.module.css";
 
 const description =
-  "Selected product work by Rafael Lemor, including MyPepProtocol, World Cup Tracker, and Lighthouse.";
+  "Selected product work by Rafael Lemor, including Lighthouse, MyPepProtocol, and World Cup Tracker.";
 
 export const metadata: Metadata = {
   title: "Work | Rafael Lemor",
@@ -45,7 +45,69 @@ export default function WorkPage() {
           </p>
         </section>
 
-        <section className={`${styles.project} ${styles.primaryProject}`}>
+        <section
+          className={`${styles.project} ${styles.primaryProject}`}
+          id="lighthouse"
+        >
+          <p className={styles.label}>Customer Success / Account intelligence</p>
+
+          <div className={styles.projectContent}>
+            <h2>Lighthouse</h2>
+
+            <div className={styles.copy}>
+              <p>
+                Lighthouse is an account-intelligence product built around a
+                problem Rafael knew firsthand from Customer Success:
+                understanding which accounts need attention, why they need it,
+                and what to do next.
+              </p>
+
+              <p>
+                It brings portfolio health, renewal risk, account context, and
+                AI-assisted executive briefs into one focused workspace. The
+                product explores how AI can turn scattered customer signals into
+                clearer priorities without replacing the judgment of the person
+                managing the relationship.
+              </p>
+            </div>
+
+            <div className={`${styles.projectMedia} ${styles.landscapeMedia}`}>
+              <Image
+                className={styles.projectImage}
+                src="/projects/lighthouse/showcase.webp"
+                alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
+                width={800}
+                height={600}
+                sizes="(max-width: 760px) calc(100vw - 48px), 800px"
+                unoptimized
+              />
+            </div>
+
+            <div className={styles.actions}>
+              <a
+                className={styles.primaryAction}
+                href="https://lighthouse-alpha-two.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View demo
+              </a>
+              <a
+                className={styles.textLink}
+                href="https://github.com/raf0x/lighthouse"
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className={`${styles.project} ${styles.secondaryProject}`}
+          id="mypepprotocol"
+        >
           <p className={styles.label}>Health tracking and intelligence</p>
 
           <div className={styles.projectContent}>
@@ -102,7 +164,7 @@ export default function WorkPage() {
         </section>
 
         <section
-          className={`${styles.project} ${styles.secondaryProject}`}
+          className={`${styles.project} ${styles.compactProject}`}
           id="world-cup-tracker"
         >
           <p className={styles.label}>Independent sports project</p>
@@ -162,60 +224,6 @@ export default function WorkPage() {
           </div>
         </section>
 
-        <section className={`${styles.project} ${styles.compactProject}`}>
-          <p className={styles.label}>Customer Success experiment</p>
-
-          <div className={styles.projectContent}>
-            <h2>Lighthouse</h2>
-
-            <div className={styles.copy}>
-              <p>
-                Lighthouse explores a simple question: can an account dashboard
-                help explain what deserves attention instead of only displaying
-                more data?
-              </p>
-
-              <p>
-                Lighthouse explores how account-health signals can be turned
-                into clearer action. It combines portfolio health, renewal risk,
-                account context, and AI-generated executive briefs to help
-                surface what deserves attention. It remains a focused experiment
-                rather than a full production product.
-              </p>
-            </div>
-
-            <div className={`${styles.projectMedia} ${styles.landscapeMedia}`}>
-              <Image
-                className={styles.projectImage}
-                src="/projects/lighthouse/showcase.webp"
-                alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
-                width={800}
-                height={600}
-                sizes="(max-width: 760px) calc(100vw - 48px), 800px"
-                unoptimized
-              />
-            </div>
-
-            <div className={styles.actions}>
-              <a
-                className={styles.textLink}
-                href="https://lighthouse-alpha-two.vercel.app/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View demo <span aria-hidden="true">&rarr;</span>
-              </a>
-              <a
-                className={styles.textLink}
-                href="https://github.com/raf0x/lighthouse"
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub <span aria-hidden="true">&rarr;</span>
-              </a>
-            </div>
-          </div>
-        </section>
       </main>
 
       <SiteFooter />

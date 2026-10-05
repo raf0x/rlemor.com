@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 const baseUrl = "https://rlemor.com";
 
-const routes = ["/", "/work", "/about", "/contact", "/work/mypepprotocol"];
+const routes = ["/", "/projects", "/about", "/contact", "/projects/mypepprotocol"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((route) => ({

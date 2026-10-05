@@ -167,6 +167,15 @@
   margin-top: 30px;
 }
 
+.secondaryProject .statement {
+  margin-top: 40px;
+  font-size: 30px;
+}
+
+.compactProject .projectMedia {
+  max-width: 520px;
+}
+
 .compactProject .copy {
   margin-top: 22px;
 }
@@ -252,6 +261,11 @@
   .statement {
     margin-top: 34px;
     font-size: 34px;
+  }
+
+  .secondaryProject .statement {
+    margin-top: 30px;
+    font-size: 28px;
   }
 
   .projectMedia {

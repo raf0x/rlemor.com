@@ -85,13 +85,46 @@ export default function Home() {
 
           <article
             className={`${styles.projectRow} ${styles.primaryProject}`}
+            id="lighthouse"
+          >
+            <div className={styles.projectCopy}>
+              <h3>Lighthouse</h3>
+              <p>
+                An account-intelligence product built from firsthand Customer
+                Success experience, combining portfolio health, renewal risk,
+                account context, and AI-assisted executive briefs to surface what
+                deserves attention.
+              </p>
+
+              <Link className={styles.textLink} href="/work#lighthouse">
+                Explore the project <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+
+            <div className={styles.projectMedia}>
+              <Image
+                className={styles.projectImage}
+                src="/projects/lighthouse/showcase.webp"
+                alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
+                width={800}
+                height={600}
+                sizes="(max-width: 900px) calc(100vw - 48px), 620px"
+                unoptimized
+              />
+            </div>
+          </article>
+
+          <article
+            className={`${styles.projectRow} ${styles.secondaryProject}`}
             id="mypepprotocol"
           >
             <div className={styles.projectCopy}>
               <h3>MyPepProtocol</h3>
               <p>
-                A working product for health and protocol tracking, built with
-                AI and modern development tools.
+                A private health-tracking product that keeps protocols,
+                schedules, inventory, labs, and longitudinal records coherent
+                over time, with product rules built around evidence and
+                uncertainty.
               </p>
 
               <Link className={styles.textLink} href="/work/mypepprotocol">
@@ -106,40 +139,25 @@ export default function Home() {
                 alt="MyPepProtocol Today view showing demo summary metrics and active protocol records."
                 width={640}
                 height={800}
-                sizes="(max-width: 900px) calc(100vw - 48px), 620px"
+                sizes="(max-width: 900px) calc(100vw - 48px), 520px"
                 unoptimized
               />
             </div>
           </article>
 
-          <article
-            className={`${styles.projectRow} ${styles.secondaryProject}`}
-          >
-            <div className={styles.projectCopy}>
+          <article className={styles.tertiaryProject}>
+            <div className={styles.tertiaryCopy}>
               <h3>World Cup Tracker</h3>
               <p>
-                Built to make the 2026 FIFA World Cup easier to follow in one
-                place, combining the full 104-match schedule, tournament bracket,
-                filters, knockout-stage tracking, and scoring. With the tournament
-                complete, it now serves as a historical reference.
+                A 104-match tournament tracker built to make the expanded 2026
+                FIFA World Cup easier to navigate, from group standings through
+                the knockout bracket.
               </p>
-
-              <Link className={styles.textLink} href="/work#world-cup-tracker">
-                Explore the project <span aria-hidden="true">→</span>
-              </Link>
             </div>
 
-            <div className={styles.projectMedia}>
-              <Image
-                className={styles.projectImage}
-                src="/projects/world-cup-tracker/world-cup-overview-desktop.png"
-                alt="World Cup Tracker overview showing tournament stats, the Road to the Final bracket, and group-stage standings."
-                width={600}
-                height={750}
-                sizes="(max-width: 900px) calc(100vw - 48px), 520px"
-                unoptimized
-              />
-            </div>
+            <Link className={styles.textLink} href="/work#world-cup-tracker">
+              Explore the project <span aria-hidden="true">→</span>
+            </Link>
           </article>
         </section>
 
@@ -151,11 +169,12 @@ export default function Home() {
 
             <div className={styles.thinkingList}>
               <article className={styles.thinkingRow}>
-                <h3>Reduce repeat work.</h3>
+                <h3>Turn signals into priorities.</h3>
                 <p>
-                  Design workflows so information entered once can support the
-                  next decision. In MyPepProtocol, inventory data carries directly
-                  into protocol setup instead of asking the user to recreate it.
+                  In Lighthouse, account-health signals, renewal risk, and account
+                  context are brought together so the user can focus on what
+                  deserves attention instead of manually synthesizing another
+                  dashboard.
                 </p>
               </article>
 

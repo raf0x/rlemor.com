@@ -147,6 +147,7 @@
 }
 
 .experienceRow .experienceMeta {
+  min-height: 38px;
   margin-top: 16px;
   color: var(--color-accent);
   font-size: 13px;
@@ -155,7 +156,7 @@
 }
 
 .experienceMeta + p {
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .work {
@@ -399,6 +400,15 @@
   .experienceRow p,
   .thinkingRow p {
     margin-top: 12px;
+  }
+
+  .experienceRow .experienceMeta {
+    min-height: 0;
+    margin-top: 10px;
+  }
+
+  .experienceMeta + p {
+    margin-top: 10px;
   }
 
   .work {

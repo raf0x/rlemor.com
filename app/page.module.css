@@ -222,6 +222,33 @@
   justify-self: center;
 }
 
+.tertiaryProject {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 48px;
+  margin-top: 40px;
+  padding-top: 34px;
+  border-top: 1px solid var(--color-rule);
+}
+
+.tertiaryCopy {
+  max-width: 700px;
+}
+
+.tertiaryCopy h3 {
+  font-size: 27px;
+  line-height: 1.1;
+  font-weight: 400;
+}
+
+.tertiaryCopy p {
+  max-width: 650px;
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
 .thinkingList {
   margin-top: 44px;
 }
@@ -397,6 +424,26 @@
     margin-top: 26px;
     margin-right: auto;
     margin-left: auto;
+  }
+
+  .tertiaryProject {
+    display: block;
+    margin-top: 32px;
+    padding-top: 28px;
+  }
+
+  .tertiaryCopy h3 {
+    font-size: 26px;
+  }
+
+  .tertiaryCopy p {
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .tertiaryProject .textLink {
+    margin-top: 22px;
   }
 
   .prose {

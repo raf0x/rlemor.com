@@ -7,7 +7,7 @@ export default function SiteFooter() {
       <span>Rafael Lemor</span>
 
       <nav className={styles.nav} aria-label="Footer navigation">
-        <Link href="/work">Work</Link>
+        <Link href="/projects">Projects</Link>
         <Link href="/about">About</Link>
         <Link href="/contact">Contact</Link>
       </nav>

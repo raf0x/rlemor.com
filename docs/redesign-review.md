@@ -1,64 +1,67 @@
-# Warm & Personal redesign review
+# Warm & Personal refinement review — PR #1
 
 Review date: October 16, 2026. Branch: `redesign/warm-personal-career-first`.
 
-The homepage now introduces Rafael through customer success, enterprise account management, and large-event operations. FIFA and IMG Tickets / Miami Open lead the experience section; independent projects follow the professional story and account context. The approved warm ivory, terracotta, Lora, DM Sans, fine rules, and open editorial rows are used throughout.
+The approved second pass groups Rafael’s experience into Global Sports & Events, Enterprise SaaS & Customer Success, and Service Operations & Leadership. FIFA is the primary professional feature; IMG Tickets / Miami Open is a supporting earlier chapter. The homepage is shorter and more visual, with one large Lighthouse capture and compact links to the other independent projects.
 
 ## Preview and scope
 
-- [Vercel preview](https://rlemor-hvngfvc8j-rafael-lemors-projects.vercel.app) — existing Vercel access controls apply.
-- Application commit: `3a1c615cc536b6e7b83d37d4e2ffc7329b23bd53`.
-- Baseline: `86f38476eb7dcb6e4523b97740c2fad06d4db3f5`; remote `main` matched this baseline when fetched.
-- Preview deployment: `dpl_H9R2Ga6Nawbszu5xhhWSmQG6Nn42`, built through the existing Git integration. No production deployment or merge was performed.
+- [Updated Vercel preview](https://rlemor-jonmogcv5-rafael-lemors-projects.vercel.app) — existing Vercel authentication applies.
+- Application commit: `0470b2eacdd07c0c166e4143b5941e17ece79b22`; deployment `dpl_J2K8zVEaKfND6uF3TL9CfrTmirXd` is READY, from the existing Git integration.
+- Refinement baseline: `08fb97b` (the first-pass application plus the approved refinement brief).
+- Production baseline remains `86f38476eb7dcb6e4523b97740c2fad06d4db3f5`. No merge or production deployment was performed.
+- [Approved refinement specification](warm-personal-refinement-brief.md).
 
-| Area | Files and behavior |
-| --- | --- |
-| Shared design | `app/layout.tsx`, `app/globals.css`, `app/icon.svg`, header/footer components and styles: fonts, light palette, visible focus, skip link, Work navigation and current-page styling |
-| Homepage | `app/page.tsx`, `app/page.module.css`: professional introduction, FIFA/IMG stories, contextual accounts, secondary independent projects, personal note and contact |
-| Experience | `app/work/page.tsx`, `app/work/work.module.css`: featured FIFA/IMG stories and complete reverse-chronological career history |
-| Compatibility and SEO | `next.config.ts`, `app/sitemap.ts`, page metadata: real `/work`, retained `/work/mypepprotocol` redirect, canonicals and sitemap |
-| Projects | Projects page/styles, `ScreenshotViewer` and three selected captures: large authentic screenshots, native dialog, keyboard scrolling, Escape/Close and focus return |
-| Existing case study | `app/projects/mypepprotocol/`: all four decision chapters, constraints, evidence, lessons, status and live CTA preserved; typography and screenshot presentation updated |
-| Personal/contact | About and Contact pages/styles: personal backstory, existing photography and exact contact destinations |
-| QA support | Ignored `.qa/` directory; no test package was added to the application's dependencies |
+Changes are limited to Home, Work, global color tokens, the icon, and a few palette substitutions in shared/About/Contact/Projects styles. No new dependency or production asset was added during this pass.
 
-## Evidence
+## Before and after
 
-The before captures show the existing public homepage; the after captures come from the protected Vercel preview above. Only existing public photography appears in these captures.
+Measurements use the same browser method before and after: whitespace-separated words inside `main`, decoded images, loaded fonts, and actual rendered dimensions. Navigation and footer text are excluded.
 
-| View | Before | After |
+| Homepage measure | First pass | Refined |
 | --- | --- | --- |
-| Homepage, 1440px | [Before](review/home-before-1440.webp) | [After](review/home-after-1440.webp) |
-| Homepage, 390px | [Before](review/home-before-390.webp) | [After](review/home-after-390.webp) |
+| Visible copy | 426 words | 250 words — 41% less |
+| Major sections | 6 | 4 — 33% fewer |
+| Height at 1440px | 3,540px | 2,520px — 29% shorter |
+| Height at 390px | 5,351px | 3,353px — 37% shorter |
+| Lighthouse image at 1440px | About 396px inside a 430px frame | 682px, 57.8% of its row, without a frame |
+| Lighthouse image at 1024px | Smaller framed image | 550px, 57.2% of its row |
 
-Additional preview evidence: [Work at 1440px](review/work-1440.webp), [Projects at 1440px](review/projects-1440.webp), [Contact at 320px](review/contact-320.webp), [screenshot dialog at 320px](review/modal-320.webp).
+The three experience areas use open editorial rows. Selected relationships are a short band with immediate employer context. MyPepProtocol and World Cup Tracker retain concise context and their existing destinations. The personal note and direct contact links share one pale-yellow section; repeated taglines and project CTAs have been removed.
+
+| View | Before refinement | Current preview |
+| --- | --- | --- |
+| Home, 1440px | [First pass](review/home-after-1440.webp) | [Refined](review/refinement-home-1440.webp) |
+| Home, 390px | [First pass](review/home-after-390.webp) | [Refined](review/refinement-home-390.webp) |
+| Work, 1440px | [First pass](review/work-1440.webp) | [Refined](review/refinement-work-1440.webp) |
+| Work, 390px | — | [Refined](review/refinement-work-390.webp) |
+
+Only these four selected review images are retained as PR documentation. The local harness, full screenshot matrix, raw results, and temporary files remain in ignored `.qa/`.
+
+## Visual system
+
+Ivory `#FFFCF7`, Lora headings, DM Sans body, and dark ink remain. Blue `#315BC6` is used for links and selected headings; dark green `#23675A` for smaller editorial labels; coral `#E46A4C` for a short decorative rule; soft yellow for the contact surface. These accents provide rhythm without colored cards.
+
+Against ivory, contrast is 13.06:1 for ink, 5.96:1 for blue, and 6.50:1 for dark green. Coral is decorative and never used as small text. Secondary body text uses the same dark ink as primary text. The site remains light-only.
 
 ## Validation
 
-- `npm run lint`, `npx tsc --noEmit`, and `npm run build` passed. The build uses Next.js 16.3.8 and the installed local documentation was reviewed before implementation.
-- Local production-server browser checks passed for all six principal pages at 1440, 1024, 768, 390, and 320 pixels.
-- The hosted preview passed the same 30 page/viewport checks. Every image decoded, all four primary navigation items remained visible with 44px-high targets, the warm background and Lora heading font were confirmed, and there was no horizontal overflow, broken in-page anchor or browser runtime error.
-- Axe WCAG A/AA scans reported zero violations across 18 page/viewport audits and 12 open-dialog audits. This automated result supplements the independent visual review; it is not a claim of exhaustive accessibility certification.
-- All four screenshot triggers were exercised at 1440, 390 and 320 pixels: Enter/Space opened the dialog, the full-size image loaded, keyboard scrolling remained available, Escape and Close dismissed it, focus returned to the trigger, and page scrolling was restored.
-- Verified skip-link focus, light styling under a dark device preference, reduced-motion scroll behavior, actual Contact navigation, exact email/LinkedIn links, the legacy 308 redirect including its query string, `/work` in the sitemap, and a genuine 404 response. [Machine-readable results](review/verification.json).
-- Independent code and screenshot review checked factual relationships, preserved case-study content, desktop/tablet/mobile layout, portrait/travel crops and screenshot detail. Findings fixed: UTF-8 markers that invalidated leading CSS selectors, a literal Contact arrow entity, and the smallest mobile headline's forced line break. A tablet screenshot was recaptured after image decoding.
-- The local Windows image folder was normalized to match Git's existing lowercase `public/images` paths. No photograph files were added or renamed in Git.
+- `npm run lint`, `npx tsc --noEmit`, and the final production build passed on Next.js 16.3.8. Installed local Next.js guidance was reviewed before implementation.
+- Local production-server checks passed on all six principal routes at 1440, 1024, 768, 390, and 320px, including image decoding, overflow, fonts, canonicals, mobile navigation, screenshot dialogs, and contact links.
+- The actual protected Vercel preview passed the same 30 page/viewport checks. Every image decoded, text/navigation remained readable, and no page overflow or browser runtime error was found. All internal page links and their fragments were checked against the rendered target pages.
+- Additional hosted assertions confirmed exactly three homepage experience rows, four homepage sections, seven chronological jobs on Work, all preserved/new Work anchors, and a larger FIFA heading than Miami Open at every requested width. Lighthouse’s actual displayed image width is 55–60% of its desktop row; it fills the content width on tablet/mobile.
+- Axe WCAG A/AA scans returned zero violations across 18 page/viewport audits and 12 open-dialog audits. All four screenshot triggers passed Enter/Space opening, Escape/Close dismissal, keyboard-scroll availability, focus return, and page-scroll restoration at 1440, 390, and 320px.
+- Verified light-only styling under a dark device preference, reduced-motion scrolling, skip-link focus, actual Contact navigation, exact email/LinkedIn links, canonical URLs, sitemap, the legacy 308 redirect with query-string preservation, and a genuine 404 response.
+- Independent product/visual critic review passed for Home and Work at 1440, 768, 390, and 320px. Review focused on career-first hierarchy, FIFA prominence, Miami Open’s supporting role, open rows, palette restraint, Lighthouse size, and mobile wrapping/spacing. No remaining implementation finding was identified.
 
-## Selected production assets
+## Preservation and release gates
 
-| Asset | Provenance and treatment |
-| --- | --- |
-| Existing portrait and travel photographs | Already tracked public site assets; reused through `next/image`. No newly supplied group photographs selected. |
-| `public/projects/lighthouse/overview-desktop.webp` | Captured October 16, 2026 from the [public Lighthouse demo](https://lighthouse-alpha-two.vercel.app/), HTTP 200, at 1440×1000 with 2× device scale. Original 2880×2000; WebP quality 94; 240,548 bytes. No AI actions, authentication, interface edits or upscaling. No visible emails, phone numbers, credentials or private-session details. Caption identifies the public-demo source. SHA-256: `a75a1188d2f0487d057560dddf255e660baed56a3afe4328dd294354381cce8d`. |
-| `public/projects/mypepprotocol/overview-detail.webp` | Derived from the existing 2048×1342 PNG; cropped at x=480 to 1088×1342 to remove lateral margins, then encoded as WebP. Demo content retained; no interface edits or upscaling. |
-| `public/projects/world-cup-tracker/overview-detail.webp` | Existing 1122×1402 project PNG encoded as WebP without cropping, interface edits or upscaling. Historical independent-project disclosure retained. |
+- All six principal page routes, canonical URLs, sitemap entries, the legacy `/work/mypepprotocol` redirect, navigation, skip link, email, and LinkedIn destinations remain.
+- All four MyPepProtocol decision chapters, evidence/caveats, lessons, status, and live CTA are unchanged. Project page content and the screenshot viewer’s behavior are unchanged.
+- Work retains all seven chronological entries, including Independent Consulting. CHEQ appears once in the employment timeline and is cross-referenced between its customer-success and venue-implementation contexts.
+- FIFA’s qualified four-tournament metrics and personally managed Coca-Cola/Bank of America relationships remain. Shibumi’s verified results, Inktel’s Williams-Sonoma service-delivery context, and TEN’s travel concierge/client-experience role remain intact.
+- Existing `#fifa`, `#miami-open`, and `#career` anchors survive. Home links to `#sports-events`, `#enterprise`, and `#service-operations`.
+- The existing public portrait and authentic project captures are reused. No new FIFA photograph or official event graphic was published. Photograph selection and publication rights/consent remain a release gate.
+- FIFA’s official title is still unresolved; **Commercial Partner Ticketing / CRM Operations** remains the neutral descriptor. Specific Formula 1 responsibilities, Qualcomm attribution, and Panini/host-city claims remain omitted pending confirmation.
 
-The former Lighthouse high-resolution capture TODO is resolved. The existing FIFA graphic is an official mark rather than an event photograph, so it was not selected for the new Work page. Private handoff files and new FIFA photos remain outside the commits and preview source.
-
-## Questions retained for Rafael's review
-
-1. Confirm FIFA's official title. The preview uses **Commercial Partner Ticketing / CRM Operations** because the résumé and public title differ.
-2. Select specific new FIFA photos and confirm publication rights/consent before any public use. The preview uses existing public imagery.
-3. Confirm exact Formula 1 Miami GP responsibilities, Qualcomm attribution, and Panini/host-city details before adding those claims. They are omitted from the redesign.
-
-Production release still requires Rafael's explicit approval.
+Rafael’s explicit approval is required before merge or production release.

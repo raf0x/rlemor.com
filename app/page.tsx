@@ -22,15 +22,16 @@ export default function Home() {
             </p>
             <h1 id="intro-heading">
               I’m Rafael.
-              <br />I turn <span>human relationships</span>
-              <br className={styles.heroLineBreak} /> into a competitive advantage.
+              <br />I’ve worked behind the scenes at the <span>World Cup</span>
+              <br className={styles.heroLineBreak} /> and alongside enterprise customers.
             </h1>
             <p className={styles.heroCopy}>
-              From FIFA’s global commercial partners to enterprise SaaS customers,
-              I’ve built my career around trust, navigating complexity, and
-              delivering measurable results. Today, I combine that experience
-              with AI and modern tools to turn information into insights, improve
-              decisions, and build practical solutions.
+              At FIFA, I worked on commercial-partner ticketing across four
+              tournaments, personally managing partners including Coca-Cola
+              and Bank of America. At Shibumi, I managed 25 enterprise accounts
+              representing $4M in ARR. Today I use AI-assisted development
+              tools to build practical products shaped by problems I’ve seen
+              firsthand.
             </p>
             <div className={styles.actions}>
               <Link className={styles.button} href="/work">
@@ -144,8 +145,9 @@ export default function Home() {
           <p className={styles.eyebrow}>Independent projects</p>
           <h2 id="projects-heading">What I’ve built with AI.</h2>
           <p className={styles.projectsIntro}>
-            Independent products developed using modern tools and AI-assisted
-            workflows, grounded in practical problems.
+            I started building because I kept finding problems I wanted to
+            solve, at work and beyond it. AI-assisted tools now help me turn
+            those questions into working products.
           </p>
           <article className={styles.lighthouse}>
             <Image
@@ -189,8 +191,9 @@ export default function Home() {
                 </Link>
               </h3>
               <p>
-                A health-record product built around coherent information and
-                explicit evidence.
+                A private health-record app that keeps treatment plans,
+                schedules, inventory, and lab results connected so information
+                does not have to be entered twice.
               </p>
             </div>
             <div>

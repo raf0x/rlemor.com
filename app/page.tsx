@@ -22,8 +22,7 @@ export default function Home() {
             </p>
             <h1 id="intro-heading">
               I’m Rafael.
-              <br />I’ve worked behind the scenes at the <span>World Cup</span>
-              <br className={styles.heroLineBreak} /> and alongside enterprise customers.
+              <br />From <span>World Cup ticketing</span> to enterprise accounts.
             </h1>
             <p className={styles.heroCopy}>
               At FIFA, I worked on commercial-partner ticketing across four

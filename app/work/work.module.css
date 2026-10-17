@@ -72,6 +72,20 @@
 .storyLead + p {
   margin-top: 18px;
 }
+.matchdayFigure {
+  margin: 28px 0;
+}
+.matchdayImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.matchdayFigure figcaption {
+  margin-top: 12px;
+  color: var(--color-foreground);
+  font-size: 15px;
+  line-height: 1.5;
+}
 .scope {
   margin: 28px 0;
 }

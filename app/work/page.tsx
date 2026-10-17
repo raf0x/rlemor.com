@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
@@ -62,6 +63,20 @@ export default function WorkPage() {
                 partner training, escalations, and closeout. Clear communication
                 and attention to each partner’s needs mattered at every stage.
               </p>
+              <figure className={styles.matchdayFigure}>
+                <Image
+                  className={styles.matchdayImage}
+                  src="/images/fifa-world-cup-2026-matchday.webp"
+                  alt="FIFA World Cup 2026 stadium ceremony with France and England flags displayed across the pitch."
+                  width={1600}
+                  height={1200}
+                  sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 760px) calc(100vw - 64px), (max-width: 1000px) calc(66vw - 66px), (max-width: 1244px) calc(66vw - 88.44px), 733px"
+                />
+                <figcaption>
+                  FIFA World Cup 2026. A matchday view I photographed while working
+                  in tournament ticketing operations.
+                </figcaption>
+              </figure>
               <dl className={styles.scope}>
                 <div>
                   <dt>30+ partners</dt>

@@ -284,6 +284,9 @@
   }
 }
 @media (max-width: 900px) {
+  .heroLineBreak {
+    display: none;
+  }
   .hero {
     grid-template-columns: minmax(0, 1fr) 220px;
     gap: 32px;

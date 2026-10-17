@@ -38,14 +38,15 @@ export default function ContactPage() {
 
         <div className={styles.content}>
           <p className={styles.statement}>
-            I&apos;m interested in Customer Success, Enterprise Account
-            Management, and large-event operations: work built around people,
-            trust, and following through.
+            I&apos;m interested in Customer Success, strategic account
+            management, and major-event operations where trust, commercial
+            judgment, and reliable execution make a difference.
           </p>
 
           <p className={styles.secondaryCopy}>
-            If my experience sounds relevant to what you&apos;re working on,
-            I&apos;d love to hear from you. Email is the best place to start.
+            I also enjoy working with teams that use technology to solve
+            real customer problems. If my experience could help with yours,
+            email is the best place to start.
           </p>
 
           <div className={styles.rows}>

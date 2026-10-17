@@ -1,11 +1,17 @@
 :root {
   color-scheme: light;
   --color-background: #fffcf7;
-  --color-foreground: #291e1a;
-  --color-muted: #291e1a;
-  --color-accent: #92351c;
-  --color-rule: #dfbda9;
-  --color-media: #fff0e8;
+  --color-foreground: #29312d;
+  --color-muted: #29312d;
+  --color-accent: #315bc6;
+  --color-green: #23675a;
+  --color-coral: #e46a4c;
+  --color-highlight: #f2ce74;
+  --color-rule: #dcded2;
+  --color-media: #f4f2e9;
+  --color-tint-blue: #edf2ff;
+  --color-tint-green: #edf4ef;
+  --color-tint-yellow: #fff3d3;
   --page-max-width: 1180px;
   --page-gutter: 32px;
 }
@@ -76,7 +82,7 @@ svg {
   outline-offset: 5px;
 }
 ::selection {
-  background: #ffe0ce;
+  background: var(--color-highlight);
   color: var(--color-foreground);
 }
 .skip-link {

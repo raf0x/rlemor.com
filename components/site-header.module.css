@@ -19,7 +19,7 @@
   white-space: nowrap;
 }
 .name span {
-  color: var(--color-accent);
+  color: var(--color-green);
 }
 .nav {
   display: flex;

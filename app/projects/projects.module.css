@@ -125,7 +125,7 @@
 }
 
 .primaryAction:hover {
-  background: #ffe0ce;
+  background: var(--color-tint-blue);
 }
 
 .primaryAction:focus-visible,

@@ -38,8 +38,8 @@
 
 .rows {
   margin-top: 42px;
-  border-top: 3px solid var(--color-accent);
-  background: var(--color-media);
+  border-top: 3px solid var(--color-coral);
+  background: var(--color-tint-yellow);
 }
 
 .row {

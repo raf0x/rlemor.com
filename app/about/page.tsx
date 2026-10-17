@@ -37,21 +37,24 @@ export default function AboutPage() {
       <main id="main-content" tabIndex={-1} className={styles.page}>
         <section className={styles.intro}>
           <p className={styles.eyebrow}>About me</p>
-          <h1>A people person.<br />Always curious.</h1>
+          <h1>A little more about me.</h1>
 
           <div className={styles.introLayout}>
             <div className={styles.introCopy}>
               <p className={styles.lead}>
-                I&apos;m Rafael, based in Miami. My background is in customer
-                success, account management, and operations. The common thread
-                is people: understanding what they need and helping things run
-                smoothly.
+                I&apos;m Rafael, based in Miami. Enterprise software and global
+                sporting events have taken me into some complex situations,
+                but the moments that stay with me are often surprisingly personal.
               </p>
               <p>
-                I&apos;ve worked across enterprise software, travel, and major
-                sporting events. Those settings are different, but they all
-                depend on clear communication, thoughtful service, and following
-                through on the details.
+                During the 2026 World Cup, I supported the Miami Host City
+                Committee throughout the tournament. For a sold-out match, they
+                needed four additional tickets for senior guests. I worked
+                across FIFA teams until our ticketing director helped make it
+                happen. After their involvement wrapped up with the third-place
+                match in Miami, they invited me to their offices to celebrate
+                together. That invitation is one of my favorite memories from
+                the tournament.
               </p>
               <Link className={styles.textLink} href="/work">
                 Explore my professional experience <span aria-hidden="true">&rarr;</span>
@@ -90,10 +93,9 @@ export default function AboutPage() {
               meet people, and see everyday life from a different perspective.
             </p>
             <p>
-              Football is another constant. That made working around the World
-              Cup a particularly meaningful chapter. At FIFA, I helped
-              commercial partners navigate ticketing across four global
-              tournaments, culminating in the 2026 World Cup.
+              Football is another constant. It was part of my life long before
+              I worked at FIFA, and seeing the World Cup from behind the scenes
+              was a rare way to experience something I already loved.
             </p>
           </div>
         </section>

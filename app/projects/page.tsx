@@ -199,10 +199,6 @@ export default function ProjectsPage() {
               />
             </div>
 
-            <p className={styles.disclosure}>
-              Independent project. Not affiliated with or endorsed by FIFA.
-            </p>
-
             <div className={styles.actions}>
               <a
                 className={styles.textLink}
@@ -210,7 +206,7 @@ export default function ProjectsPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                View live project <span aria-hidden="true">&rarr;</span>
+                View Project <span aria-hidden="true">&rarr;</span>
               </a>
               <a
                 className={styles.textLink}

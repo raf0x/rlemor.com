@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./about.module.css";
 
 const description =
-  "About Rafael Lemor: customer-facing operations, major events, product building, and travel.";
+  "Meet Rafael Lemor: Miami-based, people-focused, and curious about travel, football, and building useful things.";
 
 export const metadata: Metadata = {
   title: "About | Rafael Lemor",
@@ -33,22 +34,29 @@ export default function AboutPage() {
     <>
       <SiteHeader />
 
-      <main className={styles.page}>
+      <main id="main-content" tabIndex={-1} className={styles.page}>
         <section className={styles.intro}>
-          <h1>About</h1>
+          <p className={styles.eyebrow}>About me</p>
+          <h1>A people person.<br />Always curious.</h1>
 
           <div className={styles.introLayout}>
-            <p>
-              Rafael is a seasoned professional with more than seven years across
-              enterprise SaaS and global sports operations. He has managed customer
-              and partner relationships for Fortune 500 companies including
-              Coca-Cola, Bank of America, and Qualcomm, with experience spanning
-              Customer Success, account management, technology implementation, and
-              large-scale CRM and ticketing operations. Today, he is applying AI to
-              how work gets done, building workflows and agentic systems that reduce
-              repetitive work, make complex information easier to use, and improve
-              execution.
-            </p>
+            <div className={styles.introCopy}>
+              <p className={styles.lead}>
+                I&apos;m Rafael, based in Miami. My background is in customer
+                success, account management, and operations. The common thread
+                is people: understanding what they need and helping things run
+                smoothly.
+              </p>
+              <p>
+                I&apos;ve worked across enterprise software, travel, and major
+                sporting events. Those settings are different, but they all
+                depend on clear communication, thoughtful service, and following
+                through on the details.
+              </p>
+              <Link className={styles.textLink} href="/work">
+                Explore my professional experience <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </div>
 
             <div className={styles.portraitFrame}>
               <Image
@@ -56,82 +64,66 @@ export default function AboutPage() {
                 src="/images/rafael-portrait.jpg"
                 alt="Rafael Lemor"
                 fill
-                sizes="(max-width: 800px) 288px, 304px"
+                sizes="(max-width: 380px) calc(100vw - 48px), 320px"
               />
             </div>
           </div>
         </section>
 
-        <section className={styles.paragraphSection}>
-          <div className={styles.storyRow}>
+        <section className={styles.storySection} aria-labelledby="beyond-work">
+          <figure className={styles.travelFigure}>
             <Image
-              className={`${styles.storyImage} ${styles.fifaImage}`}
-              src="/images/about-fifa.png"
-              alt="FIFA"
-              width={144}
-              height={144}
-              sizes="(max-width: 760px) 128px, 144px"
-            />
-            <p>
-              At FIFA, Rafael managed ticketing operations and commercial-partner
-              relationships across four global tournaments, culminating in the 2026
-              World Cup. His work spanned allocations, contracts, distribution,
-              payments, escalations, and tournament closeout, coordinating across
-              partners and internal teams in an environment where accuracy, timing,
-              and execution mattered at global scale.
-            </p>
-          </div>
-        </section>
-
-        <section className={styles.paragraphSection}>
-          <div className={styles.storyRow}>
-            <picture>
-              <source
-                media="(prefers-reduced-motion: reduce)"
-                srcSet="/images/about-product-building.png"
-              />
-              <Image
-                className={styles.storyImage}
-                src="/images/rlemor-orbit-animation.gif"
-                alt="Product building and iteration loop"
-                width={144}
-                height={144}
-                sizes="(max-width: 760px) 128px, 144px"
-                style={{ objectFit: "contain" }}
-                unoptimized
-              />
-            </picture>
-            <p>
-              More recently, Rafael has extended that experience into product
-              building. Using AI and modern development tools, he moves from
-              identifying a real problem to designing, building, and testing a
-              working solution. His focus is not technology for its own sake, but
-              practical systems that reduce friction, make information more useful,
-              and improve execution. MyPepProtocol is the clearest example of that
-              approach.
-            </p>
-          </div>
-        </section>
-
-        <section className={styles.paragraphSection}>
-          <div className={styles.storyRow}>
-            <Image
-              className={styles.storyImage}
+              className={styles.travelImage}
               src="/images/about-travel2.jpg"
-              alt="Rafael Lemor traveling"
-              width={144}
-              height={144}
-              sizes="(max-width: 760px) 128px, 144px"
+              alt="Rafael looking across the water toward Angkor Wat at sunrise"
+              width={4032}
+              height={3024}
+              sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1230px) 43vw, 480px"
             />
+            <figcaption>A quiet moment on the road in Southeast Asia.</figcaption>
+          </figure>
+          <div className={styles.storyCopy}>
+            <h2 id="beyond-work">Curiosity beyond work.</h2>
             <p>
-              Outside work, Rafael has traveled to roughly 25–30 countries,
-              including a three-month backpacking trip through Southeast Asia
-              spanning about eight countries and 25 cities. Travel remains one of
-              his biggest personal interests, alongside football, which made the
-              opportunity to work around the World Cup a particularly meaningful
-              chapter.
+              Travel is one of my biggest interests. A three-month backpacking
+              trip through Southeast Asia gave me time to explore new places,
+              meet people, and see everyday life from a different perspective.
+            </p>
+            <p>
+              Football is another constant. That made working around the World
+              Cup a particularly meaningful chapter. At FIFA, I helped
+              commercial partners navigate ticketing across four global
+              tournaments, culminating in the 2026 World Cup.
             </p>
           </div>
+        </section>
+
+        <section className={styles.buildingSection} aria-labelledby="building">
+          <h2 id="building">Making useful things.</h2>
+          <div className={styles.storyCopy}>
+            <p>
+              More recently, I&apos;ve brought that curiosity into independent
+              product building. I use AI and modern development tools to take a
+              practical problem from an initial question to a working solution,
+              then test and refine it.
+            </p>
+            <p>
+              It&apos;s another way to explore the things I care about at work:
+              reducing friction, making information easier to use, and helping
+              people get things done.
+            </p>
+            <Link className={styles.textLink} href="/projects">
+              See my independent projects <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </div>
+        </section>
+
+        <section className={styles.contactSection} aria-labelledby="say-hello">
+          <div>
+            <h2 id="say-hello">Good things start with a conversation.</h2>
+            <p>Want to talk about my experience or something you&apos;re working on?</p>
+          </div>
+          <Link className={styles.button} href="/contact">Get in touch <span aria-hidden="true">&rarr;</span></Link>
         </section>
       </main>
 

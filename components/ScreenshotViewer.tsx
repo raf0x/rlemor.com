@@ -13,6 +13,7 @@ type ScreenshotViewerProps = {
   expandedWidth?: number;
   caption?: string;
   sizes?: string;
+  mediaType?: "screenshot" | "artwork";
 };
 
 export default function ScreenshotViewer({
@@ -24,6 +25,7 @@ export default function ScreenshotViewer({
   expandedWidth = width,
   caption,
   sizes = "(max-width: 640px) calc(100vw - 48px), (max-width: 760px) calc(100vw - 64px), (max-width: 942px) calc(100vw - 222px), 720px",
+  mediaType = "screenshot",
 }: ScreenshotViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -56,7 +58,7 @@ export default function ScreenshotViewer({
         type="button"
         className={styles.trigger}
         onClick={() => setIsOpen(true)}
-        aria-label={`Enlarge ${title} screenshot`}
+        aria-label={`Enlarge ${title} ${mediaType}`}
         aria-haspopup="dialog"
       >
         <Image
@@ -68,7 +70,7 @@ export default function ScreenshotViewer({
           sizes={sizes}
         />
         <span className={styles.enlarge} aria-hidden="true">
-          Enlarge screenshot <span>↗</span>
+          Enlarge {mediaType} <span>↗</span>
         </span>
       </button>
       {caption && <figcaption className={styles.caption}>{caption}</figcaption>}
@@ -91,14 +93,14 @@ export default function ScreenshotViewer({
           </button>
         </div>
         <p className={styles.instructions} id={instructionId}>
-          Scroll to explore the screenshot. Press Escape or Close to return.
+          Scroll to explore the {mediaType}. Press Escape or Close to return.
         </p>
         {isOpen && (
           <div
             className={styles.imageScroll}
             tabIndex={0}
             role="region"
-            aria-label={`${title} full-size screenshot`}
+            aria-label={`${title} full-size ${mediaType}`}
           >
             <Image
               className={styles.expanded}

@@ -25,6 +25,10 @@
 .DS_Store
 *.pem
 
+# Local design source material; selected production assets live in public/projects.
+/design-handoff/
+/editorial-assets/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

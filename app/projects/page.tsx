@@ -133,11 +133,12 @@ export default function ProjectsPage() {
             <div className={styles.projectMedia}>
               <ScreenshotViewer
                 title="MyPepProtocol"
-                src="/projects/mypepprotocol/overview-detail.webp"
-                alt="MyPepProtocol dashboard showing summary metrics, active protocols, and active compound details."
-                width={1088}
-                height={1342}
-                caption="The Today view, shown with demo data. The case study explains the decisions behind the product."
+                src="/projects/mypepprotocol/concept-artwork.png"
+                alt="MyPepProtocol promotional concept with a rendered phone, syringe, vial, and mock protocol, lab, and schedule widgets."
+                width={1672}
+                height={941}
+                mediaType="artwork"
+                caption="Concept artwork for MyPepProtocol. See the case study for authentic product screens and decisions."
               />
             </div>
 
@@ -190,11 +191,11 @@ export default function ProjectsPage() {
             <div className={styles.projectMedia}>
               <ScreenshotViewer
                 title="World Cup Tracker"
-                src="/projects/world-cup-tracker/overview-detail.webp"
-                alt="World Cup Tracker overview showing tournament stats, the Road to the Final bracket, and group-stage standings."
-                width={1122}
-                height={1402}
-                caption="An original project capture of the bracket, predictions, and group views."
+                src="/projects/world-cup-tracker/historical-tournament.png"
+                alt="World Cup Tracker capture showing tournament statistics and the full knockout prediction bracket, with its original in-progress status labels."
+                width={894}
+                height={940}
+                caption="Historical snapshot from the now-completed 2026 tournament. Independent, unofficial project; not affiliated with or endorsed by FIFA."
               />
             </div>
 

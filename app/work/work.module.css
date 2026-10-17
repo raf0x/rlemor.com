@@ -6,6 +6,7 @@
 .intro {
   max-width: 790px;
   padding: 62px 0 66px;
+  scroll-margin-top: 28px;
 }
 .eyebrow {
   color: var(--color-accent);
@@ -62,14 +63,8 @@
 .supporting h3 {
   font-size: 28px;
 }
-.role {
-  font-size: 17px;
-  font-weight: 500;
-  margin-top: 16px;
-}
-.dates {
-  font-size: 16px;
-  margin-top: 5px;
+.fifa {
+  color: var(--color-accent);
 }
 .storyLead {
   margin-top: 24px;
@@ -108,9 +103,6 @@
   padding-top: 30px;
   border-top: 1px solid var(--color-rule);
 }
-.supporting .role {
-  margin-top: 10px;
-}
 .supporting .storyLead {
   margin-top: 18px;
 }
@@ -128,58 +120,8 @@
 .context p {
   font-size: 17px;
 }
-.specialtyBody a,
-.timeline a {
+.specialtyBody a {
   color: var(--color-accent);
-}
-.career {
-  padding: 52px 0 58px;
-  border-top: 1px solid var(--color-rule);
-  scroll-margin-top: 28px;
-}
-.sectionTop h2 {
-  font-size: 36px;
-}
-.sectionTop > p:last-child {
-  margin-top: 14px;
-  font-size: 17px;
-}
-.timeline {
-  list-style: none;
-  margin: 30px 0 0;
-  padding: 0;
-}
-.timeline li {
-  display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
-  gap: 35px;
-  border-top: 1px solid var(--color-rule);
-  padding: 20px 0;
-}
-.timeline h3 {
-  font-family: var(--font-body), Arial, sans-serif;
-  font-size: 19px;
-  line-height: 1.5;
-  font-weight: 500;
-  letter-spacing: 0;
-}
-.timeline .dates {
-  margin-top: 2px;
-}
-.timeline .role {
-  margin: 5px 0 0;
-  font-size: 17px;
-  font-weight: 400;
-}
-.timeline .role + p {
-  max-width: 680px;
-  margin-top: 9px;
-  font-size: 17px;
-}
-.timeline a {
-  display: inline-flex;
-  gap: 10px;
-  align-items: center;
 }
 .contact {
   display: flex;
@@ -207,7 +149,6 @@
   flex-shrink: 0;
 }
 .specialtyBody a:hover,
-.timeline a:hover,
 .contact > a:hover {
   text-decoration-thickness: 2px;
 }
@@ -250,16 +191,6 @@
   .supporting h3 {
     font-size: 26px;
   }
-  .career {
-    padding: 36px 0 42px;
-  }
-  .sectionTop h2 {
-    font-size: 32px;
-  }
-  .timeline li {
-    grid-template-columns: 170px minmax(0, 1fr);
-    gap: 25px;
-  }
   .contact {
     display: block;
     margin-bottom: 38px;
@@ -275,12 +206,6 @@
 @media (max-width: 540px) {
   .intro h1 {
     font-size: 38px;
-  }
-  .timeline li {
-    display: block;
-  }
-  .timeline .dates {
-    margin-bottom: 9px;
   }
   .scope > div {
     grid-template-columns: 1fr;

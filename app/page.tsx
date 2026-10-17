@@ -20,16 +20,10 @@ export default function Home() {
               <span aria-hidden="true" />
               Hello from Miami
             </p>
-            <h1 id="intro-heading">
-              I’m Rafael.
-              <br />{" "}I make <span>complex partnerships</span> work.
-            </h1>
+            <h1 id="intro-heading">I’m Rafael.</h1>
             <p className={styles.heroCopy}>
-              At FIFA, I worked across four global tournaments, personally
-              managing commercial-partner accounts for Coca-Cola and Bank of
-              America. At Shibumi, I managed 25 enterprise accounts representing
-              $4M in ARR. Today, I use AI-assisted tools to build practical
-              products from problems I’ve seen firsthand.
+              I’ve managed FIFA commercial-partner accounts and a $4M SaaS
+              portfolio. Now I build tools with AI.
             </p>
             <div className={styles.actions}>
               <Link className={styles.button} href="/work">

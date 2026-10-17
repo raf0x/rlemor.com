@@ -26,11 +26,8 @@ export default function Home() {
               <br className={styles.heroLineBreak} /> into a competitive advantage.
             </h1>
             <p className={styles.heroCopy}>
-              From FIFA’s global commercial partners to enterprise SaaS customers,
-              I’ve built my career around trust, navigating complexity, and
-              delivering measurable results. Today, I combine that experience
-              with AI and modern tools to turn information into insights, improve
-              decisions, and build practical solutions.
+              Managed FIFA commercial partners and a $4M SaaS portfolio. CX
+              leader using AI for better decisions and practical tools.
             </p>
             <div className={styles.actions}>
               <Link className={styles.button} href="/work">
@@ -144,8 +141,9 @@ export default function Home() {
           <p className={styles.eyebrow}>Independent projects</p>
           <h2 id="projects-heading">What I’ve built with AI.</h2>
           <p className={styles.projectsIntro}>
-            Independent products developed using modern tools and AI-assisted
-            workflows, grounded in practical problems.
+            I started building because I kept finding problems I wanted to
+            solve, at work and beyond it. AI-assisted tools now help me turn
+            those questions into working products.
           </p>
           <article className={styles.lighthouse}>
             <Image
@@ -189,8 +187,9 @@ export default function Home() {
                 </Link>
               </h3>
               <p>
-                A health-record product built around coherent information and
-                explicit evidence.
+                A private health-record app that keeps treatment plans,
+                schedules, inventory, and lab results connected so information
+                does not have to be entered twice.
               </p>
             </div>
             <div>

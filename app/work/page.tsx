@@ -15,13 +15,25 @@ export const metadata: Metadata = {
     title: "Work | Rafael Lemor",
     description,
     url: "/work",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Rafael Lemor. Customer Success, global events, independent products.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Work | Rafael Lemor",
     description,
-    images: ["/opengraph-image"],
+    images: [
+      {
+        url: "/opengraph-image",
+        alt: "Rafael Lemor. Customer Success, global events, independent products.",
+      },
+    ],
   },
 };
 

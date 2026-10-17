@@ -19,9 +19,23 @@ export const metadata: Metadata = {
     siteName: "Rafael Lemor",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Rafael Lemor. Customer Success, global events, independent products.",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: [
+      {
+        url: "/opengraph-image",
+        alt: "Rafael Lemor. Customer Success, global events, independent products.",
+      },
+    ],
     title: "Contact | Rafael Lemor",
     description,
   },

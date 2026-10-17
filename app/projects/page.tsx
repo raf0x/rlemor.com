@@ -21,9 +21,23 @@ export const metadata: Metadata = {
     siteName: "Rafael Lemor",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Rafael Lemor. Customer Success, global events, independent products.",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: [
+      {
+        url: "/opengraph-image",
+        alt: "Rafael Lemor. Customer Success, global events, independent products.",
+      },
+    ],
     title: "Projects | Rafael Lemor",
     description,
   },
@@ -196,6 +210,19 @@ export default function ProjectsPage() {
               </p>
             </div>
 
+            <div className={styles.projectDecision}>
+              <p className={styles.label}>A decision behind the product</p>
+              <h3>Make qualification rules visible, not just the bracket.</h3>
+              <p>
+                With 12 groups, the eight best third-place finishers also move
+                into the knockout stage. That means a projected matchup can
+                depend on results across other groups. I built the standings
+                and bracket logic to apply head-to-head tiebreakers and the
+                third-place assignment rules, while keeping outcomes
+                provisional until the relevant results were settled.
+              </p>
+            </div>
+
             <div className={styles.projectMedia}>
               <ScreenshotViewer
                 title="World Cup Tracker"
@@ -206,14 +233,17 @@ export default function ProjectsPage() {
                 mediaType="artwork"
                 caption="Promotional concept only; fixtures are illustrative, not live results. Independent, unofficial project not affiliated with or endorsed by FIFA."
               />
-              <a
-                className={styles.textLink}
-                href="/projects/world-cup-tracker/historical-tournament.png"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View actual tournament screenshot <span aria-hidden="true">&rarr;</span>
-              </a>
+              <div className={styles.actualMedia}>
+                <ScreenshotViewer
+                  title="World Cup Tracker historical tournament interface"
+                  src="/projects/world-cup-tracker/world-cup-overview-desktop.png"
+                  alt="Actual historical World Cup Tracker interface showing tournament groups, fixtures, and knockout progression."
+                  width={1122}
+                  height={1402}
+                  sizes="(max-width: 760px) calc(100vw - 48px), 520px"
+                  caption="Actual interface captured during the completed 2026 tournament. Historical view, not live scores. Independent project, not affiliated with FIFA. Enlarge to inspect."
+                />
+              </div>
             </div>
 
             <div className={styles.actions}>

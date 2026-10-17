@@ -87,13 +87,15 @@ export default function WorkPage() {
                 <div>
                   <dt>350K+ tickets</dt>
                   <dd>
-                    Across the four-tournament scope, with $50M+ in ticket
-                    purchases.
+                    Across the four-tournament commercial-partner ticketing scope.
                   </dd>
                 </div>
                 <div>
-                  <dt>97% satisfaction</dt>
-                  <dd>Partner satisfaction reported for this work.</dd>
+                  <dt>$50M+ invoiced</dt>
+                  <dd>
+                    Ticket purchases processed and managed for FIFA
+                    commercial-partner accounts.
+                  </dd>
                 </div>
               </dl>
               <p className={styles.relationship}>

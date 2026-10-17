@@ -1,4 +1,4 @@
-﻿.page {
+.page {
   width: calc(100% - (var(--page-gutter) * 2));
   max-width: var(--page-max-width);
   min-height: 70vh;

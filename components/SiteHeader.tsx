@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,7 +15,9 @@ export default function SiteHeader() {
   const pathname = usePathname();
   return (
     <>
-      <a className="skip-link" href="#main-content">Skip to content</a>
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
       <header className={styles.header}>
         <div className={styles.inner}>
           <Link className={styles.name} href="/">
@@ -23,9 +25,14 @@ export default function SiteHeader() {
           </Link>
           <nav className={styles.nav} aria-label="Primary navigation">
             {links.map(([href, label]) => (
-              <Link key={href} href={href}
+              <Link
+                key={href}
+                href={href}
                 aria-current={pathname === href ? "page" : undefined}
-                className={pathname.startsWith(href) ? styles.active : undefined}>
+                className={
+                  pathname.startsWith(href) ? styles.active : undefined
+                }
+              >
                 {label}
               </Link>
             ))}

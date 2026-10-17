@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import styles from "./site-footer.module.css";
 
 export default function SiteFooter() {
@@ -11,7 +11,13 @@ export default function SiteFooter() {
         <Link href="/about">About</Link>
         <Link href="/contact">Contact</Link>
         <a href="mailto:rlemor@gmail.com">Email</a>
-        <a href="https://www.linkedin.com/in/rlemor" target="_blank" rel="noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
+        <a
+          href="https://www.linkedin.com/in/rlemor"
+          target="_blank"
+          rel="noreferrer"
+        >
+          LinkedIn <span aria-hidden="true">↗</span>
+        </a>
       </nav>
     </footer>
   );

@@ -1,97 +1,421 @@
-﻿.page { width: calc(100% - var(--page-gutter) * 2); max-width: var(--page-max-width); margin: auto; }
-.hero { display: grid; grid-template-columns: minmax(0, 1fr) 300px; align-items: center; gap: 70px; padding: 64px 0 68px; }
-.eyebrow { display: flex; align-items: center; gap: 10px; color: var(--color-accent); font-size: 16px; font-weight: 500; margin-bottom: 19px; }
-.eyebrow > span { width: 9px; height: 9px; border-radius: 50%; background: var(--color-accent); }
-.hero h1 { font-size: clamp(44px, 4.4vw, 60px); line-height: 1.14; }
-.hero h1 span { color: var(--color-accent); }
-.heroCopy { max-width: 650px; margin-top: 26px; }
-.actions { display: flex; align-items: center; flex-wrap: wrap; gap: 26px; margin-top: 28px; font-size: 17px; }
-.button { display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 50px; padding: 11px 20px; background: var(--color-media); border: 1px solid var(--color-accent); color: var(--color-accent); font-size: 17px; font-weight: 500; text-decoration: none; }
-.button:hover { background: #ffe0ce; }
-.portrait { margin: 0; align-self: center; }
-.portrait img { width: 300px; height: 330px; object-fit: cover; border-radius: 150px 150px 4px 4px; }
-.portrait figcaption { font-size: 14px; margin-top: 15px; }
-.section { padding: 58px 0; border-top: 1px solid var(--color-rule); }
-.sectionTop { display: flex; justify-content: space-between; align-items: end; gap: 50px; margin-bottom: 32px; }
-.sectionTop .eyebrow { margin-bottom: 14px; }
-.sectionTop h2, .personal h2, .contact h2 { font-size: clamp(32px, 3vw, 40px); }
-.sectionTop > p { max-width: 380px; font-size: 18px; }
-.experienceRow { display: grid; grid-template-columns: minmax(0, .38fr) minmax(0, .62fr); gap: 48px; padding: 30px 0; border-top: 1px solid var(--color-rule); }
-.meta { font-weight: 600; font-size: 21px; }
-.meta span { display: block; margin-top: 8px; font-weight: 400; font-size: 15px; }
-.experienceRow h3, .projectRow h3, .compactProject h3 { font-size: 29px; }
-.experienceRow p:not(.meta) { margin-top: 15px; }
-.experienceRow a, .careerNote a, .projectRow a, .compactProject a, .allProjects, .personal a { display: inline-block; margin-top: 20px; color: var(--color-accent); font-size: 17px; }
-.careerNote { display: flex; align-items: start; justify-content: space-between; gap: 48px; padding-top: 26px; border-top: 1px solid var(--color-rule); font-size: 17px; }
-.careerNote p { max-width: 770px; }
-.careerNote a { flex-shrink: 0; margin-top: 0; }
-.relationships { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px; margin: 0; }
-.relationships > div { padding-top: 21px; border-top: 1px solid var(--color-rule); }
-.relationships dt { font-size: 19px; font-weight: 600; line-height: 1.5; }
-.relationships dd { margin: 12px 0 0; font-size: 17px; }
-.projectRow { display: grid; grid-template-columns: minmax(0, .38fr) minmax(0, .62fr); align-items: center; gap: 48px; padding: 32px 0; border-top: 1px solid var(--color-rule); }
-.projectRow .eyebrow, .compactProject .eyebrow { font-size: 15px; margin-bottom: 12px; }
-.projectRow p:not(.eyebrow), .compactProject p:not(.eyebrow) { margin-top: 15px; font-size: 18px; }
-.projectMedia { border: 1px solid var(--color-rule); padding: 16px; background: var(--color-media); border-radius: 55px 55px 2px 2px; }
-.projectMedia img { width: 100%; height: auto; border: 1px solid var(--color-rule); }
-.compactProject { display: flex; align-items: end; justify-content: space-between; gap: 44px; padding-top: 30px; border-top: 1px solid var(--color-rule); }
-.compactProject > div { max-width: 720px; }
-.compactProject a { flex-shrink: 0; }
-.allProjects { margin-top: 32px; }
-.personal { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; padding: 54px 0 64px; border-top: 1px solid var(--color-rule); }
-.personal p:not(.eyebrow) { font-size: 18px; }
-.contact { display: flex; justify-content: space-between; align-items: center; gap: 46px; padding: 44px; margin: 0 0 55px; background: var(--color-media); border-top: 3px solid #dc7657; }
-.contact p { margin-top: 20px; max-width: 570px; font-size: 18px; }
-.contactActions { display: flex; flex-direction: column; align-items: start; gap: 20px; flex-shrink: 0; font-size: 16px; }
-.contactActions .button { background: var(--color-background); }
+.page {
+  width: calc(100% - var(--page-gutter) * 2);
+  max-width: var(--page-max-width);
+  margin: auto;
+}
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  align-items: center;
+  gap: 70px;
+  padding: 64px 0 68px;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-accent);
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 19px;
+}
+.eyebrow > span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+.hero h1 {
+  font-size: clamp(44px, 4.4vw, 60px);
+  line-height: 1.14;
+}
+.hero h1 span {
+  color: var(--color-accent);
+}
+.heroCopy {
+  max-width: 650px;
+  margin-top: 26px;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 26px;
+  margin-top: 28px;
+  font-size: 17px;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 50px;
+  padding: 11px 20px;
+  background: var(--color-media);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-size: 17px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.button:hover {
+  background: #ffe0ce;
+}
+.portrait {
+  margin: 0;
+  align-self: center;
+}
+.portrait img {
+  width: 300px;
+  height: 330px;
+  object-fit: cover;
+  border-radius: 150px 150px 4px 4px;
+}
+.portrait figcaption {
+  font-size: 14px;
+  margin-top: 15px;
+}
+.section {
+  padding: 58px 0;
+  border-top: 1px solid var(--color-rule);
+}
+.sectionTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 50px;
+  margin-bottom: 32px;
+}
+.sectionTop .eyebrow {
+  margin-bottom: 14px;
+}
+.sectionTop h2,
+.personal h2,
+.contact h2 {
+  font-size: clamp(32px, 3vw, 40px);
+}
+.sectionTop > p {
+  max-width: 380px;
+  font-size: 18px;
+}
+.experienceRow {
+  display: grid;
+  grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+  gap: 48px;
+  padding: 30px 0;
+  border-top: 1px solid var(--color-rule);
+}
+.meta {
+  font-weight: 600;
+  font-size: 21px;
+}
+.meta span {
+  display: block;
+  margin-top: 8px;
+  font-weight: 400;
+  font-size: 15px;
+}
+.experienceRow h3,
+.projectRow h3,
+.compactProject h3 {
+  font-size: 29px;
+}
+.experienceRow p:not(.meta) {
+  margin-top: 15px;
+}
+.experienceRow a,
+.careerNote a,
+.projectRow a,
+.compactProject a,
+.allProjects,
+.personal a {
+  display: inline-block;
+  margin-top: 20px;
+  color: var(--color-accent);
+  font-size: 17px;
+}
+.careerNote {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 48px;
+  padding-top: 26px;
+  border-top: 1px solid var(--color-rule);
+  font-size: 17px;
+}
+.careerNote p {
+  max-width: 770px;
+}
+.careerNote a {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+.relationships {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 34px;
+  margin: 0;
+}
+.relationships > div {
+  padding-top: 21px;
+  border-top: 1px solid var(--color-rule);
+}
+.relationships dt {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.relationships dd {
+  margin: 12px 0 0;
+  font-size: 17px;
+}
+.projectRow {
+  display: grid;
+  grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+  align-items: center;
+  gap: 48px;
+  padding: 32px 0;
+  border-top: 1px solid var(--color-rule);
+}
+.projectRow .eyebrow,
+.compactProject .eyebrow {
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+.projectRow p:not(.eyebrow),
+.compactProject p:not(.eyebrow) {
+  margin-top: 15px;
+  font-size: 18px;
+}
+.projectMedia {
+  border: 1px solid var(--color-rule);
+  padding: 16px;
+  background: var(--color-media);
+  border-radius: 55px 55px 2px 2px;
+}
+.projectMedia img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-rule);
+}
+.compactProject {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 44px;
+  padding-top: 30px;
+  border-top: 1px solid var(--color-rule);
+}
+.compactProject > div {
+  max-width: 720px;
+}
+.compactProject a {
+  flex-shrink: 0;
+}
+.allProjects {
+  margin-top: 32px;
+}
+.personal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  padding: 54px 0 64px;
+  border-top: 1px solid var(--color-rule);
+}
+.personal p:not(.eyebrow) {
+  font-size: 18px;
+}
+.contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 46px;
+  padding: 44px;
+  margin: 0 0 55px;
+  background: var(--color-media);
+  border-top: 3px solid #dc7657;
+}
+.contact p {
+  margin-top: 20px;
+  max-width: 570px;
+  font-size: 18px;
+}
+.contactActions {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+.contactActions .button {
+  background: var(--color-background);
+}
 @media (max-width: 1000px) {
-  .hero { gap: 36px; grid-template-columns: minmax(0, 1fr) 240px; }
-  .portrait img { width: 240px; height: 280px; }
-  .hero h1 { font-size: 48px; }
-  .sectionTop { align-items: start; gap: 30px; }
-  .sectionTop > p { max-width: 300px; }
-  .experienceRow, .projectRow { gap: 32px; }
-  .careerNote { display: block; }
-  .careerNote a { margin-top: 16px; }
-  .compactProject { display: block; }
-  .personal { gap: 36px; }
-  .contact { padding: 32px; }
+  .hero {
+    gap: 36px;
+    grid-template-columns: minmax(0, 1fr) 240px;
+  }
+  .portrait img {
+    width: 240px;
+    height: 280px;
+  }
+  .hero h1 {
+    font-size: 48px;
+  }
+  .sectionTop {
+    align-items: start;
+    gap: 30px;
+  }
+  .sectionTop > p {
+    max-width: 300px;
+  }
+  .experienceRow,
+  .projectRow {
+    gap: 32px;
+  }
+  .careerNote {
+    display: block;
+  }
+  .careerNote a {
+    margin-top: 16px;
+  }
+  .compactProject {
+    display: block;
+  }
+  .personal {
+    gap: 36px;
+  }
+  .contact {
+    padding: 32px;
+  }
 }
 @media (max-width: 760px) {
-  .hero { grid-template-columns: 1fr 200px; gap: 25px; padding: 45px 0; }
-  .hero h1 { font-size: 42px; }
-  .heroCopy { font-size: 17px; }
-  .portrait img { width: 200px; height: 240px; }
-  .portrait figcaption { font-size: 13px; }
-  .sectionTop { display: block; }
-  .sectionTop > p { max-width: 600px; margin-top: 20px; }
-  .relationships { grid-template-columns: 1fr; gap: 24px; }
-  .contact { display: block; }
-  .contactActions { margin-top: 26px; }
+  .hero {
+    grid-template-columns: 1fr 200px;
+    gap: 25px;
+    padding: 45px 0;
+  }
+  .hero h1 {
+    font-size: 42px;
+  }
+  .heroCopy {
+    font-size: 17px;
+  }
+  .portrait img {
+    width: 200px;
+    height: 240px;
+  }
+  .portrait figcaption {
+    font-size: 13px;
+  }
+  .sectionTop {
+    display: block;
+  }
+  .sectionTop > p {
+    max-width: 600px;
+    margin-top: 20px;
+  }
+  .relationships {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .contact {
+    display: block;
+  }
+  .contactActions {
+    margin-top: 26px;
+  }
 }
 @media (max-width: 640px) {
-  .hero { display: flex; flex-direction: column; align-items: start; padding: 38px 0 42px; gap: 30px; }
-  .hero h1 { font-size: 42px; }
-  .heroCopy { font-size: 18px; margin-top: 22px; }
-  .eyebrow { font-size: 15px; margin-bottom: 20px; }
-  .portrait { display: flex; align-items: center; gap: 22px; }
-  .portrait img { width: 130px; height: 145px; border-radius: 65px 65px 2px 2px; }
-  .portrait figcaption { max-width: 125px; margin-top: 0; }
-  .section { padding: 40px 0; }
-  .sectionTop h2, .personal h2, .contact h2 { font-size: 32px; }
-  .sectionTop > p { font-size: 17px; }
-  .experienceRow, .projectRow, .personal { display: block; }
-  .experienceRow { padding: 26px 0; }
-  .meta { font-size: 20px; margin-bottom: 20px; }
-  .experienceRow h3, .projectRow h3, .compactProject h3 { font-size: 27px; }
-  .projectMedia { margin-bottom: 25px; }
-  .personal { padding: 40px 0; }
-  .personal > div + div { margin-top: 24px; }
-  .contact { padding: 28px 22px; margin-bottom: 38px; }
-  .contact p { font-size: 17px; }
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 38px 0 42px;
+    gap: 30px;
+  }
+  .hero h1 {
+    font-size: 42px;
+  }
+  .heroCopy {
+    font-size: 18px;
+    margin-top: 22px;
+  }
+  .eyebrow {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  .portrait {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .portrait img {
+    width: 130px;
+    height: 145px;
+    border-radius: 65px 65px 2px 2px;
+  }
+  .portrait figcaption {
+    max-width: 125px;
+    margin-top: 0;
+  }
+  .section {
+    padding: 40px 0;
+  }
+  .sectionTop h2,
+  .personal h2,
+  .contact h2 {
+    font-size: 32px;
+  }
+  .sectionTop > p {
+    font-size: 17px;
+  }
+  .experienceRow,
+  .projectRow,
+  .personal {
+    display: block;
+  }
+  .experienceRow {
+    padding: 26px 0;
+  }
+  .meta {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .experienceRow h3,
+  .projectRow h3,
+  .compactProject h3 {
+    font-size: 27px;
+  }
+  .projectMedia {
+    margin-bottom: 25px;
+  }
+  .personal {
+    padding: 40px 0;
+  }
+  .personal > div + div {
+    margin-top: 24px;
+  }
+  .contact {
+    padding: 28px 22px;
+    margin-bottom: 38px;
+  }
+  .contact p {
+    font-size: 17px;
+  }
 }
 @media (max-width: 360px) {
-  .hero h1 { font-size: 38px; }
-  .actions { gap: 18px; font-size: 16px; }
-  .button { padding: 10px 15px; gap: 18px; font-size: 16px; }
+  .hero h1 {
+    font-size: 38px;
+  }
+  .actions {
+    gap: 18px;
+    font-size: 16px;
+  }
+  .button {
+    padding: 10px 15px;
+    gap: 18px;
+    font-size: 16px;
+  }
 }

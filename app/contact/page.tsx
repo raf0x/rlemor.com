@@ -63,7 +63,7 @@ export default function ContactPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                linkedin.com/in/rlemor <span aria-hidden="true">&nearr;</span>
+                linkedin.com/in/rlemor <span aria-hidden="true">↗</span>
                 <span className={styles.srOnly}> (opens in a new tab)</span>
               </a>
             </div>

@@ -19,9 +19,11 @@ export const metadata: Metadata = {
     siteName: "Rafael Lemor",
     locale: "en_US",
     type: "website",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/opengraph-image"],
     title: "Contact | Rafael Lemor",
     description,
   },

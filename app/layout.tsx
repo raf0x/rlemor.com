@@ -1,21 +1,26 @@
-import type { Metadata } from "next";
-import { Newsreader, Source_Sans_3 } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Lora, DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const newsreader = Newsreader({
+const lora = Lora({
   subsets: ["latin"],
-  variable: "--font-newsreader",
+  variable: "--font-lora",
   display: "swap",
 });
 
-const sourceSans = Source_Sans_3({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-source-sans",
+  variable: "--font-dm-sans",
   display: "swap",
 });
 
 const siteDescription =
-  "Operations, customer experience, product judgment, and practical AI execution.";
+  "Rafael Lemor — customer success, enterprise account management, and large-event operations. Experience with FIFA, IMG Tickets, and enterprise customers.";
+
+export const viewport: Viewport = {
+  themeColor: "#fffcf7",
+  colorScheme: "light",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rlemor.com"),
@@ -43,7 +48,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${newsreader.variable} ${sourceSans.variable}`}>
+      <body className={`${lora.variable} ${dmSans.variable}`}>
         {children}
       </body>
     </html>

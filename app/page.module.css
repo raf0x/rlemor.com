@@ -30,6 +30,7 @@
   line-height: 1.14;
 }
 .hero h1 span {
+  display: block;
   color: var(--color-accent);
 }
 .heroCopy {
@@ -406,6 +407,9 @@
   }
 }
 @media (max-width: 360px) {
+  .hero h1 span {
+    display: inline;
+  }
   .hero h1 {
     font-size: 38px;
   }

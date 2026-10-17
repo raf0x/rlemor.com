@@ -23,8 +23,7 @@ export default function Home() {
             <h1 id="intro-heading">
               I’m Rafael.
               <br />
-              People are at the
-              <br />
+              People are at the{" "}
               <span>heart of my work.</span>
             </h1>
             <p className={styles.heroCopy}>

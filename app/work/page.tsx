@@ -91,10 +91,10 @@ export default function WorkPage() {
                   </dd>
                 </div>
                 <div>
-                  <dt>$50M+</dt>
+                  <dt>$50M+ invoiced</dt>
                   <dd>
-                    Ticket purchases I personally processed and managed for my
-                    FIFA commercial-partner accounts.
+                    Ticket purchases processed and managed for FIFA
+                    commercial-partner accounts.
                   </dd>
                 </div>
               </dl>

@@ -86,19 +86,32 @@
   font-size: 15px;
   line-height: 1.5;
 }
-.trophyFigure {
-  width: min(85%, 320px);
-  margin: 8px 0 30px auto;
+.fifaPhotoPair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 8px 0 30px;
 }
-.trophyImage {
+.fifaPortraitFigure {
+  min-width: 0;
+  margin: 0;
+}
+.fifaPortraitImage {
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 1206 / 1589;
+  object-fit: cover;
 }
-.trophyFigure figcaption {
+.fifaPortraitFigure figcaption {
   margin-top: 12px;
   font-size: 15px;
   line-height: 1.5;
+}
+@media (max-width: 540px) {
+  .fifaPortraitFigure figcaption {
+    font-size: 14px;
+  }
 }
 .scope {
   margin: 28px 0;

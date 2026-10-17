@@ -22,15 +22,14 @@ export default function Home() {
             </p>
             <h1 id="intro-heading">
               I’m Rafael.
-              <br />{" "}From <span>World Cup ticketing</span> to enterprise accounts.
+              <br />{" "}I make <span>complex partnerships</span> work.
             </h1>
             <p className={styles.heroCopy}>
-              At FIFA, I worked on commercial-partner ticketing across four
-              tournaments, personally managing partners including Coca-Cola
-              and Bank of America. At Shibumi, I managed 25 enterprise accounts
-              representing $4M in ARR. Today I use AI-assisted development
-              tools to build practical products shaped by problems I’ve seen
-              firsthand.
+              At FIFA, I worked across four global tournaments, personally
+              managing commercial-partner accounts for Coca-Cola and Bank of
+              America. At Shibumi, I managed 25 enterprise accounts representing
+              $4M in ARR. Today, I use AI-assisted tools to build practical
+              products from problems I’ve seen firsthand.
             </p>
             <div className={styles.actions}>
               <Link className={styles.button} href="/work">

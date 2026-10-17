@@ -22,7 +22,8 @@ export default function Home() {
             </p>
             <h1 id="intro-heading">
               I’m Rafael.
-              <br />I turn <span>human relationships</span> into a competitive advantage.
+              <br />I turn <span>human relationships</span>
+              <br className={styles.heroLineBreak} /> into a competitive advantage.
             </h1>
             <p className={styles.heroCopy}>
               From FIFA’s global commercial partners to enterprise SaaS customers,
@@ -159,10 +160,21 @@ export default function Home() {
               <h3>Lighthouse</h3>
               <p>
                 Lighthouse is an AI-assisted customer health and account
-                intelligence platform that brings customer context, renewal risk,
-                and account health signals into one workspace. It helps Customer
-                Success teams identify at-risk accounts, prioritize action, and
-                use AI-generated executive briefs to make better decisions.
+                intelligence platform that brings customer{" "}
+                <strong className={styles.lighthouseSignal}>context</strong>,
+                renewal <strong className={styles.lighthouseSignal}>risk</strong>,
+                and account{" "}
+                <strong className={styles.lighthouseSignal}>
+                  health signals
+                </strong>{" "}
+                into one workspace. It helps Customer Success teams{" "}
+                <strong className={styles.lighthouseOutcome}>identify</strong>{" "}
+                at-risk accounts, prioritize{" "}
+                <strong className={styles.lighthouseOutcome}>action</strong>, and
+                use AI-generated executive briefs to make{" "}
+                <strong className={styles.lighthouseOutcome}>
+                  better decisions
+                </strong>.
               </p>
               <Link href="/projects#lighthouse">
                 Explore Lighthouse <span aria-hidden="true">→</span>

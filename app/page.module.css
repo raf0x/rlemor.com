@@ -29,9 +29,9 @@
   border-radius: 50%;
 }
 .hero h1 {
-  max-width: 680px;
-  font-size: clamp(42px, 4vw, 54px);
-  line-height: 1.16;
+  max-width: 760px;
+  font-size: clamp(40px, 3.8vw, 50px);
+  line-height: 1.18;
 }
 .hero h1 span {
   color: var(--color-accent);
@@ -64,11 +64,15 @@
   background: var(--color-tint-blue);
 }
 .portrait {
+  width: 260px;
   margin: 0;
+  text-align: center;
 }
 .portrait img {
+  display: block;
   width: 260px;
   height: auto;
+  margin-inline: auto;
   aspect-ratio: 1;
   object-fit: cover;
   object-position: center;
@@ -78,6 +82,7 @@
 .portrait figcaption {
   margin-top: 14px;
   font-size: 14px;
+  text-align: center;
 }
 .experience,
 .projects {
@@ -144,16 +149,22 @@
   font-size: 17px;
 }
 .relationships {
-  padding: 25px 0 35px;
+  padding: 34px 0 40px;
   border-top: 1px solid var(--color-rule);
 }
 .relationships h2 {
-  margin-bottom: 20px;
-  font-family: var(--font-body), Arial, sans-serif;
-  font-size: 15px;
+  margin-bottom: 16px;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: clamp(28px, 2.7vw, 36px);
   font-weight: 500;
-  letter-spacing: 0;
-  color: var(--color-green);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--color-foreground);
+}
+.relationshipsIntro {
+  max-width: 890px;
+  margin-bottom: 27px;
+  font-size: 18px;
 }
 .relationships dl {
   display: grid;
@@ -171,6 +182,11 @@
 }
 .projects > .eyebrow {
   color: var(--color-accent);
+}
+.projectsIntro {
+  max-width: 740px;
+  margin-top: 16px;
+  font-size: 18px;
 }
 .lighthouse {
   display: grid;
@@ -270,6 +286,9 @@
   .heroCopy {
     font-size: 18px;
   }
+  .portrait {
+    width: 220px;
+  }
   .portrait img {
     width: 220px;
   }
@@ -306,16 +325,17 @@
     margin-top: 20px;
   }
   .portrait {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+    display: block;
+    justify-self: center;
+    width: min(100%, 260px);
+    margin-inline: auto;
   }
   .portrait img {
-    width: 112px;
+    width: 144px;
   }
   .portrait figcaption {
-    max-width: 135px;
-    margin-top: 0;
+    max-width: none;
+    margin-top: 12px;
   }
   .experience,
   .projects {
@@ -349,7 +369,14 @@
     font-size: 16px;
   }
   .relationships {
-    padding: 24px 0 30px;
+    padding: 30px 0 34px;
+  }
+  .relationships h2 {
+    font-size: 29px;
+  }
+  .relationshipsIntro,
+  .projectsIntro {
+    font-size: 17px;
   }
   .relationships dl {
     grid-template-columns: 1fr;

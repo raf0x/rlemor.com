@@ -206,6 +206,14 @@
   margin-top: 18px;
   font-size: 18px;
 }
+.lighthouseSignal {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+.lighthouseOutcome {
+  color: var(--color-green);
+  font-weight: 700;
+}
 .otherProjects {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -87,7 +87,7 @@ export default function WorkPage() {
                     height={1568}
                     sizes="(max-width: 760px) 45vw, (max-width: 1244px) 30vw, 360px"
                   />
-                  <figcaption>With Roberto Carlos at the FIFA offices.</figcaption>
+                  <figcaption>With Brazilian and Real Madrid soccer legend Roberto Carlos at the FIFA offices.</figcaption>
                 </figure>
                 <figure className={styles.fifaPortraitFigure}>
                   <Image

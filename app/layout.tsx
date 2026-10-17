@@ -44,7 +44,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/opengraph-image"],
+    images: [
+      {
+        url: "/opengraph-image",
+        alt: "Rafael Lemor. Customer Success, global events, independent products.",
+      },
+    ],
     title: "Rafael Lemor",
     description: siteDescription,
   },

@@ -4,73 +4,118 @@
   margin: 0 auto;
 }
 .intro {
-  max-width: 810px;
-  padding: 64px 0 66px;
+  max-width: 790px;
+  padding: 62px 0 66px;
 }
 .eyebrow {
   color: var(--color-accent);
   font-size: 16px;
   font-weight: 500;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .intro h1 {
-  font-size: clamp(42px, 5vw, 60px);
+  max-width: 700px;
+  font-size: clamp(38px, 4.5vw, 54px);
 }
 .intro h1 span {
   color: var(--color-accent);
 }
 .intro > p:last-child {
-  max-width: 740px;
-  margin-top: 28px;
+  max-width: 660px;
+  margin-top: 24px;
 }
-.feature {
+.specialty {
+  --section-accent: var(--color-accent);
   display: grid;
-  grid-template-columns: minmax(0, 0.43fr) minmax(0, 0.57fr);
+  grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr);
   gap: 70px;
-  padding: 54px 0 62px;
+  padding: 52px 0 58px;
   border-top: 1px solid var(--color-rule);
   scroll-margin-top: 28px;
 }
-.storyHeading h2 {
-  font-size: clamp(32px, 3.2vw, 41px);
+.enterprise {
+  --section-accent: var(--color-green);
+}
+.service {
+  --section-accent: var(--color-foreground);
+}
+.specialtyHeading .eyebrow {
+  color: var(--section-accent);
+}
+.specialtyHeading h2 {
+  font-size: clamp(29px, 2.65vw, 34px);
+  max-width: 350px;
+}
+.specialtyBody {
+  min-width: 0;
+}
+.feature,
+.chapter,
+.supporting {
+  scroll-margin-top: 28px;
+}
+.feature h3 {
+  font-size: clamp(32px, 3.1vw, 40px);
+  max-width: 610px;
+}
+.chapter h3,
+.supporting h3 {
+  font-size: 28px;
 }
 .role {
   font-size: 17px;
   font-weight: 500;
-  margin-top: 22px;
+  margin-top: 16px;
 }
 .dates {
-  font-size: 15px;
-  margin-top: 9px;
+  font-size: 16px;
+  margin-top: 5px;
 }
-.storyCopy > p + p {
+.storyLead {
   margin-top: 24px;
+}
+.storyLead + p {
+  margin-top: 18px;
 }
 .scope {
   margin: 28px 0;
 }
 .scope > div {
   display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 20px;
-  padding: 19px 0;
+  grid-template-columns: minmax(175px, 0.4fr) minmax(0, 0.6fr);
+  gap: 24px;
+  padding: 18px 0;
   border-top: 1px solid var(--color-rule);
 }
 .scope dt {
   font-family: var(--font-heading), Georgia, serif;
-  color: var(--color-accent);
-  font-size: 25px;
+  color: var(--section-accent);
+  font-size: 26px;
   line-height: 1.3;
 }
 .scope dd {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
+}
+.relationship {
+  font-size: 17px;
+}
+.relationship strong {
+  font-weight: 600;
+}
+.supporting {
+  margin-top: 34px;
+  padding-top: 30px;
+  border-top: 1px solid var(--color-rule);
+}
+.supporting .role {
+  margin-top: 10px;
+}
+.supporting .storyLead {
+  margin-top: 18px;
 }
 .context {
-  padding: 23px 26px;
-  margin-top: 26px;
-  border-left: 2px solid var(--color-accent);
-  background: var(--color-media);
+  margin-top: 30px;
 }
 .context h3 {
   font-family: var(--font-body), Arial, sans-serif;
@@ -78,31 +123,30 @@
   font-size: 17px;
   font-weight: 600;
   margin-bottom: 10px;
+  line-height: 1.5;
 }
 .context p {
   font-size: 17px;
 }
-.eventNote {
-  margin-top: 28px;
-  padding: 22px 0;
-  border-top: 1px solid var(--color-rule);
-  font-size: 17px;
+.specialtyBody a,
+.timeline a {
+  color: var(--color-accent);
 }
 .career {
-  padding: 54px 0 62px;
+  padding: 52px 0 58px;
   border-top: 1px solid var(--color-rule);
   scroll-margin-top: 28px;
 }
 .sectionTop h2 {
-  font-size: 40px;
+  font-size: 36px;
 }
 .sectionTop > p:last-child {
-  margin-top: 20px;
-  font-size: 18px;
+  margin-top: 14px;
+  font-size: 17px;
 }
 .timeline {
   list-style: none;
-  margin: 34px 0 0;
+  margin: 30px 0 0;
   padding: 0;
 }
 .timeline li {
@@ -110,28 +154,32 @@
   grid-template-columns: 230px minmax(0, 1fr);
   gap: 35px;
   border-top: 1px solid var(--color-rule);
-  padding: 27px 0;
+  padding: 20px 0;
 }
 .timeline h3 {
-  font-size: 28px;
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 .timeline .dates {
-  margin-top: 5px;
-  color: var(--color-accent);
+  margin-top: 2px;
 }
 .timeline .role {
-  margin: 9px 0 12px;
+  margin: 5px 0 0;
+  font-size: 17px;
+  font-weight: 400;
+}
+.timeline .role + p {
+  max-width: 680px;
+  margin-top: 9px;
   font-size: 17px;
 }
-.timeline li > div > p:last-of-type {
-  max-width: 780px;
-  font-size: 18px;
-}
 .timeline a {
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 12px;
-  color: var(--color-accent);
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
 }
 .contact {
   display: flex;
@@ -139,69 +187,74 @@
   align-items: center;
   gap: 35px;
   margin-bottom: 56px;
-  border-top: 3px solid #dc7657;
-  padding: 42px;
-  background: var(--color-media);
+  padding: 32px 0 12px;
+  border-top: 1px solid var(--color-rule);
 }
 .contact h2 {
-  font-size: 38px;
+  font-size: 36px;
 }
 .contact p {
-  margin-top: 20px;
+  margin-top: 16px;
   font-size: 18px;
-  max-width: 650px;
 }
 .contact > a {
   display: inline-flex;
-  gap: 28px;
+  gap: 22px;
   align-items: center;
-  border: 1px solid var(--color-accent);
-  background: var(--color-background);
-  padding: 12px 20px;
+  padding: 12px 0;
   color: var(--color-accent);
-  font-size: 17px;
-  text-decoration: none;
+  font-size: 18px;
   flex-shrink: 0;
 }
+.specialtyBody a:hover,
+.timeline a:hover,
 .contact > a:hover {
-  background: #ffe0ce;
+  text-decoration-thickness: 2px;
 }
 @media (max-width: 1000px) {
-  .feature {
+  .specialty {
     gap: 36px;
   }
   .scope > div {
     grid-template-columns: 1fr;
-    gap: 9px;
+    gap: 8px;
   }
 }
 @media (max-width: 760px) {
   .intro {
-    padding: 42px 0 46px;
+    padding: 40px 0 44px;
   }
   .intro h1 {
-    font-size: 42px;
+    max-width: 550px;
+    font-size: 40px;
   }
-  .feature {
+  .specialty {
     display: block;
-    padding: 38px 0 44px;
+    padding: 36px 0 42px;
   }
-  .storyHeading h2,
-  .sectionTop h2 {
-    font-size: 34px;
+  .specialtyHeading h2 {
+    max-width: 540px;
+    font-size: 30px;
   }
-  .storyCopy {
-    margin-top: 28px;
+  .specialtyBody {
+    margin-top: 30px;
+  }
+  .feature h3 {
+    font-size: 32px;
   }
   .scope > div {
-    grid-template-columns: minmax(130px, 0.8fr) 1fr;
-    gap: 18px;
+    grid-template-columns: minmax(170px, 0.4fr) minmax(0, 0.6fr);
+    gap: 20px;
   }
-  .scope dt {
-    font-size: 23px;
+  .chapter h3,
+  .supporting h3 {
+    font-size: 26px;
   }
   .career {
-    padding: 38px 0 46px;
+    padding: 36px 0 42px;
+  }
+  .sectionTop h2 {
+    font-size: 32px;
   }
   .timeline li {
     grid-template-columns: 170px minmax(0, 1fr);
@@ -209,28 +262,28 @@
   }
   .contact {
     display: block;
-    padding: 28px 24px;
     margin-bottom: 38px;
+    padding-top: 30px;
   }
   .contact h2 {
     font-size: 32px;
   }
   .contact > a {
-    margin-top: 24px;
+    margin-top: 16px;
   }
 }
 @media (max-width: 540px) {
+  .intro h1 {
+    font-size: 38px;
+  }
   .timeline li {
     display: block;
   }
   .timeline .dates {
-    margin-bottom: 14px;
-  }
-  .timeline li > div > p:last-of-type {
-    font-size: 17px;
+    margin-bottom: 9px;
   }
   .scope > div {
     grid-template-columns: 1fr;
-    gap: 9px;
+    gap: 8px;
   }
 }

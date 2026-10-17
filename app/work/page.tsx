@@ -19,7 +19,6 @@ const career = [
     employer: "FIFA",
     dates: "Sep 2024 – Aug 2026",
     role: "Commercial Partner Ticketing / CRM Operations · Contract",
-    copy: "Commercial partner ticketing across four global tournaments, culminating in the 2026 FIFA World Cup.",
     href: "#fifa",
   },
   {
@@ -32,31 +31,30 @@ const career = [
     employer: "CHEQ.io",
     dates: "Apr 2023 – Oct 2023",
     role: "Customer Success Manager",
-    copy: "Customer success and implementations for a mobile commerce platform. Team and venue implementation contexts included Inter Miami, the Miami Marlins, and Hard Rock Stadium.",
+    href: "#cheq",
   },
   {
     employer: "Shibumi",
     dates: "Sep 2021 – Jan 2023",
     role: "Enterprise Customer Success Manager",
-    copy: "Managed 25 enterprise accounts representing $4M in ARR. Achieved 117% net dollar retention with zero churn, partnered with Sales on $500K in expansion, and led C-suite QBRs and account health scoring.",
+    href: "#shibumi",
   },
   {
     employer: "Inktel",
     dates: "Sep 2020 – Sep 2021",
     role: "Operations Manager",
-    copy: "Led supervisors and service delivery for the Williams-Sonoma account, scaling the team to 400+ agents in four months.",
+    href: "#inktel",
   },
   {
     employer: "TEN Lifestyle Group",
     dates: "Jul 2017 – Sep 2020",
     role: "Account Manager",
-    copy: "Travel concierge and customer experience for clients across the U.S. and Latin America.",
+    href: "#ten-lifestyle",
   },
   {
     employer: "IMG Tickets",
     dates: "2014–2017",
     role: "Box Office Manager · Miami Open",
-    copy: "Four editions of the Miami Open at Crandon Park, Key Biscayne, with event ticketing and customer service throughout the year.",
     href: "#miami-open",
   },
 ];
@@ -69,119 +67,190 @@ export default function WorkPage() {
         <section className={styles.intro}>
           <p className={styles.eyebrow}>Professional experience</p>
           <h1>
-            Work built on
-            <br />
-            <span>relationships.</span>
+            Work built on <span>relationships.</span>
           </h1>
           <p>
-            I’ve worked where enterprise expectations meet real-world
-            operations. Understanding the customer, coordinating the details,
-            and following through have been the constants.
+            Across global events, enterprise software, and service teams, the
+            constant has been understanding the customer and following through.
           </p>
         </section>
 
         <section
-          className={styles.feature}
-          id="fifa"
-          aria-labelledby="fifa-heading"
+          className={styles.specialty}
+          id="sports-events"
+          aria-labelledby="events-heading"
         >
-          <div className={styles.storyHeading}>
-            <p className={styles.eyebrow}>FIFA · Contract</p>
-            <h2 id="fifa-heading">
-              Behind the tickets.
-              <br />
-              Alongside the partners.
-            </h2>
-            <p className={styles.role}>
-              Commercial Partner Ticketing / CRM Operations
-            </p>
-            <p className={styles.dates}>Sep 2024 – Aug 2026</p>
+          <div className={styles.specialtyHeading}>
+            <p className={styles.eyebrow}>01 / Experience</p>
+            <h2 id="events-heading">Global Sports &amp; Events</h2>
           </div>
-          <div className={styles.storyCopy}>
-            <p>
-              Across four global tournaments culminating in the 2026 FIFA World
-              Cup, my work connected commercial partners with the systems and
-              operations behind their ticketing needs.
-            </p>
-            <p>
-              That meant managing CRM records, allocations and fulfillment,
-              reporting, partner training, escalations, and closeout. The scale
-              was global; the day-to-day work depended on clear communication
-              and attention to each partner’s needs.
-            </p>
-            <dl className={styles.scope}>
-              <div>
-                <dt>30+ partners</dt>
-                <dd>
-                  Commercial-partner ticketing scope across four tournaments.
-                </dd>
-              </div>
-              <div>
-                <dt>350K+ tickets</dt>
-                <dd>
-                  Across the four-tournament scope, with $50M+ in ticket
-                  purchases.
-                </dd>
-              </div>
-              <div>
-                <dt>97% satisfaction</dt>
-                <dd>Partner satisfaction reported for this work.</dd>
-              </div>
-            </dl>
-            <div className={styles.context}>
-              <h3>Accounts, with context</h3>
+          <div className={styles.specialtyBody}>
+            <article
+              className={styles.feature}
+              id="fifa"
+              aria-labelledby="fifa-heading"
+            >
+              <p className={styles.eyebrow}>FIFA · Contract</p>
+              <h3 id="fifa-heading">
+                Behind the tickets. Alongside the partners.
+              </h3>
+              <p className={styles.role}>
+                Commercial Partner Ticketing / CRM Operations
+              </p>
+              <p className={styles.dates}>Sep 2024 – Aug 2026</p>
+              <p className={styles.storyLead}>
+                Across four global tournaments culminating in the 2026 FIFA
+                World Cup, my work connected commercial partners with the
+                systems and operations behind their ticketing needs.
+              </p>
               <p>
-                Coca-Cola and Bank of America were commercial partner accounts I
-                personally managed at FIFA.
+                That meant CRM records, allocations and fulfillment, reporting,
+                partner training, escalations, and closeout. Clear communication
+                and attention to each partner’s needs mattered at every stage.
+              </p>
+              <dl className={styles.scope}>
+                <div>
+                  <dt>30+ partners</dt>
+                  <dd>
+                    Commercial-partner ticketing scope across four tournaments.
+                  </dd>
+                </div>
+                <div>
+                  <dt>350K+ tickets</dt>
+                  <dd>
+                    Across the four-tournament scope, with $50M+ in ticket
+                    purchases.
+                  </dd>
+                </div>
+                <div>
+                  <dt>97% satisfaction</dt>
+                  <dd>Partner satisfaction reported for this work.</dd>
+                </div>
+              </dl>
+              <p className={styles.relationship}>
+                <strong>Personally managed at FIFA:</strong> Coca-Cola and Bank
+                of America commercial partner accounts.
+              </p>
+            </article>
+
+            <article
+              className={styles.supporting}
+              id="miami-open"
+              aria-labelledby="miami-heading"
+            >
+              <h3 id="miami-heading">IMG Tickets / Miami Open</h3>
+              <p className={styles.role}>Box Office Manager</p>
+              <p className={styles.dates}>
+                2014–2017 · Crandon Park, Key Biscayne
+              </p>
+              <p className={styles.storyLead}>
+                At IMG Tickets, I managed the box office for four Miami Open
+                editions, from 2014 through 2017. During each two-week event, I
+                was responsible for ticketing staff, VIP entrance operations,
+                inventory, sales, and customer escalations. Outside event
+                periods, I handled customer service and support.
+              </p>
+            </article>
+
+            <div className={styles.context}>
+              <h3>CHEQ / Team &amp; venue implementations</h3>
+              <p>
+                At CHEQ, a mobile-commerce platform, implementation contexts
+                included Inter Miami, the Miami Marlins, and Hard Rock Stadium.{" "}
+                <a href="#cheq">
+                  More on the customer success role{" "}
+                  <span aria-hidden="true">↓</span>
+                </a>
               </p>
             </div>
           </div>
         </section>
 
         <section
-          className={styles.feature}
-          id="miami-open"
-          aria-labelledby="miami-heading"
+          className={`${styles.specialty} ${styles.enterprise}`}
+          id="enterprise"
+          aria-labelledby="enterprise-heading"
         >
-          <div className={styles.storyHeading}>
-            <p className={styles.eyebrow}>IMG Tickets · Employer</p>
-            <h2 id="miami-heading">
-              The Miami Open,
-              <br />
-              from the box office.
+          <div className={styles.specialtyHeading}>
+            <p className={styles.eyebrow}>02 / Experience</p>
+            <h2 id="enterprise-heading">
+              Enterprise SaaS &amp; Customer Success
             </h2>
-            <p className={styles.role}>Box Office Manager</p>
-            <p className={styles.dates}>
-              2014–2017 · Crandon Park, Key Biscayne
-            </p>
-            <p className={styles.eventNote}>
-              Four editions: 2014, 2015, 2016, 2017.
-            </p>
           </div>
-          <div className={styles.storyCopy}>
-            <p>
-              For four editions of the Miami Open, I managed the box office
-              responsibilities that shape a guest’s experience before they ever
-              reach their seat.
-            </p>
-            <p>
-              During the two-week event, I managed ticketing staff, VIP entrance
-              operations, ticket inventory, sales, and customer escalations. A
-              question at the gate or a change to a ticket needed a clear answer
-              and a practical next step.
-            </p>
-            <p>
-              Outside event periods, the work continued through customer service
-              and support. It was an early foundation in taking ownership of a
-              customer’s experience from start to finish.
-            </p>
-            <div className={styles.context}>
-              <h3>The relationship</h3>
-              <p>
-                IMG Tickets was my employer. The Miami Open was the event;
-                Crandon Park was the venue.
+          <div className={styles.specialtyBody}>
+            <article
+              className={styles.chapter}
+              id="shibumi"
+              aria-labelledby="shibumi-heading"
+            >
+              <h3 id="shibumi-heading">Shibumi</h3>
+              <p className={styles.role}>Enterprise Customer Success Manager</p>
+              <p className={styles.dates}>Sep 2021 – Jan 2023</p>
+              <p className={styles.storyLead}>
+                I managed{" "}
+                <strong>25 enterprise accounts representing $4M in ARR</strong>,
+                achieving 117% net dollar retention with zero churn.
               </p>
-            </div>
+              <p>
+                I led C-suite QBRs and account health scoring, and partnered
+                with Sales on $500K in expansion.
+              </p>
+            </article>
+            <article
+              className={styles.supporting}
+              id="cheq"
+              aria-labelledby="cheq-heading"
+            >
+              <h3 id="cheq-heading">CHEQ.io</h3>
+              <p className={styles.role}>Customer Success Manager</p>
+              <p className={styles.dates}>Apr 2023 – Oct 2023</p>
+              <p className={styles.storyLead}>
+                Customer success and implementations for a mobile-commerce
+                platform, with team and venue implementation work connecting
+                this role to the{" "}
+                <a href="#sports-events">events experience above</a>.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section
+          className={`${styles.specialty} ${styles.service}`}
+          id="service-operations"
+          aria-labelledby="service-heading"
+        >
+          <div className={styles.specialtyHeading}>
+            <p className={styles.eyebrow}>03 / Experience</p>
+            <h2 id="service-heading">Service Operations &amp; Leadership</h2>
+          </div>
+          <div className={styles.specialtyBody}>
+            <article
+              className={styles.chapter}
+              id="inktel"
+              aria-labelledby="inktel-heading"
+            >
+              <h3 id="inktel-heading">Inktel</h3>
+              <p className={styles.role}>Operations Manager</p>
+              <p className={styles.dates}>Sep 2020 – Sep 2021</p>
+              <p className={styles.storyLead}>
+                I led supervisors and service delivery for the Williams-Sonoma
+                account, scaling the team to{" "}
+                <strong>400+ agents in four months</strong>.
+              </p>
+            </article>
+            <article
+              className={styles.supporting}
+              id="ten-lifestyle"
+              aria-labelledby="ten-heading"
+            >
+              <h3 id="ten-heading">TEN Lifestyle Group</h3>
+              <p className={styles.role}>Account Manager</p>
+              <p className={styles.dates}>Jul 2017 – Sep 2020</p>
+              <p className={styles.storyLead}>
+                Travel concierge, customer support, and client experience for
+                clients across the U.S. and Latin America.
+              </p>
+            </article>
           </div>
         </section>
 
@@ -193,24 +262,24 @@ export default function WorkPage() {
           <div className={styles.sectionTop}>
             <p className={styles.eyebrow}>The full path</p>
             <h2 id="career-heading">Experience, in order.</h2>
-            <p>
-              Most recent first, across sport, software, service, and
-              operations.
-            </p>
+            <p>Most recent first.</p>
           </div>
           <ol className={styles.timeline}>
             {career.map((job) => (
               <li key={job.employer}>
                 <p className={styles.dates}>{job.dates}</p>
                 <div>
-                  <h3>{job.employer}</h3>
+                  <h3>
+                    {job.href ? (
+                      <a href={job.href}>
+                        {job.employer} <span aria-hidden="true">↑</span>
+                      </a>
+                    ) : (
+                      job.employer
+                    )}
+                  </h3>
                   <p className={styles.role}>{job.role}</p>
-                  <p>{job.copy}</p>
-                  {job.href && (
-                    <a href={job.href}>
-                      Read the story <span aria-hidden="true">↑</span>
-                    </a>
-                  )}
+                  {job.copy && <p>{job.copy}</p>}
                 </div>
               </li>
             ))}
@@ -218,15 +287,8 @@ export default function WorkPage() {
         </section>
         <section className={styles.contact}>
           <div>
-            <h2>
-              Let’s talk about
-              <br />
-              what comes next.
-            </h2>
-            <p>
-              Customer success, enterprise accounts, and complex event
-              operations.
-            </p>
+            <h2>What comes next?</h2>
+            <p>I’d be glad to hear what you’re working on.</p>
           </div>
           <Link href="/contact">
             Get in touch <span aria-hidden="true">↗</span>

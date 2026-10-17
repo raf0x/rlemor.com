@@ -26,8 +26,8 @@ export default function Home() {
               <br className={styles.heroLineBreak} /> into a competitive advantage.
             </h1>
             <p className={styles.heroCopy}>
-              I’ve managed FIFA commercial-partner accounts and a $4M SaaS
-              portfolio. Now I build tools with AI.
+              Managed FIFA commercial partners and a $4M SaaS portfolio. CX
+              leader using AI for better decisions and practical tools.
             </p>
             <div className={styles.actions}>
               <Link className={styles.button} href="/work">

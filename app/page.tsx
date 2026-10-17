@@ -22,7 +22,7 @@ export default function Home() {
             </p>
             <h1 id="intro-heading">
               I’m Rafael.
-              <br />From <span>World Cup ticketing</span> to enterprise accounts.
+              <br />{" "}From <span>World Cup ticketing</span> to enterprise accounts.
             </h1>
             <p className={styles.heroCopy}>
               At FIFA, I worked on commercial-partner ticketing across four

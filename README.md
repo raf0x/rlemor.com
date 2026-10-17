@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# rlemor.com
 
-## Getting Started
+The personal website of **Rafael Lemor**, an operations and Customer Success professional with experience in enterprise accounts, global sporting events, and independent product building with AI-assisted tools.
 
-First, run the development server:
+**Live website:** https://rlemor.com
+
+## Explore
+
+- [Work](https://rlemor.com/work): selected professional experience across sports, enterprise software, and service operations.
+- [Projects](https://rlemor.com/projects): Lighthouse, MyPepProtocol, and World Cup Tracker.
+- [About](https://rlemor.com/about): a little more about the person behind the work.
+- [Contact](https://rlemor.com/contact): ways to get in touch.
+- [MyPepProtocol case study](https://rlemor.com/projects/mypepprotocol): product decisions, constraints, and lessons from an independent project.
+
+The website is an editorial introduction, not a replacement for a résumé.
+
+## Technology
+
+Built with Next.js App Router, React, TypeScript, and CSS. The website uses `next/image` for image optimization and `next/font` for typography, and is deployed with Vercel.
+
+There is no application database, account system, or content-management service in this website.
+
+## Run locally
+
+Requires Node.js and npm.
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+For a production build:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## About this repository
 
-To learn more about Next.js, take a look at the following resources:
+This repository contains the website itself, including page content, styles, and approved public images. The independent projects linked from the site are maintained in their own repositories.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Changes to the published site are reviewed before deployment.

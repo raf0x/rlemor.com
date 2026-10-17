@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import ScreenshotViewer from "@/components/ScreenshotViewer";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./case-study.module.css";
@@ -34,7 +34,7 @@ export default function MyPepProtocolCaseStudy() {
     <>
       <SiteHeader />
 
-      <main className={styles.page}>
+      <main className={styles.page} id="main-content" tabIndex={-1}>
         <article className={styles.caseStudy}>
           <header className={styles.intro}>
             <p className={styles.eyebrow}>MyPepProtocol</p>
@@ -66,18 +66,17 @@ export default function MyPepProtocolCaseStudy() {
             </p>
           </header>
 
-          <figure className={styles.overviewFigure}>
-            <Image
-              className={styles.productImage}
-              src="/projects/mypepprotocol/showcase.webp"
+          <div className={styles.overviewFigure}>
+            <ScreenshotViewer
+              title="MyPepProtocol"
+              src="/projects/mypepprotocol/overview-detail.webp"
               alt="MyPepProtocol Today view with demo summary metrics and active protocol records."
-              width={640}
-              height={800}
-              priority
-              sizes="(max-width: 760px) calc(100vw - 48px), 560px"
-                unoptimized
+              width={1088}
+              height={1342}
+              sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 784px) calc(100vw - 64px), 720px"
+              caption="The Today view, shown with demo data. Enlarge to inspect the original interface."
             />
-          </figure>
+          </div>
 
           <section className={styles.section}>
             <p className={styles.sectionLabel}>Product rules</p>

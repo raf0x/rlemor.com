@@ -8,11 +8,6 @@ const nextConfig: NextConfig = {
         destination: "/projects/mypepprotocol",
         permanent: true,
       },
-      {
-        source: "/work",
-        destination: "/projects",
-        permanent: true,
-      },
     ];
   },
 };

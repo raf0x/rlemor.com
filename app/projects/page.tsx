@@ -75,13 +75,21 @@ export default function ProjectsPage() {
             <div className={styles.projectMedia}>
               <ScreenshotViewer
                 title="Lighthouse"
-                src="/projects/lighthouse/overview-desktop.webp"
-                alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
-                width={2880}
-                height={2000}
-                expandedWidth={1440}
-                caption="Captured from the public Lighthouse demo. The workspace brings account context, risk signals, and analysis tools together."
+                src="/projects/lighthouse/concept-artwork.webp"
+                alt="Promotional Lighthouse concept illustration of an account-health dashboard with renewal risk, AI executive briefs, and a coastal lighthouse."
+                width={1672}
+                height={941}
+                mediaType="artwork"
+                caption="Concept illustration with fictional dashboard data, not a screenshot of the actual application."
               />
+              <a
+                className={styles.textLink}
+                href="/projects/lighthouse/overview-desktop.webp"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View actual Lighthouse dashboard <span aria-hidden="true">&rarr;</span>
+              </a>
             </div>
 
             <div className={styles.actions}>
@@ -191,12 +199,21 @@ export default function ProjectsPage() {
             <div className={styles.projectMedia}>
               <ScreenshotViewer
                 title="World Cup Tracker"
-                src="/projects/world-cup-tracker/historical-tournament.png"
-                alt="World Cup Tracker capture showing tournament statistics and the full knockout prediction bracket, with its original in-progress status labels."
-                width={894}
-                height={940}
-                caption="Historical snapshot from the now-completed 2026 tournament. Independent, unofficial project; not affiliated with or endorsed by FIFA."
+                src="/projects/world-cup-tracker/concept-artwork.webp"
+                alt="World Cup Tracker concept illustration with a mobile tournament interface, match schedule, standings, and knockout bracket in a football stadium."
+                width={1672}
+                height={941}
+                mediaType="artwork"
+                caption="Promotional concept only; fixtures are illustrative, not live results. Independent, unofficial project not affiliated with or endorsed by FIFA."
               />
+              <a
+                className={styles.textLink}
+                href="/projects/world-cup-tracker/historical-tournament.png"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View actual tournament screenshot <span aria-hidden="true">&rarr;</span>
+              </a>
             </div>
 
             <div className={styles.actions}>

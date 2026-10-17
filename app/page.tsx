@@ -150,10 +150,10 @@ export default function Home() {
           <article className={styles.lighthouse}>
             <Image
               className={styles.projectImage}
-              src="/projects/lighthouse/overview-desktop.webp"
-              alt="Lighthouse’s account-intelligence workspace, captured from the public demo"
-              width={2880}
-              height={2000}
+              src="/projects/lighthouse/concept-artwork.webp"
+              alt="Illustrative Lighthouse concept artwork featuring account health, renewal risk, and a coastal lighthouse."
+              width={1672}
+              height={941}
               sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 900px) calc(100vw - 64px), (max-width: 1244px) 56vw, 682px"
             />
             <div>

@@ -87,7 +87,7 @@
   line-height: 1.5;
 }
 .trophyFigure {
-  width: min(100%, 320px);
+  width: min(85%, 320px);
   margin: 8px 0 30px auto;
 }
 .trophyImage {

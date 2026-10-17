@@ -120,6 +120,45 @@ export default function MyPepProtocolCaseStudy() {
             </div>
           </section>
 
+          <section className={styles.section} aria-labelledby="interface-evidence">
+            <p className={styles.sectionLabel}>Product interface</p>
+
+            <div className={styles.sectionContent}>
+              <h2 id="interface-evidence">One product, two screen sizes.</h2>
+              <p className={styles.evidenceIntro}>
+                These are actual desktop and mobile captures of the Today
+                overview, shown with demo records. They illustrate how the same
+                information is organized at different screen sizes, not every
+                workflow described in the decisions below.
+              </p>
+
+              <div className={styles.evidenceGallery}>
+                <div>
+                  <ScreenshotViewer
+                    title="MyPepProtocol desktop Today overview"
+                    src="/projects/mypepprotocol/overview-desktop.png"
+                    alt="Desktop capture of the MyPepProtocol Today dashboard with protocol summaries and demo data."
+                    width={2048}
+                    height={1342}
+                    sizes="(max-width: 620px) calc(100vw - 48px), (max-width: 1060px) 46vw, 500px"
+                    caption="Desktop Today overview, captured during development with demo data. Enlarge to inspect."
+                  />
+                </div>
+                <div>
+                  <ScreenshotViewer
+                    title="MyPepProtocol mobile Today overview"
+                    src="/projects/mypepprotocol/overview-mobile.png"
+                    alt="Mobile capture of the MyPepProtocol Today dashboard showing a narrow-screen protocol summary with demo data."
+                    width={780}
+                    height={1888}
+                    sizes="(max-width: 620px) calc(100vw - 48px), (max-width: 1060px) 27vw, 260px"
+                    caption="Mobile Today overview, captured during development with demo data. Enlarge to inspect."
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
           <section className={`${styles.decision} ${styles.decisionOne}`}>
             <p className={styles.sectionLabel}>Decision 01</p>
 

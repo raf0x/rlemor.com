@@ -48,13 +48,22 @@ export default function AboutPage() {
               </p>
               <p>
                 During the 2026 World Cup, I supported the Miami Host City
-                Committee throughout the tournament. For a sold-out match, they
-                needed four additional tickets for senior guests. I worked
-                across FIFA teams until our ticketing director helped make it
-                happen. After their involvement wrapped up with the third-place
-                match in Miami, they invited me to their offices to celebrate
-                together. That invitation is one of my favorite memories from
-                the tournament.
+                Committee throughout the tournament. Just two or three days
+                before the sold-out Mexico–England match in Mexico City, my point
+                of contact called me directly. Four tickets intended for the
+                organization&apos;s CEO had mistakenly gone to other people
+                during their internal distribution.
+              </p>
+              <p>
+                I started coordinating across FIFA teams, eventually reaching
+                our ticketing director, who helped us secure four replacement
+                tickets in time.
+              </p>
+              <p>
+                After the committee&apos;s tournament participation ended with
+                the third-place match in Miami, they invited me to their
+                offices to celebrate together. It&apos;s still one of my
+                favorite memories from that World Cup.
               </p>
               <Link className={styles.textLink} href="/work">
                 Explore my professional experience <span aria-hidden="true">&rarr;</span>

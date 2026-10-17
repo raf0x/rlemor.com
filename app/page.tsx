@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
@@ -6,246 +6,130 @@ import SiteHeader from "@/components/SiteHeader";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  alternates: {
-    canonical: "/",
-  },
+  alternates: { canonical: "/" },
 };
 
 export default function Home() {
   return (
     <>
       <SiteHeader />
-
-      <main className={styles.page}>
-        <section className={styles.hero}>
-          <p className={styles.eyebrow}>Operations / Customer experience</p>
-
-          <h1>Operations, customers, and useful products.</h1>
-
-          <p className={styles.heroCopy}>
-            I’m Rafael Lemor. My background spans global ticketing operations,
-            customer success and account management. Today, I also turn ideas
-            into working products with AI and modern tools.
-          </p>
-
-          <div className={styles.heroActions}>
-            <a className={styles.primaryAction} href="#projects">
-              View projects
-            </a>
-            <a className={styles.textLink} href="#contact">
-              Get in touch
-            </a>
-          </div>
-        </section>
-
-        <section className={`${styles.labeledSection} ${styles.experienceSection}`}>
-          <p className={styles.sectionLabel}>Experience</p>
-
-          <div className={styles.sectionContent}>
-            <h2>Complex environments. Consistent execution.</h2>
-
-            <div className={styles.experienceList}>
-              <article className={styles.experienceRow}>
-                <h3>Global Sports Operations</h3>
-                <p className={styles.experienceMeta}>
-                  FIFA · Miami Open · Formula 1 · Hard Rock Stadium
-                </p>
-                <p>
-                  Managed ticketing operations across four FIFA tournaments and
-                  four editions of the Miami Open. Work spanned CRM operations,
-                  ticket allocations and fulfillment, partner workshops and
-                  training, and high-stakes delivery across commercial partners
-                  and host-city stakeholders.
-                </p>
-              </article>
-
-              <article className={styles.experienceRow}>
-                <h3>SaaS / Customer Success</h3>
-                <p className={styles.experienceMeta}>
-                  Shibumi · CHEQ by Cantaloupe
-                </p>
-                <p>
-                  Worked across Shibumi, an enterprise strategic portfolio
-                  management platform, and CHEQ by Cantaloupe, a mobile-first
-                  commerce platform for stadiums and live venues. Experience
-                  spanned Customer Success, implementation, technology, and
-                  operational problem solving.
-                </p>
-              </article>
-
-              <article className={styles.experienceRow}>
-                <h3>Commercial Partnerships / B2B</h3>
-                <p className={styles.experienceMeta}>
-                  Coca-Cola · Bank of America · Qualcomm
-                </p>
-                <p>
-                  Managed complex customer and partner relationships across SaaS
-                  and global sports, including Fortune 500 organizations such as
-                  Coca-Cola, Bank of America, and Qualcomm. The common thread was
-                  translating commercial priorities into coordinated execution
-                  across teams, systems, and operations.
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.work} id="projects">
-          <h2>Selected projects</h2>
-
-          <article
-            className={`${styles.projectRow} ${styles.primaryProject}`}
-            id="lighthouse"
-          >
-            <div className={styles.projectCopy}>
-              <h3>Lighthouse</h3>
-              <p>
-                An account-intelligence product built from firsthand Customer
-                Success experience, combining portfolio health, renewal risk,
-                account context, and AI-assisted executive briefs to surface what
-                deserves attention.
-              </p>
-
-              <Link className={styles.textLink} href="/projects#lighthouse">
-                Explore the project <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-
-            <div className={styles.projectMedia}>
-              <Image
-                className={styles.projectImage}
-                src="/projects/lighthouse/showcase.webp"
-                alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
-                width={800}
-                height={600}
-                sizes="(max-width: 900px) calc(100vw - 48px), 620px"
-                unoptimized
-              />
-            </div>
-          </article>
-
-          <article
-            className={`${styles.projectRow} ${styles.secondaryProject}`}
-            id="mypepprotocol"
-          >
-            <div className={styles.projectCopy}>
-              <h3>MyPepProtocol</h3>
-              <p>
-                A private health-tracking product that keeps protocols,
-                schedules, inventory, labs, and longitudinal records coherent
-                over time, with product rules built around evidence and
-                uncertainty.
-              </p>
-
-              <Link className={styles.textLink} href="/projects/mypepprotocol">
-                Explore the case study <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-
-            <div className={styles.projectMedia}>
-              <Image
-                className={styles.projectImage}
-                src="/projects/mypepprotocol/showcase.webp"
-                alt="MyPepProtocol Today view showing demo summary metrics and active protocol records."
-                width={640}
-                height={800}
-                sizes="(max-width: 900px) calc(100vw - 48px), 520px"
-                unoptimized
-              />
-            </div>
-          </article>
-
-          <article className={styles.tertiaryProject}>
-            <div className={styles.tertiaryCopy}>
-              <h3>World Cup Tracker</h3>
-              <p>
-                A 104-match tournament tracker built to make the expanded 2026
-                FIFA World Cup easier to navigate, from group standings through
-                the knockout bracket.
-              </p>
-            </div>
-
-            <Link className={styles.textLink} href="/projects#world-cup-tracker">
-              Explore the project <span aria-hidden="true">→</span>
-            </Link>
-          </article>
-        </section>
-
-        <section className={styles.labeledSection}>
-          <p className={styles.sectionLabel}>How I think</p>
-
-          <div className={styles.sectionContent}>
-            <h2>A practical operating mindset.</h2>
-
-            <div className={styles.thinkingList}>
-              <article className={styles.thinkingRow}>
-                <h3>Turn signals into priorities.</h3>
-                <p>
-                  In Lighthouse, account-health signals, renewal risk, and account
-                  context are brought together so the user can focus on what
-                  deserves attention instead of manually synthesizing another
-                  dashboard.
-                </p>
-              </article>
-
-              <article className={styles.thinkingRow}>
-                <h3>Keep facts separate from assumptions.</h3>
-                <p>
-                  When information is incomplete, make the uncertainty explicit.
-                  MyPepProtocol separates recorded facts from interpretation rather
-                  than presenting correlation as causation.
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.labeledSection} id="about">
-          <p className={styles.sectionLabel}>About</p>
-
-          <div className={styles.sectionContent}>
-            <h2>More than the résumé.</h2>
-
-            <div className={styles.prose}>
-              <p>
-                Rafael’s career has moved between enterprise software, global
-                sport, and now building products with AI. The common thread is a
-                preference for complex problems, useful systems, and work where
-                thoughtful execution matters.
-              </p>
-              <p>
-                Outside work, travel and football are constants. He has explored
-                30 countries so far, including an extended backpacking trip
-                through Southeast Asia, and is usually most interested in
-                experiences that expose him to different people, places, and
-                ways of thinking.
-              </p>
-            </div>
-
-            <Link className={styles.textLink} href="/about">
-              More about Rafael <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </section>
-
-        <section className={styles.labeledSection} id="contact">
-          <p className={styles.sectionLabel}>Contact</p>
-
-          <div className={styles.sectionContent}>
-            <h2>Let’s start a conversation.</h2>
-
-            <p className={styles.contactCopy}>
-              For opportunities across operations, customer experience and
-              product-adjacent work.
+      <main className={styles.page} id="main-content" tabIndex={-1}>
+        <section className={styles.hero} aria-labelledby="intro-heading">
+          <div>
+            <p className={styles.eyebrow}><span aria-hidden="true" />Hello from Miami</p>
+            <h1 id="intro-heading">I’m Rafael.<br />People are at the<br /><span>heart of my work.</span></h1>
+            <p className={styles.heroCopy}>
+              Customer success, enterprise account management, and large-event
+              operations. From FIFA’s commercial partners to the Miami Open
+              box office, I help people navigate complexity and keep things moving.
             </p>
+            <div className={styles.actions}>
+              <Link className={styles.button} href="/work">Explore work <span aria-hidden="true">↗</span></Link>
+              <Link href="/contact">Get in touch</Link>
+            </div>
+          </div>
+          <figure className={styles.portrait}>
+            <Image src="/images/rafael-portrait.jpg" alt="Rafael Lemor"
+              width={400} height={400} sizes="(max-width: 640px) 180px, 300px" preload />
+            <figcaption>Miami, Florida · Open to a conversation</figcaption>
+          </figure>
+        </section>
 
-            <a className={styles.textLink} href="mailto:rlemor@gmail.com">
-              Get in touch <span aria-hidden="true">→</span>
-            </a>
+        <section className={styles.section} aria-labelledby="experience-heading">
+          <div className={styles.sectionTop}>
+            <div><p className={styles.eyebrow}>Professional experience</p><h2 id="experience-heading">People, partners.<br />And the details that matter.</h2></div>
+            <p>Global sport, enterprise software, and service operations. Different settings, the same care for the customer.</p>
+          </div>
+          <article className={styles.experienceRow}>
+            <p className={styles.meta}>FIFA<br /><span>Sep 2024 – Aug 2026 · Contract</span></p>
+            <div><h3>Global tournaments. Personal attention.</h3>
+              <p>Commercial partner ticketing and CRM operations across four tournaments,
+                culminating in the 2026 FIFA World Cup. Allocations, fulfillment,
+                training, and escalations — with relationships at the center.</p>
+              <Link href="/work#fifa">My work with FIFA <span aria-hidden="true">→</span></Link>
+            </div>
+          </article>
+          <article className={styles.experienceRow}>
+            <p className={styles.meta}>IMG Tickets / Miami Open<br /><span>2014–2017 · Box Office Manager</span></p>
+            <div><h3>Four editions. Every detail counts.</h3>
+              <p>Ticketing staff, VIP entrances, inventory, sales, and customer
+                escalations during the two-week event at Crandon Park.
+                Customer service continued beyond tournament week.</p>
+              <Link href="/work#miami-open">Inside the Miami Open role <span aria-hidden="true">→</span></Link>
+            </div>
+          </article>
+          <div className={styles.careerNote}>
+            <p>Also at <strong>Shibumi</strong> in enterprise customer success,
+              <strong> CHEQ</strong> in venue implementations,
+              <strong> Inktel</strong> in service delivery, and
+              <strong> TEN Lifestyle Group</strong> in travel concierge.</p>
+            <Link href="/work#career">View the full experience <span aria-hidden="true">→</span></Link>
+          </div>
+        </section>
+
+        <section className={styles.section} aria-labelledby="accounts-heading">
+          <div className={styles.sectionTop}>
+            <div><p className={styles.eyebrow}>Selected accounts &amp; environments</p><h2 id="accounts-heading">The relationships behind the work.</h2></div>
+          </div>
+          <dl className={styles.relationships}>
+            <div><dt>Coca-Cola &amp; Bank of America</dt><dd>Commercial partner accounts I personally managed at FIFA.</dd></div>
+            <div><dt>Williams-Sonoma</dt><dd>Customer service account supported through my operations role at Inktel.</dd></div>
+            <div><dt>Inter Miami · Miami Marlins<br />Hard Rock Stadium</dt><dd>Team and venue implementation contexts through CHEQ.</dd></div>
+          </dl>
+        </section>
+
+        <section className={styles.section} id="projects" aria-labelledby="projects-heading">
+          <div className={styles.sectionTop}>
+            <div><p className={styles.eyebrow}>Independent projects</p><h2 id="projects-heading">A curious side, put into practice.</h2></div>
+            <p>Alongside my career, I use AI and modern tools to turn firsthand questions into working products.</p>
+          </div>
+          <article className={styles.projectRow}>
+            <div className={styles.projectMedia}>
+              <Image src="/projects/lighthouse/showcase.webp" alt="Lighthouse account intelligence dashboard"
+                width={800} height={600} sizes="(max-width: 640px) calc(100vw - 48px), 400px" />
+            </div>
+            <div><p className={styles.eyebrow}>From customer success experience</p><h3>Lighthouse</h3>
+              <p>Account health, renewal risk, and customer context in one workspace,
+                with AI-assisted executive briefs to help focus attention.</p>
+              <Link href="/projects#lighthouse">Explore Lighthouse <span aria-hidden="true">→</span></Link>
+            </div>
+          </article>
+          <article className={styles.projectRow}>
+            <div className={styles.projectMedia}>
+              <Image src="/projects/mypepprotocol/overview-desktop.png" alt="MyPepProtocol dashboard with demo protocol and inventory records"
+                width={2048} height={1342} sizes="(max-width: 640px) calc(100vw - 48px), 400px" />
+            </div>
+            <div><p className={styles.eyebrow}>Product judgment &amp; careful tradeoffs</p><h3>MyPepProtocol</h3>
+              <p>A private health-tracking product built around coherent records,
+                practical workflows, and an explicit distinction between evidence and interpretation.</p>
+              <Link href="/projects/mypepprotocol">Read the case study <span aria-hidden="true">→</span></Link>
+            </div>
+          </article>
+          <article className={styles.compactProject}>
+            <div><p className={styles.eyebrow}>An independent historical project</p><h3>World Cup Tracker</h3>
+              <p>A tournament’s schedule, standings, and knockout bracket in one place.
+                Independently built; not affiliated with or endorsed by FIFA.</p></div>
+            <Link href="/projects#world-cup-tracker">Explore the tracker <span aria-hidden="true">→</span></Link>
+          </article>
+          <Link className={styles.allProjects} href="/projects">All independent projects <span aria-hidden="true">→</span></Link>
+        </section>
+
+        <section className={styles.personal} aria-labelledby="personal-heading">
+          <div><p className={styles.eyebrow}>Away from the desk</p><h2 id="personal-heading">Always curious about<br />the next perspective.</h2></div>
+          <div><p>Travel and football have followed me through different chapters of life.
+            Backpacking through Southeast Asia is part of that story — a chance to
+            meet people, get a little lost, and see things differently.</p>
+            <Link href="/about">A little more about me <span aria-hidden="true">→</span></Link></div>
+        </section>
+        <section className={styles.contact} aria-labelledby="contact-heading">
+          <div><h2 id="contact-heading">Good things start<br />with a conversation.</h2>
+            <p>Let’s talk customer success, enterprise accounts, or your next big event.</p></div>
+          <div className={styles.contactActions}>
+            <a className={styles.button} href="mailto:rlemor@gmail.com">Say hello <span aria-hidden="true">↗</span></a>
+            <a href="https://www.linkedin.com/in/rlemor" target="_blank" rel="noreferrer">Connect on LinkedIn <span aria-hidden="true">↗</span></a>
           </div>
         </section>
       </main>
-
       <SiteFooter />
     </>
   );

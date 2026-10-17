@@ -86,6 +86,20 @@
   font-size: 15px;
   line-height: 1.5;
 }
+.trophyFigure {
+  width: min(85%, 320px);
+  margin: 8px 0 30px auto;
+}
+.trophyImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.trophyFigure figcaption {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.5;
+}
 .scope {
   margin: 28px 0;
 }

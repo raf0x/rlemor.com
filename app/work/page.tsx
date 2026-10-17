@@ -77,6 +77,19 @@ export default function WorkPage() {
                   in tournament ticketing operations.
                 </figcaption>
               </figure>
+              <figure className={styles.trophyFigure}>
+                <Image
+                  className={styles.trophyImage}
+                  src="/images/fifa-club-world-cup-2025-trophy.webp"
+                  alt="Rafael beside the FIFA Club World Cup 2025 trophy at a tournament display."
+                  width={1206}
+                  height={1589}
+                  sizes="(max-width: 540px) 300px, 320px"
+                />
+                <figcaption>
+                  FIFA Club World Cup 2025. A moment beside the tournament trophy.
+                </figcaption>
+              </figure>
               <dl className={styles.scope}>
                 <div>
                   <dt>30+ partners</dt>

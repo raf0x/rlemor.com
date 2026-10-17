@@ -1,12 +1,41 @@
-# Editorial refinement 3 — product/design review
+# Warm & Personal — final FIFA photo review
 
 Review date: October 16, 2026. Branch: `redesign/warm-personal-career-first`. Existing [draft PR #1](https://github.com/raf0x/rlemor.com/pull/1).
 
-This pass implements all five decisions in the [approved editorial brief](editorial-refinement-brief.md). Work is now a selective introduction to three professional strengths rather than a résumé. The warm visual system and career-first homepage remain intact.
+## Final FIFA matchday integration
 
-## Preview and changes
+[Final application preview: Work](https://rlemor-h85cqqd76-rafael-lemors-projects.vercel.app/work). Existing Vercel authentication applies. Verified application commit: `6b3dec88d08759bb8dc6ee907fe385f751ff7dc2`; the following documentation commit only adds review evidence.
 
-- [Updated Vercel preview](https://rlemor-j2mraef95-rafael-lemors-projects.vercel.app); existing Vercel authentication applies.
+Rafael approved public use of his matchday photograph, originally `IMG_6690 (1).jpeg`. Only the selected optimized WebP was copied to `public/images/fifa-world-cup-2026-matchday.webp`: 1600×1200, 376,340 bytes, SHA-256 `744d99ff8e95dee9664d9c0c4d83fd5bf79c038faf4878c478be2bba64c11887`. The production asset is byte-identical to the supplied WebP. Source photographs and handoff files remain outside Git.
+
+One semantic figure now sits within the Work FIFA feature, after both responsibility paragraphs and before the metrics. Next.js Image uses intrinsic dimensions and responsive sizes; the full natural 4:3 composition remains visible with `object-fit: contain`. A dark 15px caption, modest spacing and square edges preserve the editorial treatment without decorative framing.
+
+- Alt: “FIFA World Cup 2026 stadium ceremony with France and England flags displayed across the pitch.”
+- Caption: “FIFA World Cup 2026. A matchday view I photographed while working in tournament ticketing operations.”
+
+| Fresh hosted Work screenshots | Review evidence |
+| --- | --- |
+| Desktop · 1440px | [Full page](review/matchday-work-1440.webp) |
+| Mobile · 390px | [Full page](review/matchday-work-390.webp) |
+
+Final QA passed locally and against the actual protected preview:
+
+- `npm run lint`, `npx tsc --noEmit`, and `npm run build` passed.
+- All six routes at 1440, 1024, 768, 390 and 320px: 30 page/viewport checks, decoded images, loaded fonts, no horizontal overflow or browser runtime errors. Photo placement, exact alt/caption, natural ratio, dark caption and unframed styling passed at every width.
+- 18 page and 12 open-dialog Axe WCAG A/AA audits: zero violations. All four screenshot/artwork controls passed keyboard opening, scrolling, Escape/Close, focus return and scroll restoration. Reduced motion, skip-link focus, mobile navigation and light-only styling passed.
+- All internal routes/fragments and ten Work anchors resolved. Exact contact destinations, canonicals, sitemap, legacy `/work/mypepprotocol` 308 with query preservation, and 404 behavior passed. The three external live projects and both GitHub project links returned HTTP 200.
+- The hosted original matchday WebP and both approved project PNGs were fetched and SHA-256 matched. Lighthouse imagery, circular portraits and authentic case-study screenshots remain intact. Independent source and hosted visual review passed at all five widths.
+- Only Work TSX/CSS and the selected WebP changed in the application commit. Home, About, Contact, Projects, case-study content, shared components and dependencies are unchanged from `1daa42d`; its World Cup Tracker “View Project” cleanup is preserved.
+
+The older group photograph `IMG_6743.jpeg` remains uncommitted and unpublished. Draft PR #1 stops for Rafael’s final product/design and release review. No merge or production deployment was performed; production remains on `86f38476eb7dcb6e4523b97740c2fad06d4db3f5`.
+
+## Earlier approved editorial refinement
+
+The earlier pass implemented all five decisions in the [approved editorial brief](editorial-refinement-brief.md). Work is now a selective introduction to three professional strengths rather than a résumé. The warm visual system and career-first homepage remain intact. The following evidence records that earlier pass; the final preview and Work screenshots are above.
+
+## Earlier preview and changes
+
+- [Earlier editorial Vercel preview](https://rlemor-j2mraef95-rafael-lemors-projects.vercel.app); existing Vercel authentication applies.
 - Application commit: `319539934d3e2c5e0fa038967128fc7f6ab5dcda`.
 - Before-refinement baseline: `b88b8ca`; production remains on `86f38476eb7dcb6e4523b97740c2fad06d4db3f5`.
 
@@ -64,6 +93,6 @@ The MyPepProtocol image is promotional concept artwork with illustrative widgets
 - Work retains `#sports-events`, `#enterprise`, `#service-operations`, `#fifa`, `#miami-open`, `#shibumi`, `#cheq`, `#inktel` and `#ten-lifestyle`; `#career` lands at the introduction.
 - FIFA’s qualified four-tournament results and personally managed Coca-Cola/Bank of America relationships remain. Shibumi’s verified results, Inktel’s Williams-Sonoma service-delivery context, CHEQ’s implementation context, TEN’s concierge/client-experience work, and Miami Open responsibilities remain accurate.
 - FIFA’s official title is unresolved. The editorial narrative describes the work without asserting an official title. Unverified Formula 1 responsibilities, Qualcomm attribution, and Panini/host-city claims remain omitted.
-- The new FIFA team photograph is not committed or published. Specific photo selection and publication rights/consent still require Rafael’s approval.
+- The earlier FIFA group photograph (`IMG_6743.jpeg`) is not committed or published. The separately approved matchday photograph is integrated as documented above.
 
 This preview is for product/design review. No merge or production deployment was performed; Rafael’s explicit release approval is still required.

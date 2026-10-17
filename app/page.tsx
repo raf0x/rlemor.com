@@ -20,7 +20,11 @@ export default function Home() {
               <span aria-hidden="true" />
               Hello from Miami
             </p>
-            <h1 id="intro-heading">I’m Rafael.</h1>
+            <h1 id="intro-heading">
+              I’m Rafael.
+              <br />I turn <span>human relationships</span>
+              <br className={styles.heroLineBreak} /> into a competitive advantage.
+            </h1>
             <p className={styles.heroCopy}>
               I’ve managed FIFA commercial-partner accounts and a $4M SaaS
               portfolio. Now I build tools with AI.

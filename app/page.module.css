@@ -68,9 +68,12 @@
 }
 .portrait img {
   width: 260px;
-  height: 286px;
+  height: auto;
+  aspect-ratio: 1;
   object-fit: cover;
-  border-radius: 130px 130px 3px 3px;
+  object-position: center;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 .portrait figcaption {
   margin-top: 14px;
@@ -125,6 +128,10 @@
 .fifa {
   color: var(--color-accent);
   font-size: 21px;
+}
+.experienceRow strong,
+.relationships strong {
+  font-weight: 700;
 }
 .experienceRow a,
 .lighthouse a {
@@ -265,7 +272,6 @@
   }
   .portrait img {
     width: 220px;
-    height: 244px;
   }
   .experienceRow {
     grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
@@ -306,8 +312,6 @@
   }
   .portrait img {
     width: 112px;
-    height: 124px;
-    border-radius: 60px 60px 3px 3px;
   }
   .portrait figcaption {
     max-width: 135px;

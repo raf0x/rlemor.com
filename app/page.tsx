@@ -63,7 +63,7 @@ export default function Home() {
                 <strong className={styles.fifa}>FIFA</strong> —
                 commercial-partner ticketing and CRM across four tournaments,
                 culminating in World Cup 2026. Earlier chapters: IMG Tickets /
-                Miami Open and CHEQ’s venue implementations.
+                Miami Open and <strong>CHEQ</strong>’s venue implementations.
               </p>
               <Link href="/work#sports-events">
                 Explore sports &amp; events <span aria-hidden="true">→</span>
@@ -74,8 +74,9 @@ export default function Home() {
             <h3>Enterprise SaaS &amp; customer success</h3>
             <div>
               <p>
-                At Shibumi and CHEQ, helping customers get value from software
-                through account ownership, implementation, and ongoing support.
+                At <strong>Shibumi</strong> and <strong>CHEQ</strong>, helping
+                customers get value from software through account ownership,
+                implementation, and ongoing support.
               </p>
               <Link href="/work#enterprise">
                 Explore customer success <span aria-hidden="true">→</span>
@@ -86,8 +87,9 @@ export default function Home() {
             <h3>Service operations &amp; leadership</h3>
             <div>
               <p>
-                Leading teams and service delivery at Inktel, and travel
-                concierge relationships at TEN Lifestyle Group.
+                Leading teams and service delivery at <strong>Inktel</strong>,
+                and travel concierge relationships at{" "}
+                <strong>TEN Lifestyle Group</strong>.
               </p>
               <Link href="/work#service-operations">
                 Explore service operations <span aria-hidden="true">→</span>
@@ -103,15 +105,23 @@ export default function Home() {
           <h2 id="relationships-heading">Selected relationships</h2>
           <dl>
             <div>
-              <dt>Coca-Cola &amp; Bank of America</dt>
+              <dt>
+                <strong>Coca-Cola</strong> &amp;{" "}
+                <strong>Bank of America</strong>
+              </dt>
               <dd>FIFA · Personally managed commercial partners</dd>
             </div>
             <div>
-              <dt>Williams-Sonoma</dt>
+              <dt>
+                <strong>Williams-Sonoma</strong>
+              </dt>
               <dd>Inktel · Service delivery</dd>
             </div>
             <div>
-              <dt>Inter Miami · Miami Marlins · Hard Rock Stadium</dt>
+              <dt>
+                <strong>Inter Miami</strong> · <strong>Miami Marlins</strong> ·{" "}
+                <strong>Hard Rock Stadium</strong>
+              </dt>
               <dd>CHEQ · Team and venue implementations</dd>
             </div>
           </dl>

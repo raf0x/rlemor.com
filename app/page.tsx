@@ -22,13 +22,14 @@ export default function Home() {
             </p>
             <h1 id="intro-heading">
               I’m Rafael.
-              <br />I bring people and <br />
-              <span>operations together.</span>
+              <br />I turn <span>human relationships</span> into a competitive advantage.
             </h1>
             <p className={styles.heroCopy}>
-              Customer Success, enterprise Account Management, and global event
-              operations. I help customers and partners move from complex needs
-              to clear next steps.
+              From FIFA’s global commercial partners to enterprise SaaS customers,
+              I’ve built my career around trust, navigating complexity, and
+              delivering measurable results. Today, I combine that experience
+              with AI and modern tools to turn information into insights, improve
+              decisions, and build practical solutions.
             </p>
             <div className={styles.actions}>
               <Link className={styles.button} href="/work">
@@ -46,7 +47,7 @@ export default function Home() {
               sizes="(max-width: 640px) 120px, (max-width: 900px) 220px, 260px"
               preload
             />
-            <figcaption>Based in Miami, Florida.</figcaption>
+            <figcaption>Usually planning my next trip.</figcaption>
           </figure>
         </section>
 
@@ -55,7 +56,7 @@ export default function Home() {
           aria-labelledby="experience-heading"
         >
           <p className={styles.eyebrow}>Professional experience</p>
-          <h2 id="experience-heading">Three ways I help things work.</h2>
+          <h2 id="experience-heading">From enterprise accounts to the world stage.</h2>
           <article className={styles.experienceRow}>
             <h3>Global sports &amp; events</h3>
             <div>
@@ -102,7 +103,14 @@ export default function Home() {
           className={styles.relationships}
           aria-labelledby="relationships-heading"
         >
-          <h2 id="relationships-heading">Selected relationships</h2>
+          <h2 id="relationships-heading">
+            Enterprise accounts, commercial partners &amp; major venues.
+          </h2>
+          <p className={styles.relationshipsIntro}>
+            My experience includes managing a portfolio of 25 enterprise accounts
+            representing $4M in ARR at Shibumi, alongside FIFA ticketing operations
+            spanning 30+ commercial partners across four tournaments.
+          </p>
           <dl>
             <div>
               <dt>
@@ -133,7 +141,11 @@ export default function Home() {
           aria-labelledby="projects-heading"
         >
           <p className={styles.eyebrow}>Independent projects</p>
-          <h2 id="projects-heading">Curiosity, put to work.</h2>
+          <h2 id="projects-heading">What I’ve built with AI.</h2>
+          <p className={styles.projectsIntro}>
+            Independent products developed using modern tools and AI-assisted
+            workflows, grounded in practical problems.
+          </p>
           <article className={styles.lighthouse}>
             <Image
               className={styles.projectImage}
@@ -146,9 +158,11 @@ export default function Home() {
             <div>
               <h3>Lighthouse</h3>
               <p>
-                A customer-success question, turned into an account-intelligence
-                workspace: health, renewal risk, and AI-assisted briefs that
-                help focus attention.
+                Lighthouse is an AI-assisted customer health and account
+                intelligence platform that brings customer context, renewal risk,
+                and account health signals into one workspace. It helps Customer
+                Success teams identify at-risk accounts, prioritize action, and
+                use AI-generated executive briefs to make better decisions.
               </p>
               <Link href="/projects#lighthouse">
                 Explore Lighthouse <span aria-hidden="true">→</span>

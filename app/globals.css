@@ -1,40 +1,42 @@
 :root {
-  --color-background: #f7f5ef;
-  --color-foreground: #1f2321;
-  --color-muted: #5d625f;
-  --color-accent: #355348;
-  --color-rule: #dfe0d7;
-  --color-media: #ebede6;
-
-  --page-max-width: 1120px;
-  --page-gutter: 24px;
+  color-scheme: light;
+  --color-background: #fffcf7;
+  --color-foreground: #29312d;
+  --color-muted: #29312d;
+  --color-accent: #315bc6;
+  --color-green: #23675a;
+  --color-coral: #e46a4c;
+  --color-highlight: #f2ce74;
+  --color-rule: #dcded2;
+  --color-media: #f4f2e9;
+  --color-tint-blue: #edf2ff;
+  --color-tint-green: #edf4ef;
+  --color-tint-yellow: #fff3d3;
+  --page-max-width: 1180px;
+  --page-gutter: 32px;
 }
-
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
-
 html {
   background: var(--color-background);
+  scroll-padding-top: 24px;
 }
-
 body {
-  --font-heading: var(--font-newsreader);
-  --font-body: var(--font-source-sans);
-
+  --font-heading: var(--font-lora);
+  --font-body: var(--font-dm-sans);
   margin: 0;
   min-height: 100vh;
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: var(--font-body), sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
-
 h1,
 h2,
 h3,
@@ -42,34 +44,74 @@ h4,
 h5,
 h6 {
   margin: 0;
-  font-family: var(--font-heading), serif;
-  font-weight: 400;
-  line-height: 1.08;
+  font-family: var(--font-heading), Georgia, serif;
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: -0.035em;
+  overflow-wrap: break-word;
 }
-
 p {
   margin: 0;
 }
-
 a {
   color: inherit;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
 }
-
 button,
 input,
 textarea,
 select {
   font: inherit;
 }
-
+button,
+a {
+  touch-action: manipulation;
+}
+button {
+  color: inherit;
+}
 img,
 picture,
 svg {
   display: block;
   max-width: 100%;
 }
-
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 5px;
+}
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-background);
+  background: var(--color-highlight);
+  color: var(--color-foreground);
+}
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  transform: translateY(-160%);
+  padding: 12px 18px;
+  background: var(--color-background);
+  border: 1px solid var(--color-accent);
+}
+.skip-link:focus {
+  transform: none;
+}
+@media (max-width: 640px) {
+  :root {
+    --page-gutter: 24px;
+  }
+  body {
+    font-size: 17px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
 }

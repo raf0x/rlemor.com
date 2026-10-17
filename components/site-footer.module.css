@@ -2,40 +2,40 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
-  width: calc(100% - (var(--page-gutter) * 2));
+  gap: 24px;
+  width: calc(100% - var(--page-gutter) * 2);
   max-width: var(--page-max-width);
   margin: 0 auto;
-  padding: 30px 0 56px;
+  padding: 25px 0 42px;
   border-top: 1px solid var(--color-rule);
-  color: var(--color-muted);
-  font-size: 13px;
+  font-size: 15px;
 }
-
 .nav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 32px;
+  gap: 8px 24px;
 }
-
 .nav a {
-  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
   text-decoration: none;
 }
-
-.nav a:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 5px;
+.nav a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
 }
-
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .footer {
-    display: block;
-    padding: 28px 0 42px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
   }
-
+}
+@media (max-width: 380px) {
   .nav {
-    margin-top: 24px;
-    gap: 32px;
+    gap: 4px 20px;
   }
 }

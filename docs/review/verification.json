@@ -1,0 +1,131 @@
+{
+  "reviewDate": "2026-10-16",
+  "applicationCommit": "3a1c615cc536b6e7b83d37d4e2ffc7329b23bd53",
+  "preview": "https://rlemor-hvngfvc8j-rafael-lemors-projects.vercel.app",
+  "routes": [
+    "/",
+    "/work",
+    "/projects",
+    "/projects/mypepprotocol",
+    "/about",
+    "/contact"
+  ],
+  "widths": [
+    1440,
+    1024,
+    768,
+    390,
+    320
+  ],
+  "pageChecks": 30,
+  "axePageAudits": 18,
+  "axeDialogAudits": 12,
+  "axeViolations": 0,
+  "dialogChecks": [
+    {
+      "route": "/projects",
+      "width": 1440,
+      "index": 0,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects",
+      "width": 1440,
+      "index": 1,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects",
+      "width": 1440,
+      "index": 2,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects/mypepprotocol",
+      "width": 1440,
+      "index": 0,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects",
+      "width": 390,
+      "index": 0,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects",
+      "width": 390,
+      "index": 1,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects",
+      "width": 390,
+      "index": 2,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects/mypepprotocol",
+      "width": 390,
+      "index": 0,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects",
+      "width": 320,
+      "index": 0,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects",
+      "width": 320,
+      "index": 1,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects",
+      "width": 320,
+      "index": 2,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    },
+    {
+      "route": "/projects/mypepprotocol",
+      "width": 320,
+      "index": 0,
+      "escape": true,
+      "close": true,
+      "focusReturn": true
+    }
+  ],
+  "runtimeErrors": [],
+  "reducedMotion": true,
+  "lightOnly": true,
+  "skipLink": true,
+  "legacyRedirect": 308,
+  "sitemap": true,
+  "notFound": 404,
+  "playwright": "1.64.1",
+  "axe": "4.14.0"
+}

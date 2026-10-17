@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import ScreenshotViewer from "@/components/ScreenshotViewer";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./projects.module.css";
 
 const description =
-  "Selected projects by Rafael Lemor, including Lighthouse, MyPepProtocol, and World Cup Tracker.";
+  "Independent projects by Rafael Lemor: Lighthouse account intelligence, MyPepProtocol, and World Cup Tracker. Real problems, product decisions, and working products.";
 
 export const metadata: Metadata = {
   title: "Projects | Rafael Lemor",
@@ -29,24 +29,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WorkPage() {
+export default function ProjectsPage() {
   return (
     <>
       <SiteHeader />
 
-      <main className={styles.page}>
+      <main className={styles.page} id="main-content" tabIndex={-1}>
         <section className={styles.intro}>
-          <h1>Projects</h1>
+          <p className={styles.eyebrow}>Independent projects</p>
+          <h1>Curiosity, put to work.</h1>
           <p>
-            These projects reflect how Rafael approaches real problems through
-            product thinking, practical execution, and modern tools. The emphasis
-            is on the problem, the decisions, and what shipped, not the technology
-            for its own sake.
+            My work with customers makes me curious about the systems behind
+            their experience. These independent, AI-assisted projects give that
+            curiosity somewhere practical to go: from the first question to a
+            working product.
           </p>
         </section>
 
         <section
-          className={`${styles.project} ${styles.primaryProject}`}
+          className={styles.project}
           id="lighthouse"
         >
           <p className={styles.label}>Customer Success / Account intelligence</p>
@@ -57,7 +58,7 @@ export default function WorkPage() {
             <div className={styles.copy}>
               <p>
                 Lighthouse is an account-intelligence product built around a
-                problem Rafael knew firsthand from Customer Success:
+                problem I knew firsthand from Customer Success:
                 understanding which accounts need attention, why they need it,
                 and what to do next.
               </p>
@@ -71,15 +72,15 @@ export default function WorkPage() {
               </p>
             </div>
 
-            <div className={`${styles.projectMedia} ${styles.landscapeMedia}`}>
-              <Image
-                className={styles.projectImage}
-                src="/projects/lighthouse/showcase.webp"
+            <div className={styles.projectMedia}>
+              <ScreenshotViewer
+                title="Lighthouse"
+                src="/projects/lighthouse/overview-desktop.webp"
                 alt="Lighthouse account intelligence dashboard showing portfolio health, renewal risk, account metrics, and AI analysis tools."
-                width={800}
-                height={600}
-                sizes="(max-width: 760px) calc(100vw - 48px), 800px"
-                unoptimized
+                width={2880}
+                height={2000}
+                expandedWidth={1440}
+                caption="Captured from the public Lighthouse demo. The workspace brings account context, risk signals, and analysis tools together."
               />
             </div>
 
@@ -105,7 +106,7 @@ export default function WorkPage() {
         </section>
 
         <section
-          className={`${styles.project} ${styles.secondaryProject}`}
+          className={styles.project}
           id="mypepprotocol"
         >
           <p className={styles.label}>Health tracking and intelligence</p>
@@ -129,15 +130,15 @@ export default function WorkPage() {
               </p>
             </div>
 
-            <div className={`${styles.projectMedia} ${styles.portraitMedia}`}>
-              <Image
-                className={styles.projectImage}
-                src="/projects/mypepprotocol/showcase.webp"
-                alt="MyPepProtocol dashboard showing summary metrics, active protocols, and active compound details."
-                width={640}
-                height={800}
-                sizes="(max-width: 760px) calc(100vw - 48px), 600px"
-                unoptimized
+            <div className={styles.projectMedia}>
+              <ScreenshotViewer
+                title="MyPepProtocol"
+                src="/projects/mypepprotocol/concept-artwork.png"
+                alt="MyPepProtocol promotional concept with a rendered phone, syringe, vial, and mock protocol, lab, and schedule widgets."
+                width={1672}
+                height={941}
+                mediaType="artwork"
+                caption="Concept artwork for MyPepProtocol. See the case study for authentic product screens and decisions."
               />
             </div>
 
@@ -164,7 +165,7 @@ export default function WorkPage() {
         </section>
 
         <section
-          className={`${styles.project} ${styles.compactProject}`}
+          className={styles.project}
           id="world-cup-tracker"
         >
           <p className={styles.label}>Independent sports project</p>
@@ -187,21 +188,16 @@ export default function WorkPage() {
               </p>
             </div>
 
-            <div className={`${styles.projectMedia} ${styles.portraitMedia}`}>
-              <Image
-                className={styles.projectImage}
-                src="/projects/world-cup-tracker/showcase.webp"
-                alt="World Cup Tracker overview showing tournament stats, the Road to the Final bracket, and group-stage standings."
-                width={600}
-                height={750}
-                sizes="(max-width: 760px) calc(100vw - 48px), 600px"
-                unoptimized
+            <div className={styles.projectMedia}>
+              <ScreenshotViewer
+                title="World Cup Tracker"
+                src="/projects/world-cup-tracker/historical-tournament.png"
+                alt="World Cup Tracker capture showing tournament statistics and the full knockout prediction bracket, with its original in-progress status labels."
+                width={894}
+                height={940}
+                caption="Historical snapshot from the now-completed 2026 tournament. Independent, unofficial project; not affiliated with or endorsed by FIFA."
               />
             </div>
-
-            <p className={styles.disclosure}>
-              Independent project. Not affiliated with or endorsed by FIFA.
-            </p>
 
             <div className={styles.actions}>
               <a
@@ -210,7 +206,7 @@ export default function WorkPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                View live project <span aria-hidden="true">&rarr;</span>
+                View Project <span aria-hidden="true">&rarr;</span>
               </a>
               <a
                 className={styles.textLink}
@@ -224,6 +220,12 @@ export default function WorkPage() {
           </div>
         </section>
 
+        <section className={styles.careerLink} aria-label="Professional experience">
+          <h2>The experience behind the projects.</h2>
+          <Link className={styles.textLink} href="/work">
+            Explore my professional work <span aria-hidden="true">&rarr;</span>
+          </Link>
+        </section>
       </main>
 
       <SiteFooter />

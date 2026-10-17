@@ -5,44 +5,48 @@
 }
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr) 260px;
   align-items: center;
-  gap: 70px;
-  padding: 64px 0 68px;
+  gap: 100px;
+  padding: 58px 0 62px;
 }
+.greeting,
 .eyebrow {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+.greeting {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--color-accent);
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 19px;
+  color: var(--color-green);
 }
-.eyebrow > span {
-  width: 9px;
-  height: 9px;
+.greeting > span {
+  width: 8px;
+  height: 8px;
+  background: var(--color-green);
   border-radius: 50%;
-  background: var(--color-accent);
 }
 .hero h1 {
-  font-size: clamp(44px, 4.4vw, 60px);
-  line-height: 1.14;
+  max-width: 680px;
+  font-size: clamp(42px, 4vw, 54px);
+  line-height: 1.16;
 }
 .hero h1 span {
-  display: block;
   color: var(--color-accent);
 }
 .heroCopy {
-  max-width: 650px;
-  margin-top: 26px;
+  max-width: 640px;
+  margin-top: 24px;
+  font-size: 20px;
 }
 .actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 26px;
-  margin-top: 28px;
+  margin-top: 27px;
   font-size: 17px;
 }
 .button {
@@ -52,366 +56,345 @@
   gap: 28px;
   min-height: 50px;
   padding: 11px 20px;
-  background: var(--color-media);
   border: 1px solid var(--color-accent);
   color: var(--color-accent);
-  font-size: 17px;
-  font-weight: 500;
   text-decoration: none;
 }
 .button:hover {
-  background: #ffe0ce;
+  background: var(--color-tint-blue);
 }
 .portrait {
   margin: 0;
-  align-self: center;
 }
 .portrait img {
-  width: 300px;
-  height: 330px;
+  width: 260px;
+  height: 286px;
   object-fit: cover;
-  border-radius: 150px 150px 4px 4px;
+  border-radius: 130px 130px 3px 3px;
 }
 .portrait figcaption {
+  margin-top: 14px;
   font-size: 14px;
-  margin-top: 15px;
 }
-.section {
-  padding: 58px 0;
+.experience,
+.projects {
+  padding: 48px 0;
   border-top: 1px solid var(--color-rule);
 }
-.sectionTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 50px;
-  margin-bottom: 32px;
+.eyebrow {
+  color: var(--color-green);
 }
-.sectionTop .eyebrow {
-  margin-bottom: 14px;
-}
-.sectionTop h2,
-.personal h2,
+.experience > h2,
+.projects > h2,
 .contact h2 {
-  font-size: clamp(32px, 3vw, 40px);
+  font-size: clamp(30px, 2.8vw, 38px);
 }
-.sectionTop > p {
-  max-width: 380px;
-  font-size: 18px;
+.experience > h2 {
+  margin-bottom: 28px;
 }
 .experienceRow {
   display: grid;
-  grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+  grid-template-columns: minmax(0, 0.37fr) minmax(0, 0.63fr);
   gap: 48px;
-  padding: 30px 0;
+  padding: 27px 0;
+}
+.experienceRow + .experienceRow {
   border-top: 1px solid var(--color-rule);
 }
-.meta {
-  font-weight: 600;
+.experienceRow h3 {
+  font-size: 27px;
+  line-height: 1.3;
+}
+.experienceRow:first-of-type h3 {
+  padding-top: 13px;
+  position: relative;
+}
+.experienceRow:first-of-type h3::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 46px;
+  height: 3px;
+  background: var(--color-coral);
+}
+.experienceRow p {
+  max-width: 700px;
+  font-size: 18px;
+}
+.fifa {
+  color: var(--color-accent);
   font-size: 21px;
 }
-.meta span {
-  display: block;
-  margin-top: 8px;
-  font-weight: 400;
-  font-size: 15px;
-}
-.experienceRow h3,
-.projectRow h3,
-.compactProject h3 {
-  font-size: 29px;
-}
-.experienceRow p:not(.meta) {
-  margin-top: 15px;
-}
 .experienceRow a,
-.careerNote a,
-.projectRow a,
-.compactProject a,
-.allProjects,
-.personal a {
-  display: inline-block;
-  margin-top: 20px;
+.lighthouse a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin-top: 12px;
   color: var(--color-accent);
   font-size: 17px;
 }
-.careerNote {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 48px;
-  padding-top: 26px;
-  border-top: 1px solid var(--color-rule);
-  font-size: 17px;
-}
-.careerNote p {
-  max-width: 770px;
-}
-.careerNote a {
-  flex-shrink: 0;
-  margin-top: 0;
-}
 .relationships {
+  padding: 25px 0 35px;
+  border-top: 1px solid var(--color-rule);
+}
+.relationships h2 {
+  margin-bottom: 20px;
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--color-green);
+}
+.relationships dl {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 34px;
+  grid-template-columns: 1fr 0.8fr 1.2fr;
+  gap: 36px;
   margin: 0;
 }
-.relationships > div {
-  padding-top: 21px;
-  border-top: 1px solid var(--color-rule);
-}
 .relationships dt {
-  font-size: 19px;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1.5;
 }
 .relationships dd {
-  margin: 12px 0 0;
-  font-size: 17px;
-}
-.projectRow {
-  display: grid;
-  grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
-  align-items: center;
-  gap: 48px;
-  padding: 32px 0;
-  border-top: 1px solid var(--color-rule);
-}
-.projectRow .eyebrow,
-.compactProject .eyebrow {
+  margin: 6px 0 0;
   font-size: 15px;
-  margin-bottom: 12px;
 }
-.projectRow p:not(.eyebrow),
-.compactProject p:not(.eyebrow) {
-  margin-top: 15px;
-  font-size: 18px;
+.projects > .eyebrow {
+  color: var(--color-accent);
 }
-.projectMedia {
-  border: 1px solid var(--color-rule);
-  padding: 16px;
-  background: var(--color-media);
-  border-radius: 55px 55px 2px 2px;
-}
-.projectMedia img {
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--color-rule);
-}
-.compactProject {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
+.lighthouse {
+  display: grid;
+  grid-template-columns: minmax(0, 0.6fr) minmax(0, 0.4fr);
+  align-items: center;
   gap: 44px;
-  padding-top: 30px;
-  border-top: 1px solid var(--color-rule);
-}
-.compactProject > div {
-  max-width: 720px;
-}
-.compactProject a {
-  flex-shrink: 0;
-}
-.allProjects {
   margin-top: 32px;
 }
-.personal {
+.projectImage {
+  width: 100%;
+  height: auto;
+}
+.lighthouse h3 {
+  font-size: 31px;
+}
+.lighthouse p {
+  margin-top: 18px;
+  font-size: 18px;
+}
+.otherProjects {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 70px;
-  padding: 54px 0 64px;
+  gap: 48px;
+  margin-top: 34px;
+  padding-top: 26px;
   border-top: 1px solid var(--color-rule);
 }
-.personal p:not(.eyebrow) {
-  font-size: 18px;
+.otherProjects h3 {
+  font-size: 23px;
+}
+.otherProjects h3 a {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  color: var(--color-accent);
+}
+.otherProjects p {
+  max-width: 510px;
+  margin-top: 10px;
+  font-size: 17px;
 }
 .contact {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 46px;
-  padding: 44px;
-  margin: 0 0 55px;
-  background: var(--color-media);
-  border-top: 3px solid #dc7657;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 34px 36px;
+  margin: 10px 0 45px;
+  background: var(--color-tint-yellow);
 }
-.contact p {
-  margin-top: 20px;
-  max-width: 570px;
-  font-size: 18px;
+.contact .eyebrow {
+  margin-bottom: 13px;
 }
-.contactActions {
+.contact > div > p:last-child {
+  max-width: 650px;
+  margin-top: 18px;
+  font-size: 17px;
+}
+.contactLinks {
   display: flex;
   flex-direction: column;
-  align-items: start;
-  gap: 20px;
+  align-items: flex-start;
+  gap: 10px;
   flex-shrink: 0;
-  font-size: 16px;
+  font-size: 17px;
 }
-.contactActions .button {
-  background: var(--color-background);
+.contactLinks a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--color-accent);
 }
 @media (max-width: 1000px) {
   .hero {
-    gap: 36px;
-    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 55px;
   }
-  .portrait img {
-    width: 240px;
-    height: 280px;
-  }
-  .hero h1 {
-    font-size: 48px;
-  }
-  .sectionTop {
-    align-items: start;
-    gap: 30px;
-  }
-  .sectionTop > p {
-    max-width: 300px;
-  }
-  .experienceRow,
-  .projectRow {
+  .experienceRow {
     gap: 32px;
   }
-  .careerNote {
-    display: block;
-  }
-  .careerNote a {
-    margin-top: 16px;
-  }
-  .compactProject {
-    display: block;
-  }
-  .personal {
-    gap: 36px;
-  }
-  .contact {
-    padding: 32px;
-  }
-}
-@media (max-width: 760px) {
-  .hero {
-    grid-template-columns: 1fr 200px;
-    gap: 25px;
-    padding: 45px 0;
-  }
-  .hero h1 {
-    font-size: 42px;
-  }
-  .heroCopy {
-    font-size: 17px;
-  }
-  .portrait img {
-    width: 200px;
-    height: 240px;
-  }
-  .portrait figcaption {
-    font-size: 13px;
-  }
-  .sectionTop {
-    display: block;
-  }
-  .sectionTop > p {
-    max-width: 600px;
-    margin-top: 20px;
-  }
-  .relationships {
-    grid-template-columns: 1fr;
+  .relationships dl {
     gap: 24px;
   }
   .contact {
+    align-items: flex-start;
+  }
+}
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 32px;
+  }
+  .hero h1 {
+    font-size: 44px;
+  }
+  .heroCopy {
+    font-size: 18px;
+  }
+  .portrait img {
+    width: 220px;
+    height: 244px;
+  }
+  .experienceRow {
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+  }
+  .lighthouse {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .lighthouse > div {
+    max-width: 650px;
+  }
+  .contact {
     display: block;
   }
-  .contactActions {
-    margin-top: 26px;
+  .contactLinks {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+    margin-top: 20px;
   }
 }
 @media (max-width: 640px) {
   .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    padding: 38px 0 42px;
-    gap: 30px;
+    grid-template-columns: 1fr;
+    gap: 27px;
+    padding: 36px 0 38px;
   }
   .hero h1 {
-    font-size: 42px;
+    font-size: 40px;
   }
   .heroCopy {
-    font-size: 18px;
-    margin-top: 22px;
-  }
-  .eyebrow {
-    font-size: 15px;
-    margin-bottom: 20px;
+    margin-top: 20px;
   }
   .portrait {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 20px;
   }
   .portrait img {
-    width: 130px;
-    height: 145px;
-    border-radius: 65px 65px 2px 2px;
+    width: 112px;
+    height: 124px;
+    border-radius: 60px 60px 3px 3px;
   }
   .portrait figcaption {
-    max-width: 125px;
+    max-width: 135px;
     margin-top: 0;
   }
-  .section {
-    padding: 40px 0;
+  .experience,
+  .projects {
+    padding: 36px 0;
   }
-  .sectionTop h2,
-  .personal h2,
+  .experience > h2,
+  .projects > h2,
   .contact h2 {
-    font-size: 32px;
+    font-size: 31px;
   }
-  .sectionTop > p {
-    font-size: 17px;
-  }
-  .experienceRow,
-  .projectRow,
-  .personal {
-    display: block;
+  .experience > h2 {
+    margin-bottom: 18px;
   }
   .experienceRow {
-    padding: 26px 0;
+    display: block;
+    padding: 24px 0;
   }
-  .meta {
-    font-size: 20px;
-    margin-bottom: 20px;
+  .experienceRow h3 {
+    font-size: 25px;
+    margin-bottom: 15px;
   }
-  .experienceRow h3,
-  .projectRow h3,
-  .compactProject h3 {
-    font-size: 27px;
+  .experienceRow h3 br {
+    display: none;
   }
-  .projectMedia {
-    margin-bottom: 25px;
+  .experienceRow p {
+    font-size: 17px;
   }
-  .personal {
-    padding: 40px 0;
+  .experienceRow a,
+  .lighthouse a {
+    margin-top: 9px;
+    font-size: 16px;
   }
-  .personal > div + div {
-    margin-top: 24px;
+  .relationships {
+    padding: 24px 0 30px;
+  }
+  .relationships dl {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .relationships dd {
+    margin-top: 3px;
+  }
+  .lighthouse {
+    margin-top: 26px;
+    gap: 23px;
+  }
+  .lighthouse h3 {
+    font-size: 28px;
+  }
+  .lighthouse p {
+    margin-top: 14px;
+    font-size: 17px;
+  }
+  .otherProjects {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 25px;
+    padding-top: 21px;
+  }
+  .otherProjects h3 {
+    font-size: 23px;
+  }
+  .otherProjects p {
+    margin-top: 5px;
+    font-size: 16px;
   }
   .contact {
     padding: 28px 22px;
-    margin-bottom: 38px;
+    margin-bottom: 34px;
   }
-  .contact p {
-    font-size: 17px;
+  .contactLinks {
+    font-size: 16px;
   }
 }
 @media (max-width: 360px) {
-  .hero h1 span {
-    display: inline;
-  }
   .hero h1 {
-    font-size: 38px;
+    font-size: 36px;
+  }
+  .hero h1 br:last-of-type {
+    display: none;
+  }
+  .heroCopy {
+    font-size: 17px;
   }
   .actions {
     gap: 18px;
@@ -419,7 +402,6 @@
   }
   .button {
     padding: 10px 15px;
-    gap: 18px;
-    font-size: 16px;
+    gap: 20px;
   }
 }

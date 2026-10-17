@@ -16,20 +16,19 @@ export default function Home() {
       <main className={styles.page} id="main-content" tabIndex={-1}>
         <section className={styles.hero} aria-labelledby="intro-heading">
           <div>
-            <p className={styles.eyebrow}>
+            <p className={styles.greeting}>
               <span aria-hidden="true" />
               Hello from Miami
             </p>
             <h1 id="intro-heading">
               I’m Rafael.
-              <br />
-              People are at the{" "}
-              <span>heart of my work.</span>
+              <br />I bring people and <br />
+              <span>operations together.</span>
             </h1>
             <p className={styles.heroCopy}>
-              Customer success, enterprise account management, and large-event
-              operations. From FIFA’s commercial partners to the Miami Open box
-              office, I help people navigate complexity and keep things moving.
+              Customer Success, enterprise Account Management, and global event
+              operations. I help customers and partners move from complex needs
+              to clear next steps.
             </p>
             <div className={styles.actions}>
               <Link className={styles.button} href="/work">
@@ -44,240 +43,153 @@ export default function Home() {
               alt="Rafael Lemor"
               width={400}
               height={400}
-              sizes="(max-width: 640px) 180px, 300px"
+              sizes="(max-width: 640px) 120px, (max-width: 900px) 220px, 260px"
               preload
             />
-            <figcaption>Miami, Florida · Open to a conversation</figcaption>
+            <figcaption>Based in Miami, Florida.</figcaption>
           </figure>
         </section>
 
         <section
-          className={styles.section}
+          className={styles.experience}
           aria-labelledby="experience-heading"
         >
-          <div className={styles.sectionTop}>
-            <div>
-              <p className={styles.eyebrow}>Professional experience</p>
-              <h2 id="experience-heading">
-                People, partners.
-                <br />
-                And the details that matter.
-              </h2>
-            </div>
-            <p>
-              Global sport, enterprise software, and service operations.
-              Different settings, the same care for the customer.
-            </p>
-          </div>
+          <p className={styles.eyebrow}>Professional experience</p>
+          <h2 id="experience-heading">Three ways I help things work.</h2>
           <article className={styles.experienceRow}>
-            <p className={styles.meta}>
-              FIFA
-              <br />
-              <span>Sep 2024 – Aug 2026 · Contract</span>
-            </p>
+            <h3>Global sports &amp; events</h3>
             <div>
-              <h3>Global tournaments. Personal attention.</h3>
               <p>
-                Commercial partner ticketing and CRM operations across four
-                tournaments, culminating in the 2026 FIFA World Cup.
-                Allocations, fulfillment, training, and escalations — with
-                relationships at the center.
+                <strong className={styles.fifa}>FIFA</strong> —
+                commercial-partner ticketing and CRM across four tournaments,
+                culminating in World Cup 2026. Earlier chapters: IMG Tickets /
+                Miami Open and CHEQ’s venue implementations.
               </p>
-              <Link href="/work#fifa">
-                My work with FIFA <span aria-hidden="true">→</span>
+              <Link href="/work#sports-events">
+                Explore sports &amp; events <span aria-hidden="true">→</span>
               </Link>
             </div>
           </article>
           <article className={styles.experienceRow}>
-            <p className={styles.meta}>
-              IMG Tickets / Miami Open
-              <br />
-              <span>2014–2017 · Box Office Manager</span>
-            </p>
+            <h3>Enterprise SaaS &amp; customer success</h3>
             <div>
-              <h3>Four editions. Every detail counts.</h3>
               <p>
-                Ticketing staff, VIP entrances, inventory, sales, and customer
-                escalations during the two-week event at Crandon Park. Customer
-                service continued beyond tournament week.
+                At Shibumi and CHEQ, helping customers get value from software
+                through account ownership, implementation, and ongoing support.
               </p>
-              <Link href="/work#miami-open">
-                Inside the Miami Open role <span aria-hidden="true">→</span>
+              <Link href="/work#enterprise">
+                Explore customer success <span aria-hidden="true">→</span>
               </Link>
             </div>
           </article>
-          <div className={styles.careerNote}>
-            <p>
-              Also at <strong>Shibumi</strong> in enterprise customer success,
-              <strong> CHEQ</strong> in venue implementations,
-              <strong> Inktel</strong> in service delivery, and
-              <strong> TEN Lifestyle Group</strong> in travel concierge.
-            </p>
-            <Link href="/work#career">
-              View the full experience <span aria-hidden="true">→</span>
-            </Link>
-          </div>
+          <article className={styles.experienceRow}>
+            <h3>Service operations &amp; leadership</h3>
+            <div>
+              <p>
+                Leading teams and service delivery at Inktel, and travel
+                concierge relationships at TEN Lifestyle Group.
+              </p>
+              <Link href="/work#service-operations">
+                Explore service operations <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </article>
         </section>
 
-        <section className={styles.section} aria-labelledby="accounts-heading">
-          <div className={styles.sectionTop}>
-            <div>
-              <p className={styles.eyebrow}>
-                Selected accounts &amp; environments
-              </p>
-              <h2 id="accounts-heading">The relationships behind the work.</h2>
-            </div>
-          </div>
-          <dl className={styles.relationships}>
+        <aside
+          className={styles.relationships}
+          aria-labelledby="relationships-heading"
+        >
+          <h2 id="relationships-heading">Selected relationships</h2>
+          <dl>
             <div>
               <dt>Coca-Cola &amp; Bank of America</dt>
-              <dd>Commercial partner accounts I personally managed at FIFA.</dd>
+              <dd>FIFA · Personally managed commercial partners</dd>
             </div>
             <div>
               <dt>Williams-Sonoma</dt>
-              <dd>
-                Customer service account supported through my operations role at
-                Inktel.
-              </dd>
+              <dd>Inktel · Service delivery</dd>
             </div>
             <div>
-              <dt>
-                Inter Miami · Miami Marlins
-                <br />
-                Hard Rock Stadium
-              </dt>
-              <dd>Team and venue implementation contexts through CHEQ.</dd>
+              <dt>Inter Miami · Miami Marlins · Hard Rock Stadium</dt>
+              <dd>CHEQ · Team and venue implementations</dd>
             </div>
           </dl>
-        </section>
+        </aside>
 
         <section
-          className={styles.section}
+          className={styles.projects}
           id="projects"
           aria-labelledby="projects-heading"
         >
-          <div className={styles.sectionTop}>
+          <p className={styles.eyebrow}>Independent projects</p>
+          <h2 id="projects-heading">Curiosity, put to work.</h2>
+          <article className={styles.lighthouse}>
+            <Image
+              className={styles.projectImage}
+              src="/projects/lighthouse/overview-desktop.webp"
+              alt="Lighthouse’s account-intelligence workspace, captured from the public demo"
+              width={2880}
+              height={2000}
+              sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 900px) calc(100vw - 64px), (max-width: 1244px) 56vw, 682px"
+            />
             <div>
-              <p className={styles.eyebrow}>Independent projects</p>
-              <h2 id="projects-heading">A curious side, put into practice.</h2>
-            </div>
-            <p>
-              Alongside my career, I use AI and modern tools to turn firsthand
-              questions into working products.
-            </p>
-          </div>
-          <article className={styles.projectRow}>
-            <div className={styles.projectMedia}>
-              <Image
-                src="/projects/lighthouse/overview-desktop.webp"
-                alt="Lighthouse account intelligence dashboard"
-                width={2880}
-                height={2000}
-                sizes="(max-width: 640px) calc(100vw - 48px), 400px"
-              />
-            </div>
-            <div>
-              <p className={styles.eyebrow}>From customer success experience</p>
               <h3>Lighthouse</h3>
               <p>
-                Account health, renewal risk, and customer context in one
-                workspace, with AI-assisted executive briefs to help focus
-                attention.
+                A customer-success question, turned into an account-intelligence
+                workspace: health, renewal risk, and AI-assisted briefs that
+                help focus attention.
               </p>
               <Link href="/projects#lighthouse">
                 Explore Lighthouse <span aria-hidden="true">→</span>
               </Link>
             </div>
           </article>
-          <article className={styles.projectRow}>
-            <div className={styles.projectMedia}>
-              <Image
-                src="/projects/mypepprotocol/overview-desktop.png"
-                alt="MyPepProtocol dashboard with demo protocol and inventory records"
-                width={2048}
-                height={1342}
-                sizes="(max-width: 640px) calc(100vw - 48px), 400px"
-              />
+          <div className={styles.otherProjects}>
+            <div>
+              <h3>
+                <Link href="/projects/mypepprotocol">
+                  MyPepProtocol <span aria-hidden="true">→</span>
+                </Link>
+              </h3>
+              <p>
+                A health-record product built around coherent information and
+                explicit evidence.
+              </p>
             </div>
             <div>
-              <p className={styles.eyebrow}>
-                Product judgment &amp; careful tradeoffs
-              </p>
-              <h3>MyPepProtocol</h3>
+              <h3>
+                <Link href="/projects#world-cup-tracker">
+                  World Cup Tracker <span aria-hidden="true">→</span>
+                </Link>
+              </h3>
               <p>
-                A private health-tracking product built around coherent records,
-                practical workflows, and an explicit distinction between
-                evidence and interpretation.
-              </p>
-              <Link href="/projects/mypepprotocol">
-                Read the case study <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </article>
-          <article className={styles.compactProject}>
-            <div>
-              <p className={styles.eyebrow}>
-                An independent historical project
-              </p>
-              <h3>World Cup Tracker</h3>
-              <p>
-                A tournament’s schedule, standings, and knockout bracket in one
-                place. Independently built; not affiliated with or endorsed by
-                FIFA.
+                An independent tournament tracker and predictor, now a
+                historical reference. Not affiliated with FIFA.
               </p>
             </div>
-            <Link href="/projects#world-cup-tracker">
-              Explore the tracker <span aria-hidden="true">→</span>
-            </Link>
-          </article>
-          <Link className={styles.allProjects} href="/projects">
-            All independent projects <span aria-hidden="true">→</span>
-          </Link>
+          </div>
         </section>
 
-        <section className={styles.personal} aria-labelledby="personal-heading">
-          <div>
-            <p className={styles.eyebrow}>Away from the desk</p>
-            <h2 id="personal-heading">
-              Always curious about
-              <br />
-              the next perspective.
-            </h2>
-          </div>
-          <div>
-            <p>
-              Travel and football have followed me through different chapters of
-              life. Backpacking through Southeast Asia is part of that story — a
-              chance to meet people, get a little lost, and see things
-              differently.
-            </p>
-            <Link href="/about">
-              A little more about me <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </section>
         <section className={styles.contact} aria-labelledby="contact-heading">
           <div>
-            <h2 id="contact-heading">
-              Good things start
-              <br />
-              with a conversation.
-            </h2>
+            <p className={styles.eyebrow}>Beyond the work</p>
+            <h2 id="contact-heading">Let’s talk about what’s next.</h2>
             <p>
-              Let’s talk customer success, enterprise accounts, or your next big
-              event.
+              Miami-based, a football fan, and always curious about the next
+              place to explore.
             </p>
           </div>
-          <div className={styles.contactActions}>
-            <a className={styles.button} href="mailto:rlemor@gmail.com">
-              Say hello <span aria-hidden="true">↗</span>
+          <div className={styles.contactLinks}>
+            <a href="mailto:rlemor@gmail.com">
+              rlemor@gmail.com <span aria-hidden="true">↗</span>
             </a>
             <a
               href="https://www.linkedin.com/in/rlemor"
               target="_blank"
               rel="noreferrer"
             >
-              Connect on LinkedIn <span aria-hidden="true">↗</span>
+              LinkedIn <span aria-hidden="true">↗</span>
             </a>
           </div>
         </section>

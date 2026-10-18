@@ -96,19 +96,18 @@ export default function ProjectsPage() {
                 mediaType="artwork"
                 caption="Concept illustration with fictional dashboard data, not a screenshot of the actual application."
               />
-              <a
-                className={styles.textLink}
-                href="/projects/lighthouse/overview-desktop.webp"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View actual Lighthouse dashboard <span aria-hidden="true">&rarr;</span>
-              </a>
+              <p className={styles.disclosure}>
+                The full case study includes a real Lighthouse interface
+                capture, the product decisions, and the demo&apos;s limitations.
+              </p>
             </div>
 
             <div className={styles.actions}>
+              <Link className={styles.primaryAction} href="/projects/lighthouse">
+                Read case study
+              </Link>
               <a
-                className={styles.primaryAction}
+                className={styles.textLink}
                 href="https://lighthouse-alpha-two.vercel.app/"
                 target="_blank"
                 rel="noreferrer"

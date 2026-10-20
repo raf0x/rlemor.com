@@ -175,25 +175,24 @@
   margin-bottom: 27px;
   font-size: 18px;
 }
-.relationships dl {
+.partnerGroups {
   display: grid;
   grid-template-columns: 1.35fr 0.85fr 1.3fr;
   gap: 36px;
   margin: 0;
 }
-.partnerGroup {
+ .partnerGroup {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
 .partnerLogos {
   display: flex;
-  flex: 1;
   flex-wrap: wrap;
   align-items: center;
   align-content: center;
   gap: 13px 18px;
-  min-height: 104px;
+  height: 104px;
 }
 .partnerLogos img {
   display: block;
@@ -225,10 +224,29 @@
 .logoInterMiami { height: 52px; }
 .logoMiamiMarlins { height: 44px; }
 .logoHardRock { height: 48px; }
-.relationships dd {
-  margin: 10px 0 0;
-  font-size: 15px;
+.partnerAction {
+  margin: 0 0 12px;
+  color: var(--color-foreground);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
 }
+.employer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 91px;
+  margin-top: 15px;
+  border-top: 1px solid var(--color-rule);
+}
+.employer img { width: auto; max-width: 80%; object-fit: contain; }
+.employerFifa { height: 45px; }
+.employerInktel { height: 69px; }
+.employerCheq { height: 58px; }
+
 .projects > .eyebrow {
   color: var(--color-accent);
 }
@@ -325,7 +343,7 @@
   .experienceRow {
     gap: 32px;
   }
-  .relationships dl {
+  .partnerGroups {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 26px;
   }
@@ -451,16 +469,14 @@
   .projectsIntro {
     font-size: 17px;
   }
-  .relationships dl {
+  .partnerGroups {
     grid-template-columns: 1fr;
     gap: 24px;
   }
   .partnerGroup:last-child {
     grid-column: auto;
   }
-  .relationships dd {
-    margin-top: 3px;
-  }
+
   .lighthouse {
     margin-top: 26px;
     gap: 23px;

@@ -123,23 +123,26 @@ export default function Home() {
             spanning 30+ commercial partners across four tournaments.
           </p>
           <dl>
-            <div>
-              <dt>
-                <strong>Coca-Cola</strong> &amp;{" "}
-                <strong>Bank of America</strong>
+            <div className={styles.partnerGroup}>
+              <dt className={styles.partnerLogos}>
+                <Image className={styles.logoCocaCola} src="/brands/coca-cola.svg" alt="Coca-Cola" width={615} height={193} />
+                <Image className={styles.logoBankOfAmerica} src="/brands/bank-of-america.svg" alt="Bank of America" width={720} height={73} />
+                <Image className={styles.logoAdidas} src="/brands/adidas.svg" alt="Adidas" width={725} height={500} />
+                <Image className={styles.logoPanini} src="/brands/panini.svg" alt="Panini" width={168} height={40} />
               </dt>
               <dd>FIFA · Personally managed commercial partners</dd>
             </div>
-            <div>
-              <dt>
-                <strong>Williams-Sonoma</strong>
+            <div className={styles.partnerGroup}>
+              <dt className={styles.partnerLogos}>
+                <Image className={styles.logoWilliamsSonoma} src="/brands/williams-sonoma.svg" alt="Williams-Sonoma" width={355} height={52} />
               </dt>
               <dd>Inktel · Service delivery</dd>
             </div>
-            <div>
-              <dt>
-                <strong>Inter Miami</strong> · <strong>Miami Marlins</strong> ·{" "}
-                <strong>Hard Rock Stadium</strong>
+            <div className={styles.partnerGroup}>
+              <dt className={styles.partnerLogos}>
+                <Image className={styles.logoInterMiami} src="/brands/inter-miami.svg" alt="Inter Miami CF" width={312} height={55} />
+                <Image className={styles.logoMiamiMarlins} src="/brands/miami-marlins.svg" alt="Miami Marlins" width={32} height={30} />
+                <Image className={styles.logoHardRock} src="/brands/hard-rock-stadium.webp" alt="Hard Rock Stadium" width={332} height={192} />
               </dt>
               <dd>CHEQ · Team and venue implementations</dd>
             </div>

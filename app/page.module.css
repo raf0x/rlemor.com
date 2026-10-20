@@ -177,16 +177,35 @@
 }
 .relationships dl {
   display: grid;
-  grid-template-columns: 1fr 0.8fr 1.2fr;
+  grid-template-columns: 1.35fr 0.85fr 1.3fr;
   gap: 36px;
   margin: 0;
 }
-.relationships dt {
-  font-size: 16px;
-  font-weight: 600;
+.partnerLogos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  gap: 13px 18px;
+  min-height: 60px;
 }
+.partnerLogos img {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+.logoCocaCola { height: 27px; }
+.logoBankOfAmerica { height: 18px; }
+.logoAdidas { height: 38px; }
+.logoPanini { height: 28px; }
+.logoWilliamsSonoma { height: 26px; }
+.logoInterMiami { height: 23px; }
+.logoMiamiMarlins { height: 44px; }
+.logoHardRock { height: 48px; }
 .relationships dd {
-  margin: 6px 0 0;
+  margin: 10px 0 0;
   font-size: 15px;
 }
 .projects > .eyebrow {
@@ -286,7 +305,11 @@
     gap: 32px;
   }
   .relationships dl {
-    gap: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px;
+  }
+  .partnerGroup:last-child {
+    grid-column: 1 / -1;
   }
   .contact {
     align-items: flex-start;
@@ -400,7 +423,10 @@
   }
   .relationships dl {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 24px;
+  }
+  .partnerGroup:last-child {
+    grid-column: auto;
   }
   .relationships dd {
     margin-top: 3px;

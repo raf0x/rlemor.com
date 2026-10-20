@@ -493,10 +493,35 @@
   }
   .partnerGroups {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 0;
+  }
+  .partnerGroup {
+    padding-bottom: 28px;
+  }
+  .partnerGroup + .partnerGroup {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 28px;
   }
   .partnerGroup:last-child {
     grid-column: auto;
+    padding-bottom: 0;
+  }
+  .employer {
+    order: -2;
+    height: 58px;
+    margin: 0 0 8px;
+    border-top: 0;
+  }
+  .partnerAction {
+    order: -1;
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+  .partnerLogos,
+  .shibumiAccounts {
+    width: 100%;
+    height: auto;
+    min-height: 104px;
   }
 
   .lighthouse {

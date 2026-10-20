@@ -181,7 +181,7 @@
   gap: 36px;
   margin: 0;
 }
- .partnerGroup {
+.partnerGroup {
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -191,6 +191,7 @@
   flex-wrap: wrap;
   align-items: center;
   align-content: center;
+  justify-content: center;
   gap: 13px 18px;
   height: 104px;
 }
@@ -207,7 +208,7 @@
   grid-template-rows: 42px 34px;
   column-gap: 14px;
   row-gap: 4px;
-  justify-content: start;
+  justify-content: center;
   align-content: center;
   align-items: center;
 }
@@ -243,9 +244,9 @@
   border-top: 1px solid var(--color-rule);
 }
 .employer img { width: auto; max-width: 80%; object-fit: contain; }
-.employerFifa { height: 45px; }
-.employerInktel { height: 69px; }
-.employerCheq { height: 58px; }
+.employerFifa { height: 35px; }
+.employerInktel { height: 54px; }
+.employerCheq { height: 45px; }
 
 .projects > .eyebrow {
   color: var(--color-accent);

@@ -26,8 +26,16 @@ export default function Home() {
               <br className={styles.heroLineBreak} /> into a competitive advantage.
             </h1>
             <p className={styles.heroCopy}>
-              Managed FIFA commercial partners and a $4M SaaS portfolio. CX
-              leader using AI for better decisions and practical tools.
+              Managed{" "}
+              <Image
+                className={styles.fifaHeroLogo}
+                src="/images/fifa-wordmark.svg"
+                alt="FIFA"
+                width={270}
+                height={89}
+              />{" "}
+              commercial partners and a $4M SaaS portfolio. CX leader using AI
+              for better decisions and practical tools.
             </p>
             <div className={styles.actions}>
               <Link className={styles.button} href="/work">
@@ -59,8 +67,13 @@ export default function Home() {
             <h3>Global sports &amp; events</h3>
             <div>
               <p>
-                <strong className={styles.fifa}>FIFA</strong> —
-                commercial-partner ticketing and CRM across four tournaments,
+                <Image
+                  className={styles.fifaExperienceLogo}
+                  src="/images/fifa-wordmark.svg"
+                  alt="FIFA"
+                  width={270}
+                  height={89}
+                />{" "}— commercial-partner ticketing and CRM across four tournaments,
                 culminating in World Cup 2026. Earlier chapters: IMG Tickets /
                 Miami Open and <strong>CHEQ</strong>’s venue implementations.
               </p>

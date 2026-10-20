@@ -138,10 +138,10 @@ export default function Home() {
             <div className={styles.partnerGroup}>
               <h3 className={styles.partnerAction}>Enterprise accounts</h3>
               <div className={styles.shibumiAccounts} aria-label="Selected enterprise accounts managed at Shibumi">
-                <span className={styles.accountQualcomm}>Qualcomm</span>
-                <span className={styles.accountCigna}>cigna<span aria-hidden="true">.</span></span>
-                <span className={styles.accountDura}>DURA | SHILOH</span>
-                <span className={styles.accountTec}>TEC <small>de Monterrey</small></span>
+                <Image className={styles.accountQualcomm} src="/brands/qualcomm-client.svg" alt="Qualcomm" width={784} height={144} />
+                <Image className={styles.accountCigna} src="/brands/cigna-client.svg" alt="Cigna" width={373} height={122} />
+                <Image className={styles.accountDura} src="/brands/dura-shiloh-client.svg" alt="Dura | Shiloh" width={370} height={100} />
+                <Image className={styles.accountTec} src="/brands/tec-client.svg" alt="Tecnológico de Monterrey" width={399} height={105} />
               </div>
               <div className={styles.employer} aria-label="While working at Shibumi">
                 <span className={styles.employerShibumi}>shibumi</span>

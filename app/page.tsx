@@ -122,28 +122,40 @@ export default function Home() {
             representing $4M in ARR at Shibumi, alongside FIFA ticketing operations
             spanning 30+ commercial partners across four tournaments.
           </p>
-          <dl>
-            <div>
-              <dt>
-                <strong>Coca-Cola</strong> &amp;{" "}
-                <strong>Bank of America</strong>
-              </dt>
-              <dd>FIFA · Personally managed commercial partners</dd>
+          <div className={styles.partnerGroups} aria-label="Selected partner and client relationships">
+            <div className={styles.partnerGroup}>
+              <h3 className={styles.partnerAction}>Managed</h3>
+              <div className={styles.partnerLogos}>
+                <Image className={styles.logoCocaCola} src="/brands/coca-cola.svg" alt="Coca-Cola" width={615} height={193} />
+                <Image className={styles.logoBankOfAmerica} src="/brands/bank-of-america.svg" alt="Bank of America" width={720} height={73} />
+                <Image className={styles.logoAdidas} src="/brands/adidas.svg" alt="Adidas" width={725} height={500} />
+                <Image className={styles.logoPanini} src="/brands/panini.svg" alt="Panini" width={168} height={40} />
+              </div>
+              <div className={styles.employer} aria-label="While working at FIFA">
+                <Image className={styles.employerFifa} src="/images/fifa-wordmark.svg" alt="FIFA, employer" width={270} height={89} />
+              </div>
             </div>
-            <div>
-              <dt>
-                <strong>Williams-Sonoma</strong>
-              </dt>
-              <dd>Inktel · Service delivery</dd>
+            <div className={styles.partnerGroup}>
+              <h3 className={styles.partnerAction}>Delivered for</h3>
+              <div className={styles.partnerLogos}>
+                <Image className={styles.logoWilliamsSonoma} src="/brands/williams-sonoma.svg" alt="Williams-Sonoma" width={355} height={52} />
+              </div>
+              <div className={styles.employer} aria-label="While working at Inktel">
+                <Image className={styles.employerInktel} src="/brands/inktel-employer.svg" alt="Inktel, employer" width={280} height={95} />
+              </div>
             </div>
-            <div>
-              <dt>
-                <strong>Inter Miami</strong> · <strong>Miami Marlins</strong> ·{" "}
-                <strong>Hard Rock Stadium</strong>
-              </dt>
-              <dd>CHEQ · Team and venue implementations</dd>
+            <div className={styles.partnerGroup}>
+              <h3 className={styles.partnerAction}>Implemented for</h3>
+              <div className={styles.partnerLogos}>
+                <Image className={styles.logoInterMiami} src="/brands/inter-miami-crest.png" alt="Inter Miami CF" width={88} height={88} />
+                <Image className={styles.logoMiamiMarlins} src="/brands/miami-marlins.svg" alt="Miami Marlins" width={32} height={30} />
+                <Image className={styles.logoHardRock} src="/brands/hard-rock-stadium.webp" alt="Hard Rock Stadium" width={332} height={192} />
+              </div>
+              <div className={styles.employer} aria-label="While working at CHEQ">
+                <Image className={styles.employerCheq} src="/brands/cheq-employer.svg" alt="CHEQ, employer" width={300} height={92} />
+              </div>
             </div>
-          </dl>
+          </div>
         </aside>
 
         <section

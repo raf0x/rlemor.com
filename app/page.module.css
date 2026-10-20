@@ -175,20 +175,79 @@
   margin-bottom: 27px;
   font-size: 18px;
 }
-.relationships dl {
+.partnerGroups {
   display: grid;
-  grid-template-columns: 1fr 0.8fr 1.2fr;
+  grid-template-columns: 1.35fr 0.85fr 1.3fr;
   gap: 36px;
   margin: 0;
 }
-.relationships dt {
-  font-size: 16px;
+.partnerGroup {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.partnerLogos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  gap: 13px 18px;
+  height: 104px;
+}
+.partnerLogos img {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+.partnerGroup:first-child .partnerLogos {
+  display: grid;
+  grid-template-columns: minmax(0, 86px) minmax(0, 178px) minmax(0, 55px);
+  grid-template-rows: 42px 34px;
+  column-gap: 14px;
+  row-gap: 4px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+.partnerGroup:first-child .logoPanini {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: center;
+}
+.logoCocaCola { height: 27px; }
+.logoBankOfAmerica { height: 18px; }
+.logoAdidas { height: 38px; }
+.logoPanini { height: 28px; }
+.logoWilliamsSonoma { height: 26px; }
+.logoInterMiami { height: 52px; }
+.logoMiamiMarlins { height: 44px; }
+.logoHardRock { height: 48px; }
+.partnerAction {
+  margin: 0 0 12px;
+  color: var(--color-foreground);
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 600;
+  letter-spacing: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
 }
-.relationships dd {
-  margin: 6px 0 0;
-  font-size: 15px;
+.employer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 91px;
+  margin-top: 15px;
+  border-top: 1px solid var(--color-rule);
 }
+.employer img { width: auto; max-width: 80%; object-fit: contain; }
+.employerFifa { height: 35px; }
+.employerInktel { height: 54px; }
+.employerCheq { height: 45px; }
+
 .projects > .eyebrow {
   color: var(--color-accent);
 }
@@ -285,8 +344,21 @@
   .experienceRow {
     gap: 32px;
   }
-  .relationships dl {
-    gap: 24px;
+  .partnerGroups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px;
+  }
+  .partnerGroup:last-child {
+    grid-column: 1 / -1;
+  }
+  .partnerGroup:first-child .partnerLogos {
+    grid-template-columns: minmax(0, 76px) minmax(0, 1fr) minmax(0, 50px);
+    column-gap: 12px;
+  }
+  .partnerGroup:first-child .logoCocaCola,
+  .partnerGroup:first-child .logoBankOfAmerica {
+    width: 100%;
+    height: auto;
   }
   .contact {
     align-items: flex-start;
@@ -398,13 +470,14 @@
   .projectsIntro {
     font-size: 17px;
   }
-  .relationships dl {
+  .partnerGroups {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 24px;
   }
-  .relationships dd {
-    margin-top: 3px;
+  .partnerGroup:last-child {
+    grid-column: auto;
   }
+
   .lighthouse {
     margin-top: 26px;
     gap: 23px;

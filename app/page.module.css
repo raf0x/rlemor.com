@@ -177,7 +177,7 @@
 }
 .partnerGroups {
   display: grid;
-  grid-template-columns: 1.35fr 0.85fr 1.3fr;
+  grid-template-columns: 1.25fr 1.1fr 1.25fr;
   gap: 36px;
   margin: 0;
 }
@@ -229,9 +229,9 @@
   margin: 0 0 12px;
   color: var(--color-foreground);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-align: center;
   text-transform: uppercase;
 }
@@ -247,6 +247,24 @@
 .employerFifa { height: 35px; }
 .employerInktel { height: 54px; }
 .employerCheq { height: 45px; }
+.shibumiAccounts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: 16px 12px;
+  height: 104px;
+  text-align: center;
+}
+.shibumiAccounts > span { max-width: 100%; white-space: nowrap; line-height: 1.1; }
+.accountQualcomm { font-size: 19px; font-weight: 700; letter-spacing: -0.07em; color: #3253dc; }
+.accountCigna { font-size: 25px; font-weight: 700; letter-spacing: -0.045em; color: #0073b9; }
+.accountCigna > span { color: #73a841; }
+.accountDura { font-size: 13px; font-weight: 800; letter-spacing: -0.055em; color: #383e45; }
+.accountTec { display: flex; flex-direction: column; align-items: center; font-size: 21px; font-weight: 750; letter-spacing: -0.05em; color: #135a9b; }
+.accountTec small { font-size: 10px; font-weight: 500; letter-spacing: 0; }
+.employerShibumi { color: #0b0b0b; font-size: 31px; font-weight: 600; letter-spacing: -0.065em; }
+
 
 .projects > .eyebrow {
   color: var(--color-accent);

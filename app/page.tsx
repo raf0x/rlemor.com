@@ -144,7 +144,7 @@ export default function Home() {
                 <Image className={styles.accountTec} src="/brands/tec-client.svg" alt="Tecnológico de Monterrey" width={399} height={105} />
               </div>
               <div className={styles.employer} aria-label="While working at Shibumi">
-                <Image className={styles.employerShibumi} src="/brands/shibumi-employer.svg" alt="Shibumi, employer" width={400} height={100} />
+                <Image className={styles.employerShibumi} src="/brands/shibumi-employer.png" alt="Shibumi, employer" width={370} height={81} />
               </div>
             </div>
             <div className={styles.partnerGroup}>

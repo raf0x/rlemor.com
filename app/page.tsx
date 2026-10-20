@@ -72,7 +72,7 @@ export default function Home() {
                   alt="FIFA"
                   width={270}
                   height={89}
-                />{" "}— commercial-partner ticketing and CRM across four tournaments,
+                />{" "}— commercial partner ticketing and CRM across four tournaments,
                 culminating in World Cup 2026. Earlier chapters: IMG Tickets /
                 Miami Open and <strong>CHEQ</strong>’s venue implementations.
               </p>

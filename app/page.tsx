@@ -53,7 +53,6 @@ export default function Home() {
               sizes="(max-width: 640px) 120px, (max-width: 900px) 220px, 260px"
               preload
             />
-            <figcaption>Usually planning my next trip.</figcaption>
           </figure>
         </section>
 

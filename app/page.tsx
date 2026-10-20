@@ -140,7 +140,7 @@ export default function Home() {
             </div>
             <div className={styles.partnerGroup}>
               <dt className={styles.partnerLogos}>
-                <Image className={styles.logoInterMiami} src="/brands/inter-miami.svg" alt="Inter Miami CF" width={312} height={55} />
+                <Image className={styles.logoInterMiami} src="/brands/inter-miami-crest.png" alt="Inter Miami CF" width={88} height={88} />
                 <Image className={styles.logoMiamiMarlins} src="/brands/miami-marlins.svg" alt="Miami Marlins" width={32} height={30} />
                 <Image className={styles.logoHardRock} src="/brands/hard-rock-stadium.webp" alt="Hard Rock Stadium" width={332} height={192} />
               </dt>

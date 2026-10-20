@@ -155,7 +155,7 @@ export default function Home() {
                 <Image className={styles.logoHardRock} src="/brands/hard-rock-stadium.webp" alt="Hard Rock Stadium" width={332} height={192} />
               </div>
               <div className={styles.employer} aria-label="While working at CHEQ">
-                <Image className={styles.employerCheq} src="/brands/cheq-employer.svg" alt="CHEQ, employer" width={300} height={92} />
+                <Image className={styles.employerCheq} src="/brands/cheq-employer-correct.png" alt="CHEQ, employer" width={198} height={70} />
               </div>
             </div>
           </div>

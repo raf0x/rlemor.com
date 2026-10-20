@@ -177,7 +177,7 @@
 }
 .partnerGroups {
   display: grid;
-  grid-template-columns: 1.35fr 0.85fr 1.3fr;
+  grid-template-columns: 1.25fr 1.1fr 1.25fr;
   gap: 36px;
   margin: 0;
 }
@@ -229,9 +229,9 @@
   margin: 0 0 12px;
   color: var(--color-foreground);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-align: center;
   text-transform: uppercase;
 }
@@ -247,6 +247,27 @@
 .employerFifa { height: 35px; }
 .employerInktel { height: 54px; }
 .employerCheq { height: 45px; }
+.shibumiAccounts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: 16px 12px;
+  height: 104px;
+  text-align: center;
+}
+.shibumiAccounts img {
+  display: block;
+  width: auto;
+  max-width: 94%;
+  object-fit: contain;
+}
+.accountQualcomm { height: 24px; }
+.accountCigna { height: 49px; }
+.accountDura { height: 41px; }
+.accountTec { height: 38px; }
+.employerShibumi { height: 40px; }
+
 
 .projects > .eyebrow {
   color: var(--color-accent);

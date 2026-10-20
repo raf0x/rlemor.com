@@ -124,7 +124,7 @@ export default function Home() {
           </p>
           <div className={styles.partnerGroups} aria-label="Selected partner and client relationships">
             <div className={styles.partnerGroup}>
-              <h3 className={styles.partnerAction}>Managed</h3>
+              <h3 className={styles.partnerAction}>Commercial partnerships</h3>
               <div className={styles.partnerLogos}>
                 <Image className={styles.logoCocaCola} src="/brands/coca-cola.svg" alt="Coca-Cola" width={615} height={193} />
                 <Image className={styles.logoBankOfAmerica} src="/brands/bank-of-america.svg" alt="Bank of America" width={720} height={73} />
@@ -136,16 +136,19 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.partnerGroup}>
-              <h3 className={styles.partnerAction}>Delivered for</h3>
-              <div className={styles.partnerLogos}>
-                <Image className={styles.logoWilliamsSonoma} src="/brands/williams-sonoma.svg" alt="Williams-Sonoma" width={355} height={52} />
+              <h3 className={styles.partnerAction}>Enterprise accounts</h3>
+              <div className={styles.shibumiAccounts} aria-label="Selected enterprise accounts managed at Shibumi">
+                <span className={styles.accountQualcomm}>Qualcomm</span>
+                <span className={styles.accountCigna}>cigna<span aria-hidden="true">.</span></span>
+                <span className={styles.accountDura}>DURA | SHILOH</span>
+                <span className={styles.accountTec}>TEC <small>de Monterrey</small></span>
               </div>
-              <div className={styles.employer} aria-label="While working at Inktel">
-                <Image className={styles.employerInktel} src="/brands/inktel-employer.svg" alt="Inktel, employer" width={280} height={95} />
+              <div className={styles.employer} aria-label="While working at Shibumi">
+                <span className={styles.employerShibumi}>shibumi</span>
               </div>
             </div>
             <div className={styles.partnerGroup}>
-              <h3 className={styles.partnerAction}>Implemented for</h3>
+              <h3 className={styles.partnerAction}>Venue implementations</h3>
               <div className={styles.partnerLogos}>
                 <Image className={styles.logoInterMiami} src="/brands/inter-miami-crest.png" alt="Inter Miami CF" width={88} height={88} />
                 <Image className={styles.logoMiamiMarlins} src="/brands/miami-marlins.svg" alt="Miami Marlins" width={32} height={30} />

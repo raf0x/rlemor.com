@@ -208,53 +208,63 @@ export default function Home() {
           </article>
           <div className={styles.otherProjects}>
             <article className={styles.projectStory}>
-              <Link
-                className={styles.projectPreview}
-                href="/projects/mypepprotocol"
-                aria-label="Explore MyPepProtocol case study"
-              >
-                <Image
-                  src="/projects/mypepprotocol/overview-detail.webp"
-                  alt="Actual MyPepProtocol interface showing health metrics and active protocol tracking."
-                  width={1098}
-                  height={1350}
-                  sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 45vw, 570px"
-                />
-              </Link>
-              <h3>
-                <Link href="/projects/mypepprotocol">
-                  MyPepProtocol <span aria-hidden="true">→</span>
+              <div className={styles.projectStoryCopy}>
+                <h3>
+                  <Link href="/projects/mypepprotocol">
+                    MyPepProtocol <span aria-hidden="true">→</span>
+                  </Link>
+                </h3>
+                <p>
+                  A private health-record app that keeps treatment plans,
+                  schedules, inventory, and lab results connected so information
+                  does not have to be entered twice.
+                </p>
+              </div>
+              <figure className={styles.projectFigure}>
+                <Link
+                  className={styles.projectPreview}
+                  href="/projects/mypepprotocol"
+                  aria-label="Explore MyPepProtocol case study"
+                >
+                  <Image
+                    src="/projects/mypepprotocol/overview-desktop.png"
+                    alt="Actual MyPepProtocol desktop interface showing daily health metrics, active protocols, and connected records."
+                    width={2048}
+                    height={1342}
+                    sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 54vw, 630px"
+                  />
                 </Link>
-              </h3>
-              <p>
-                A private health-record app that keeps treatment plans,
-                schedules, inventory, and lab results connected so information
-                does not have to be entered twice.
-              </p>
+                <figcaption>MyPepProtocol. An actual product interface.</figcaption>
+              </figure>
             </article>
             <article className={styles.projectStory}>
-              <Link
-                className={styles.projectPreview}
-                href="/projects#world-cup-tracker"
-                aria-label="Explore World Cup Tracker project"
-              >
-                <Image
-                  src="/projects/world-cup-tracker/overview-detail.webp"
-                  alt="Actual World Cup Tracker interface showing the tournament bracket and results."
-                  width={1122}
-                  height={1402}
-                  sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 45vw, 570px"
-                />
-              </Link>
-              <h3>
-                <Link href="/projects#world-cup-tracker">
-                  World Cup Tracker <span aria-hidden="true">→</span>
+              <div className={styles.projectStoryCopy}>
+                <h3>
+                  <Link href="/projects#world-cup-tracker">
+                    World Cup Tracker <span aria-hidden="true">→</span>
+                  </Link>
+                </h3>
+                <p>
+                  An independent tournament tracker and predictor, now a
+                  historical reference. Not affiliated with FIFA.
+                </p>
+              </div>
+              <figure className={styles.projectFigure}>
+                <Link
+                  className={styles.projectPreview}
+                  href="/projects#world-cup-tracker"
+                  aria-label="Explore World Cup Tracker project"
+                >
+                  <Image
+                    src="/projects/world-cup-tracker/world-cup-overview-desktop.png"
+                    alt="Actual World Cup Tracker interface displaying the tournament header, knockout bracket, and group stage."
+                    width={1122}
+                    height={1402}
+                    sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 42vw, 480px"
+                  />
                 </Link>
-              </h3>
-              <p>
-                An independent tournament tracker and predictor, now a
-                historical reference. Not affiliated with FIFA.
-              </p>
+                <figcaption>World Cup Tracker. A historical interface capture.</figcaption>
+              </figure>
             </article>
           </div>
         </section>

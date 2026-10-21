@@ -234,7 +234,7 @@ export default function Home() {
                     sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 54vw, 630px"
                   />
                 </Link>
-                <figcaption>MyPepProtocol. An actual product interface.</figcaption>
+                <figcaption>Inside MyPepProtocol, an actual product interface.</figcaption>
               </figure>
             </article>
             <article className={styles.projectStory}>
@@ -263,7 +263,7 @@ export default function Home() {
                     sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 42vw, 480px"
                   />
                 </Link>
-                <figcaption>World Cup Tracker. A historical interface capture.</figcaption>
+                <figcaption>World Cup Tracker, a historical interface capture.</figcaption>
               </figure>
             </article>
           </div>

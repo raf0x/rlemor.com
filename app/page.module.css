@@ -299,39 +299,64 @@
   font-weight: 700;
 }
 .otherProjects {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px;
-  margin-top: 42px;
-  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 44px;
   border-top: 1px solid var(--color-rule);
 }
 .projectStory {
+  display: grid;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+  grid-template-areas: "copy media";
+  align-items: center;
+  gap: clamp(28px, 4.5vw, 64px);
+  padding: 42px 0 50px;
+}
+.projectStory + .projectStory {
+  border-top: 1px solid var(--color-rule);
+}
+.projectStory:last-child {
+  grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.45fr);
+  grid-template-areas: "media copy";
+}
+.projectStoryCopy {
+  grid-area: copy;
   min-width: 0;
 }
+.projectFigure {
+  grid-area: media;
+  min-width: 0;
+  margin: 0;
+}
 .projectPreview {
-  display: block;
-  height: clamp(220px, 25vw, 276px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 346px;
   overflow: hidden;
-  background: #101725;
+  background: var(--color-media);
 }
 .projectPreview img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 31%;
-  transition: transform 200ms ease;
+  object-fit: contain;
 }
 .projectStory:last-child .projectPreview img {
-  object-position: center 43%;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
 }
-.projectPreview:hover img {
-  transform: scale(1.015);
+.projectFigure figcaption {
+  margin-top: 11px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-foreground);
+  opacity: 0.8;
 }
 .otherProjects h3 {
-  margin-top: 20px;
-  font-size: 26px;
+  font-size: clamp(27px, 2.5vw, 32px);
 }
 .otherProjects h3 a {
   display: inline-flex;
@@ -341,8 +366,8 @@
   color: var(--color-accent);
 }
 .otherProjects p {
-  max-width: 510px;
-  margin-top: 6px;
+  max-width: 480px;
+  margin-top: 10px;
   font-size: 17px;
 }
 .contact {
@@ -433,6 +458,22 @@
   }
   .lighthouse > div {
     max-width: 650px;
+  }
+  .projectStory,
+  .projectStory:last-child {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "media" "copy";
+    gap: 20px;
+    padding: 38px 0 42px;
+  }
+  .projectPreview {
+    height: 360px;
+  }
+  .projectStory:last-child .projectPreview {
+    height: 390px;
+  }
+  .projectStoryCopy {
+    max-width: 700px;
   }
   .contact {
     display: block;
@@ -551,17 +592,27 @@
     font-size: 17px;
   }
   .otherProjects {
-    grid-template-columns: 1fr;
-    gap: 34px;
-    margin-top: 28px;
-    padding-top: 25px;
+    margin-top: 30px;
+  }
+  .projectStory,
+  .projectStory:last-child {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "media" "copy";
+    gap: 17px;
+    padding: 30px 0 34px;
   }
   .projectPreview {
-    height: clamp(205px, 65vw, 290px);
+    height: clamp(242px, 75vw, 326px);
+  }
+  .projectStory:last-child .projectPreview {
+    height: clamp(305px, 88vw, 385px);
+  }
+  .projectFigure figcaption {
+    margin-top: 9px;
+    font-size: 12px;
   }
   .otherProjects h3 {
-    margin-top: 14px;
-    font-size: 24px;
+    font-size: 25px;
   }
   .otherProjects p {
     margin-top: 5px;

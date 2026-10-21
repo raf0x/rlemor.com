@@ -50,7 +50,7 @@ export default function Home() {
               alt="Rafael Lemor"
               width={400}
               height={400}
-              sizes="(max-width: 640px) 120px, (max-width: 900px) 220px, 260px"
+              sizes="(max-width: 640px) 164px, (max-width: 900px) 232px, 296px"
               preload
             />
           </figure>
@@ -207,7 +207,20 @@ export default function Home() {
             </div>
           </article>
           <div className={styles.otherProjects}>
-            <div>
+            <article className={styles.projectStory}>
+              <Link
+                className={styles.projectPreview}
+                href="/projects/mypepprotocol"
+                aria-label="Explore MyPepProtocol case study"
+              >
+                <Image
+                  src="/projects/mypepprotocol/overview-detail.webp"
+                  alt="Actual MyPepProtocol interface showing health metrics and active protocol tracking."
+                  width={1098}
+                  height={1350}
+                  sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 45vw, 570px"
+                />
+              </Link>
               <h3>
                 <Link href="/projects/mypepprotocol">
                   MyPepProtocol <span aria-hidden="true">→</span>
@@ -218,8 +231,21 @@ export default function Home() {
                 schedules, inventory, and lab results connected so information
                 does not have to be entered twice.
               </p>
-            </div>
-            <div>
+            </article>
+            <article className={styles.projectStory}>
+              <Link
+                className={styles.projectPreview}
+                href="/projects#world-cup-tracker"
+                aria-label="Explore World Cup Tracker project"
+              >
+                <Image
+                  src="/projects/world-cup-tracker/overview-detail.webp"
+                  alt="Actual World Cup Tracker interface showing the tournament bracket and results."
+                  width={1122}
+                  height={1402}
+                  sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 45vw, 570px"
+                />
+              </Link>
               <h3>
                 <Link href="/projects#world-cup-tracker">
                   World Cup Tracker <span aria-hidden="true">→</span>
@@ -229,7 +255,7 @@ export default function Home() {
                 An independent tournament tracker and predictor, now a
                 historical reference. Not affiliated with FIFA.
               </p>
-            </div>
+            </article>
           </div>
         </section>
 

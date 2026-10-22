@@ -173,16 +173,18 @@ export default function Home() {
             those questions into working products.
           </p>
           <article className={styles.lighthouse}>
-            <Image
-              className={styles.projectImage}
-              src="/projects/lighthouse/concept-artwork.webp"
-              alt="Illustrative Lighthouse concept artwork featuring account health, renewal risk, and a coastal lighthouse."
-              width={1672}
-              height={941}
-              sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 900px) calc(100vw - 64px), (max-width: 1244px) 56vw, 682px"
-            />
+            <Link className={styles.lighthouseImageLink} href="/projects#lighthouse" aria-label="Explore Lighthouse project">
+              <Image
+                className={styles.projectImage}
+                src="/projects/lighthouse/concept-artwork.webp"
+                alt="Illustrative Lighthouse concept artwork featuring account health, renewal risk, and a coastal lighthouse."
+                width={1672}
+                height={941}
+                sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 900px) calc(100vw - 64px), (max-width: 1244px) 56vw, 682px"
+              />
+            </Link>
             <div>
-              <h3>Lighthouse</h3>
+              <h3><Link className={styles.lighthouseTitleLink} href="/projects#lighthouse">Lighthouse</Link></h3>
               <p>
                 Lighthouse is an AI-assisted customer health and account
                 intelligence platform that brings customer{" "}
@@ -201,7 +203,7 @@ export default function Home() {
                   better decisions
                 </strong>.
               </p>
-              <Link href="/projects#lighthouse">
+              <Link className={styles.lighthouseExploreLink} href="/projects#lighthouse">
                 Explore Lighthouse <span aria-hidden="true">→</span>
               </Link>
             </div>

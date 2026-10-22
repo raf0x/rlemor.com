@@ -844,3 +844,106 @@
     animation: none !important;
   }
 }
+
+
+/* Prototype C: Studio. Scroll choreography plus tactile project previews. */
+@media (prefers-reduced-motion: no-preference) {
+  .page[data-motion-ready="true"] .motionItem:not([data-motion-visible="true"]) {
+    opacity: 0;
+    transform: translate3d(0, 52px, 0) scale(0.97);
+  }
+  .page[data-motion-ready="true"] .motionItem {
+    transition-duration: 900ms;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) .lighthouseImageLink,
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectFigure,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectFigure {
+    opacity: 0;
+    transform: translate3d(0, 50px, 0) scale(0.9);
+  }
+  .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) > div,
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectStoryCopy,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectStoryCopy {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0);
+  }
+
+  .page[data-motion-ready="true"] .relationships .partnerLogos img,
+  .page[data-motion-ready="true"] .relationships .shibumiAccounts img {
+    transition: opacity 650ms ease,
+                transform 750ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 150ms;
+  }
+  .page[data-motion-ready="true"] .relationships:not([data-motion-visible="true"]) .partnerLogos img,
+  .page[data-motion-ready="true"] .relationships:not([data-motion-visible="true"]) .shibumiAccounts img {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  .page[data-motion-ready="true"] .relationships[data-motion-visible="true"] .partnerLogos img,
+  .page[data-motion-ready="true"] .relationships[data-motion-visible="true"] .shibumiAccounts img {
+    opacity: 1;
+    transform: none;
+  }
+  .page[data-motion-ready="true"] .relationships img:nth-child(2) { transition-delay: 220ms; }
+  .page[data-motion-ready="true"] .relationships img:nth-child(3) { transition-delay: 290ms; }
+  .page[data-motion-ready="true"] .relationships img:nth-child(4) { transition-delay: 360ms; }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .lighthouseImageLink[data-motion-tilt],
+  .projectPreview[data-motion-tilt] {
+    transform: perspective(1050px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-origin: center;
+    transition: transform 180ms ease-out;
+  }
+  .lighthouseImageLink[data-motion-tilt]:hover,
+  .projectPreview[data-motion-tilt]:hover {
+    transform: perspective(1050px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translate3d(0, -4px, 0);
+  }
+  .button[data-motion-magnet]:hover {
+    transform: translate3d(var(--magnet-x, 0px), calc(-3px + var(--magnet-y, 0px)), 0);
+  }
+  .lighthouseTitleLink span,
+  .otherProjects h3 a span {
+    transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .lighthouseTitleLink:hover span,
+  .lighthouseTitleLink:focus-visible span,
+  .otherProjects h3 a:hover span,
+  .otherProjects h3 a:focus-visible span {
+    transform: translateX(9px);
+  }
+}
+
+@media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) .lighthouseImageLink,
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectFigure,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectFigure {
+    transform: translate3d(0, 30px, 0) scale(0.97);
+  }
+}
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .page[data-motion-ready="true"] .motionItem {
+    transition-duration: 610ms;
+  }
+  .page[data-motion-ready="true"] .motionItem:not([data-motion-visible="true"]) {
+    transform: translate3d(0, 25px, 0) scale(0.99);
+  }
+  .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) .lighthouseImageLink,
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectFigure,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectFigure {
+    transform: translate3d(0, 22px, 0) scale(0.98);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lighthouseImageLink[data-motion-tilt],
+  .projectPreview[data-motion-tilt],
+  .button[data-motion-magnet],
+  .relationships img {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

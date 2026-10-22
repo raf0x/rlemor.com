@@ -23,9 +23,11 @@ export default function Home() {
               Hello from Miami
             </p>
             <h1 id="intro-heading">
-              I’m Rafael.
-              <br />I turn <span>human relationships</span>
-              <br className={styles.heroLineBreak} /> into a competitive advantage.
+              <span className={styles.heroLead}>I’m Rafael.</span>
+              <span className={styles.heroStatement}>
+                I turn <span className={styles.heroHighlight}>human relationships</span>
+                <br className={styles.heroLineBreak} /> into a competitive advantage.
+              </span>
             </h1>
             <p className={styles.heroCopy}>
               Managed{" "}
@@ -43,7 +45,7 @@ export default function Home() {
               <Link className={styles.button} data-motion-magnet href="/work">
                 Explore work <span aria-hidden="true">↗</span>
               </Link>
-              <Link href="/contact">Get in touch</Link>
+              <Link className={styles.secondaryAction} href="/contact">Get in touch</Link>
             </div>
           </div>
           <figure className={styles.portrait}>

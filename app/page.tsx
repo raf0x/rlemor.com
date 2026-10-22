@@ -46,7 +46,7 @@ export default function Home() {
               <Link href="/contact">Get in touch</Link>
             </div>
           </div>
-          <figure className={styles.portrait}>
+          <figure className={`${styles.portrait} motion-cinematic-scene`}>
             <Image
               src="/images/rafael-portrait.jpg"
               alt="Rafael Lemor"
@@ -176,7 +176,7 @@ export default function Home() {
             those questions into working products.
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item>
-            <Link className={styles.lighthouseImageLink} data-motion-tilt data-mobile-motion-item data-mobile-scroll-media href="/projects#lighthouse" aria-label="Explore Lighthouse project">
+            <Link className={`${styles.lighthouseImageLink} motion-cinematic-scene`} data-motion-tilt data-mobile-motion-item data-mobile-scroll-media href="/projects#lighthouse" aria-label="Explore Lighthouse project">
               <Image
                 className={styles.projectImage}
                 src="/projects/lighthouse/concept-artwork.webp"
@@ -224,7 +224,7 @@ export default function Home() {
               </div>
               <figure className={styles.projectFigure} data-mobile-motion-item>
                 <Link
-                  className={styles.projectPreview}
+                  className={`${styles.projectPreview} motion-cinematic-scene`}
                   data-motion-tilt
                   data-mobile-scroll-media
                   href="/projects/mypepprotocol"
@@ -255,7 +255,7 @@ export default function Home() {
               </div>
               <figure className={styles.projectFigure} data-mobile-motion-item>
                 <Link
-                  className={styles.projectPreview}
+                  className={`${styles.projectPreview} motion-cinematic-scene`}
                   data-motion-tilt
                   data-mobile-scroll-media
                   href="/projects#world-cup-tracker"

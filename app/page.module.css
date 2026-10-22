@@ -146,7 +146,7 @@
   font-weight: 700;
 }
 .experienceRow a,
-.lighthouse a {
+.lighthouseExploreLink {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -283,8 +283,20 @@
   margin-top: 32px;
 }
 .projectImage {
+  display: block;
   width: 100%;
   height: auto;
+}
+.lighthouseImageLink {
+  display: block;
+}
+.lighthouseTitleLink {
+  color: inherit;
+  text-decoration: none;
+}
+.lighthouseTitleLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
 }
 .lighthouse h3 {
   font-size: 31px;

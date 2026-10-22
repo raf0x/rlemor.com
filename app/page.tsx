@@ -40,7 +40,7 @@ export default function Home() {
               for better decisions and practical tools.
             </p>
             <div className={styles.actions}>
-              <Link className={styles.button} href="/work">
+              <Link className={styles.button} data-motion-magnet href="/work">
                 Explore work <span aria-hidden="true">↗</span>
               </Link>
               <Link href="/contact">Get in touch</Link>
@@ -176,7 +176,7 @@ export default function Home() {
             those questions into working products.
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item>
-            <Link className={styles.lighthouseImageLink} href="/projects#lighthouse" aria-label="Explore Lighthouse project">
+            <Link className={styles.lighthouseImageLink} data-motion-tilt href="/projects#lighthouse" aria-label="Explore Lighthouse project">
               <Image
                 className={styles.projectImage}
                 src="/projects/lighthouse/concept-artwork.webp"
@@ -225,6 +225,7 @@ export default function Home() {
               <figure className={styles.projectFigure}>
                 <Link
                   className={styles.projectPreview}
+                  data-motion-tilt
                   href="/projects/mypepprotocol"
                   aria-label="Explore MyPepProtocol case study"
                 >
@@ -254,6 +255,7 @@ export default function Home() {
               <figure className={styles.projectFigure}>
                 <Link
                   className={styles.projectPreview}
+                  data-motion-tilt
                   href="/projects#world-cup-tracker"
                   aria-label="Explore World Cup Tracker project"
                 >

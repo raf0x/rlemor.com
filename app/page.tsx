@@ -125,7 +125,7 @@ export default function Home() {
             spanning 30+ commercial partners across four tournaments.
           </p>
           <div className={styles.partnerGroups} aria-label="Selected partner and client relationships">
-            <div className={styles.partnerGroup}>
+            <div className={styles.partnerGroup} data-mobile-motion-item>
               <h3 className={styles.partnerAction}>Commercial partnerships</h3>
               <div className={styles.partnerLogos}>
                 <Image className={styles.logoCocaCola} src="/brands/coca-cola.svg" alt="Coca-Cola" width={615} height={193} />
@@ -137,7 +137,7 @@ export default function Home() {
                 <Image className={styles.employerFifa} src="/images/fifa-wordmark.svg" alt="FIFA, employer" width={270} height={89} />
               </div>
             </div>
-            <div className={styles.partnerGroup}>
+            <div className={styles.partnerGroup} data-mobile-motion-item>
               <h3 className={styles.partnerAction}>Enterprise accounts</h3>
               <div className={styles.shibumiAccounts} aria-label="Selected enterprise accounts managed at Shibumi">
                 <Image className={styles.accountQualcomm} src="/brands/qualcomm-client.svg" alt="Qualcomm" width={784} height={144} />
@@ -149,7 +149,7 @@ export default function Home() {
                 <Image className={styles.employerShibumi} src="/brands/shibumi-employer.png" alt="Shibumi, employer" width={370} height={81} />
               </div>
             </div>
-            <div className={styles.partnerGroup}>
+            <div className={styles.partnerGroup} data-mobile-motion-item>
               <h3 className={styles.partnerAction}>Venue implementations</h3>
               <div className={styles.partnerLogos}>
                 <Image className={styles.logoInterMiami} src="/brands/inter-miami-crest.png" alt="Inter Miami CF" width={88} height={88} />
@@ -176,7 +176,7 @@ export default function Home() {
             those questions into working products.
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item>
-            <Link className={styles.lighthouseImageLink} data-motion-tilt href="/projects#lighthouse" aria-label="Explore Lighthouse project">
+            <Link className={styles.lighthouseImageLink} data-motion-tilt data-mobile-motion-item data-mobile-scroll-media href="/projects#lighthouse" aria-label="Explore Lighthouse project">
               <Image
                 className={styles.projectImage}
                 src="/projects/lighthouse/concept-artwork.webp"
@@ -186,7 +186,7 @@ export default function Home() {
                 sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 900px) calc(100vw - 64px), (max-width: 1244px) 56vw, 682px"
               />
             </Link>
-            <div>
+            <div data-mobile-motion-item>
               <h3><Link className={styles.lighthouseTitleLink} href="/projects#lighthouse">Lighthouse <span aria-hidden="true">→</span></Link></h3>
               <p>
                 Lighthouse is an AI-assisted customer health and account
@@ -210,7 +210,7 @@ export default function Home() {
           </article>
           <div className={styles.otherProjects}>
             <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>
-              <div className={styles.projectStoryCopy}>
+              <div className={styles.projectStoryCopy} data-mobile-motion-item>
                 <h3>
                   <Link href="/projects/mypepprotocol">
                     MyPepProtocol <span aria-hidden="true">→</span>
@@ -222,10 +222,11 @@ export default function Home() {
                   does not have to be entered twice.
                 </p>
               </div>
-              <figure className={styles.projectFigure}>
+              <figure className={styles.projectFigure} data-mobile-motion-item>
                 <Link
                   className={styles.projectPreview}
                   data-motion-tilt
+                  data-mobile-scroll-media
                   href="/projects/mypepprotocol"
                   aria-label="Explore MyPepProtocol case study"
                 >
@@ -241,7 +242,7 @@ export default function Home() {
               </figure>
             </article>
             <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>
-              <div className={styles.projectStoryCopy}>
+              <div className={styles.projectStoryCopy} data-mobile-motion-item>
                 <h3>
                   <Link href="/projects#world-cup-tracker">
                     World Cup Tracker <span aria-hidden="true">→</span>
@@ -252,10 +253,11 @@ export default function Home() {
                   historical reference. Not affiliated with FIFA.
                 </p>
               </div>
-              <figure className={styles.projectFigure}>
+              <figure className={styles.projectFigure} data-mobile-motion-item>
                 <Link
                   className={styles.projectPreview}
                   data-motion-tilt
+                  data-mobile-scroll-media
                   href="/projects#world-cup-tracker"
                   aria-label="Explore World Cup Tracker project"
                 >

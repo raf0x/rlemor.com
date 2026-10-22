@@ -947,3 +947,128 @@
     transition: none !important;
   }
 }
+
+
+/*
+ * Studio Mobile / scroll-responsive.
+ * Desktop motion above remains unchanged. On phones, image curtains and
+ * depth move with the user's native scrolling, in both directions.
+ */
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .scrollProgress {
+    height: 3px;
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .motionItem {
+    transition-duration: 710ms;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .motionItem:not([data-motion-visible="true"]) {
+    transform: translate3d(0, 30px, 0);
+    opacity: 0;
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] [data-mobile-motion-item] {
+    opacity: 1;
+    transform: none;
+    transition: opacity 740ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 810ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] [data-mobile-motion-item]:not([data-motion-visible="true"]) {
+    opacity: 0;
+    transform: translate3d(0, 38px, 0);
+  }
+
+  /* Logo groups and descriptions gain individual, noticeable entrances. */
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .partnerGroup[data-mobile-motion-item]:not([data-motion-visible="true"]) {
+    transform: translate3d(0, 30px, 0) scale(0.975);
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .projectStoryCopy[data-mobile-motion-item]:not([data-motion-visible="true"]),
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .lighthouse > div[data-mobile-motion-item]:not([data-motion-visible="true"]) {
+    transform: translate3d(0, 32px, 0);
+  }
+
+  /* Logos arrive as a group on mobile, not in a long off-screen cascade. */
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .relationships .partnerLogos img,
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .relationships .shibumiAccounts img {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .lighthouse > div,
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .projectStoryCopy {
+    transition-delay: 0ms;
+  }
+
+  /*
+   * These three product images use a scroll-controlled mask instead of
+   * a completed timer. Moving the page back down reveals the wipe again.
+   */
+  .page[data-motion-ready="true"][data-mobile-scroll-ready="true"] .lighthouseImageLink[data-mobile-scroll-media],
+  .page[data-motion-ready="true"][data-mobile-scroll-ready="true"] .projectFigure[data-mobile-motion-item] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .page[data-motion-ready="true"][data-mobile-scroll-ready="true"] [data-mobile-scroll-media] {
+    clip-path: inset(0 var(--mobile-wipe-right, 100%) 0 0);
+    overflow: hidden;
+  }
+
+  .page[data-motion-ready="true"][data-mobile-scroll-ready="true"] [data-mobile-scroll-media]:focus-visible {
+    clip-path: inset(0 0 0 0);
+  }
+
+  .page[data-motion-ready="true"][data-mobile-scroll-ready="true"] [data-mobile-scroll-media] img {
+    transform: translate3d(0, var(--mobile-image-shift, 0px), 0) scale(1.12);
+    transition: transform 100ms linear;
+  }
+
+  .page[data-motion-ready="true"][data-mobile-scroll-ready="true"] .lighthouseImageLink[data-mobile-scroll-media] img {
+    transform: translate3d(0, var(--mobile-image-shift, 0px), 0) scale(1.15);
+  }
+
+  /* A more confident first impression that doesn't delay scroll gestures. */
+  .greeting,
+  .hero h1,
+  .heroCopy,
+  .actions,
+  .portrait {
+    animation-duration: 790ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hero h1 { animation-delay: 85ms; }
+  .heroCopy { animation-delay: 175ms; }
+  .actions { animation-delay: 290ms; }
+  .portrait {
+    animation-name: mobilePortraitArrival;
+    animation-duration: 950ms;
+    animation-delay: 130ms;
+  }
+}
+
+@keyframes mobilePortraitArrival {
+  from { opacity: 0; transform: translate3d(0, 28px, 0) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 640px) and (hover: none) and (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+  .button {
+    transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .button:active {
+    transform: scale(0.97);
+  }
+  .page[data-mobile-scroll-ready="true"] [data-mobile-scroll-media]:active img {
+    transform: translate3d(0, var(--mobile-image-shift, 0px), 0) scale(1.17);
+  }
+  .lighthouseTitleLink:active,
+  .otherProjects h3 a:active {
+    opacity: 0.76;
+  }
+}

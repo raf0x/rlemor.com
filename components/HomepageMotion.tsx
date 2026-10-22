@@ -8,11 +8,30 @@ export default function HomepageMotion() {
     if (!root || !("IntersectionObserver" in window) ||
         window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const items = Array.from(root.querySelectorAll<HTMLElement>("[data-motion-item]"));
+    const isPhone = window.matchMedia("(max-width: 640px)").matches;
+    const sectionItems = Array.from(root.querySelectorAll<HTMLElement>("[data-motion-item]"));
+
+    // Tall mobile stories reveal their image, copy, and partner groups as
+    // separate reading moments. Desktop retains the existing Studio motion.
+    if (isPhone) {
+      for (const item of sectionItems) {
+        if (item.querySelector("[data-mobile-motion-item]")) {
+          item.dataset.motionVisible = "true";
+        }
+      }
+      root.dataset.mobileMotionReady = "true";
+    }
+
+    const items = [
+      ...sectionItems,
+      ...(isPhone
+        ? Array.from(root.querySelectorAll<HTMLElement>("[data-mobile-motion-item]"))
+        : []),
+    ];
     const viewportHeight = window.innerHeight;
     for (const item of items) {
       const bounds = item.getBoundingClientRect();
-      if (bounds.top < viewportHeight * 0.9 && bounds.bottom > 0) {
+      if (bounds.top < viewportHeight * (isPhone ? 0.9 : 0.9) && bounds.bottom > 0) {
         item.dataset.motionVisible = "true";
       }
     }
@@ -26,13 +45,60 @@ export default function HomepageMotion() {
           }
         }
       },
-      { rootMargin: "0px 0px -7% 0px", threshold: 0.08 },
+      {
+        rootMargin: isPhone ? "0px 0px -10% 0px" : "0px 0px -7% 0px",
+        threshold: isPhone ? 0.05 : 0.08,
+      },
     );
 
     for (const item of items) {
       if (item.dataset.motionVisible !== "true") observer.observe(item);
     }
     root.dataset.motionReady = "true";
+
+    // Phone-only scroll choreography: drive three image masks and image-depth
+    // transforms from the *actual finger scroll position*. This is not a timer,
+    // and it reverses naturally when scrolling upward. Desktop stays unchanged.
+    const media = isPhone
+      ? Array.from(root.querySelectorAll<HTMLElement>("[data-mobile-scroll-media]"))
+      : [];
+    let scrollFrame = 0;
+    const updateMedia = () => {
+      scrollFrame = 0;
+      const viewport = window.innerHeight || 1;
+      for (const layer of media) {
+        const rect = layer.getBoundingClientRect();
+        if (rect.bottom < -viewport * 0.25 || rect.top > viewport * 1.2) continue;
+
+        const wipeProgress = Math.max(
+          0,
+          Math.min(1, (viewport * 0.92 - rect.top) / (viewport * 0.48)),
+        );
+        const center = rect.top + rect.height / 2;
+        const position = Math.max(
+          -1,
+          Math.min(1, (viewport / 2 - center) / (viewport * 0.55)),
+        );
+
+        layer.style.setProperty(
+          "--mobile-wipe-right",
+          `${((1 - wipeProgress) * 100).toFixed(1)}%`,
+        );
+        layer.style.setProperty(
+          "--mobile-image-shift",
+          `${(-position * 11).toFixed(1)}px`,
+        );
+      }
+      root.dataset.mobileScrollReady = "true";
+    };
+    const scheduleMedia = () => {
+      if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateMedia);
+    };
+    if (isPhone) {
+      scheduleMedia();
+      window.addEventListener("scroll", scheduleMedia, { passive: true });
+      window.addEventListener("resize", scheduleMedia);
+    }
 
     // Prototype: interaction is pointer-driven, not a constant idle animation.
     // Browsers without fine hover pointers keep the native touch experience.
@@ -77,6 +143,11 @@ export default function HomepageMotion() {
     return () => {
       observer.disconnect();
       cleanups.forEach((cleanup) => cleanup());
+      if (isPhone) {
+        window.removeEventListener("scroll", scheduleMedia);
+        window.removeEventListener("resize", scheduleMedia);
+        if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
+      }
     };
   }, []);
 

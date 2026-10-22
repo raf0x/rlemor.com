@@ -544,8 +544,7 @@
   .experienceRow p {
     font-size: 17px;
   }
-  .experienceRow a,
-  .lighthouse a {
+  .experienceRow a {
     margin-top: 9px;
     font-size: 16px;
   }
@@ -597,7 +596,7 @@
     gap: 23px;
   }
   .lighthouse h3 {
-    font-size: 28px;
+    font-size: 25px;
   }
   .lighthouse p {
     margin-top: 14px;
@@ -794,7 +793,9 @@
   .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) .lighthouseImageLink,
   .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) > div,
   .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectFigure,
-  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectStoryCopy {
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectStoryCopy,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectFigure,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectStoryCopy {
     transform: translate3d(0, 34px, 0) scale(0.98);
   }
 }
@@ -813,7 +814,9 @@
   .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) .lighthouseImageLink,
   .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) > div,
   .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectFigure,
-  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectStoryCopy {
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectStoryCopy,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectFigure,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectStoryCopy {
     transform: translate3d(0, 24px, 0) scale(0.985);
   }
 }

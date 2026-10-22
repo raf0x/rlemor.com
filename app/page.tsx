@@ -50,7 +50,7 @@ export default function Home() {
               alt="Rafael Lemor"
               width={400}
               height={400}
-              sizes="(max-width: 640px) 120px, (max-width: 900px) 220px, 260px"
+              sizes="(max-width: 640px) 164px, (max-width: 900px) 232px, 296px"
               preload
             />
           </figure>
@@ -207,29 +207,65 @@ export default function Home() {
             </div>
           </article>
           <div className={styles.otherProjects}>
-            <div>
-              <h3>
-                <Link href="/projects/mypepprotocol">
-                  MyPepProtocol <span aria-hidden="true">→</span>
+            <article className={styles.projectStory}>
+              <div className={styles.projectStoryCopy}>
+                <h3>
+                  <Link href="/projects/mypepprotocol">
+                    MyPepProtocol <span aria-hidden="true">→</span>
+                  </Link>
+                </h3>
+                <p>
+                  A private health-record app that keeps treatment plans,
+                  schedules, inventory, and lab results connected so information
+                  does not have to be entered twice.
+                </p>
+              </div>
+              <figure className={styles.projectFigure}>
+                <Link
+                  className={styles.projectPreview}
+                  href="/projects/mypepprotocol"
+                  aria-label="Explore MyPepProtocol case study"
+                >
+                  <Image
+                    src="/projects/mypepprotocol/MyPepProtocol%20Dark%20Mode%20Dashboard.png"
+                    alt="MyPepProtocol dashboard presented in an editorial laptop mockup, showing health trends, daily focus, and active protocols."
+                    width={1682}
+                    height={935}
+                    sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 54vw, 630px"
+                  />
                 </Link>
-              </h3>
-              <p>
-                A private health-record app that keeps treatment plans,
-                schedules, inventory, and lab results connected so information
-                does not have to be entered twice.
-              </p>
-            </div>
-            <div>
-              <h3>
-                <Link href="/projects#world-cup-tracker">
-                  World Cup Tracker <span aria-hidden="true">→</span>
+                <figcaption>MyPepProtocol dashboard, presented in an editorial laptop mockup.</figcaption>
+              </figure>
+            </article>
+            <article className={styles.projectStory}>
+              <div className={styles.projectStoryCopy}>
+                <h3>
+                  <Link href="/projects#world-cup-tracker">
+                    World Cup Tracker <span aria-hidden="true">→</span>
+                  </Link>
+                </h3>
+                <p>
+                  An independent tournament tracker and predictor, now a
+                  historical reference. Not affiliated with FIFA.
+                </p>
+              </div>
+              <figure className={styles.projectFigure}>
+                <Link
+                  className={styles.projectPreview}
+                  href="/projects#world-cup-tracker"
+                  aria-label="Explore World Cup Tracker project"
+                >
+                  <Image
+                    src="/projects/world-cup-tracker/world-cup-overview-desktop.png"
+                    alt="Actual World Cup Tracker interface displaying the tournament header, knockout bracket, and group stage."
+                    width={1122}
+                    height={1402}
+                    sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 42vw, 480px"
+                  />
                 </Link>
-              </h3>
-              <p>
-                An independent tournament tracker and predictor, now a
-                historical reference. Not affiliated with FIFA.
-              </p>
-            </div>
+                <figcaption>World Cup Tracker, a historical interface capture.</figcaption>
+              </figure>
+            </article>
           </div>
         </section>
 

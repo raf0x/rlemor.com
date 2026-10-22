@@ -100,38 +100,6 @@ export default function HomepageMotion() {
       window.addEventListener("resize", scheduleMedia);
     }
 
-    // Desktop-only cinematic depth on existing photographs and project screens.
-    // The independent scale/translate properties preserve Studio hover tilt.
-    const scenes = !isPhone
-      ? Array.from(root.querySelectorAll<HTMLElement>(
-          ".motion-cinematic-scene",
-        ))
-      : [];
-    let sceneFrame = 0;
-    const updateScenes = () => {
-      sceneFrame = 0;
-      const viewport = window.innerHeight || 1;
-      for (const scene of scenes) {
-        const rect = scene.getBoundingClientRect();
-        if (rect.bottom < -viewport * 0.2 || rect.top > viewport * 1.2) continue;
-        const normalized = Math.max(-1, Math.min(1,
-          (rect.top + rect.height / 2 - viewport / 2) / (viewport * 0.7),
-        ));
-        const image = scene.querySelector<HTMLElement>("img");
-        if (!image) continue;
-        image.style.setProperty("--scene-scale", (1.035 - Math.abs(normalized) * 0.055).toFixed(3));
-        image.style.setProperty("--scene-offset", `${(-normalized * 14).toFixed(1)}px`);
-      }
-    };
-    const scheduleScenes = () => {
-      if (!sceneFrame) sceneFrame = window.requestAnimationFrame(updateScenes);
-    };
-    if (!isPhone && scenes.length) {
-      scheduleScenes();
-      window.addEventListener("scroll", scheduleScenes, { passive: true });
-      window.addEventListener("resize", scheduleScenes);
-    }
-
     // Prototype: interaction is pointer-driven, not a constant idle animation.
     // Browsers without fine hover pointers keep the native touch experience.
     const cleanups: Array<() => void> = [];
@@ -175,11 +143,6 @@ export default function HomepageMotion() {
     return () => {
       observer.disconnect();
       cleanups.forEach((cleanup) => cleanup());
-      if (!isPhone) {
-        window.removeEventListener("scroll", scheduleScenes);
-        window.removeEventListener("resize", scheduleScenes);
-        if (sceneFrame) window.cancelAnimationFrame(sceneFrame);
-      }
       if (isPhone) {
         window.removeEventListener("scroll", scheduleMedia);
         window.removeEventListener("resize", scheduleMedia);

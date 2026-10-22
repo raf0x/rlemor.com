@@ -184,7 +184,7 @@ export default function Home() {
               />
             </Link>
             <div>
-              <h3><Link className={styles.lighthouseTitleLink} href="/projects#lighthouse">Lighthouse</Link></h3>
+              <h3><Link className={styles.lighthouseTitleLink} href="/projects#lighthouse">Lighthouse <span aria-hidden="true">→</span></Link></h3>
               <p>
                 Lighthouse is an AI-assisted customer health and account
                 intelligence platform that brings customer{" "}
@@ -203,9 +203,6 @@ export default function Home() {
                   better decisions
                 </strong>.
               </p>
-              <Link className={styles.lighthouseExploreLink} href="/projects#lighthouse">
-                Explore Lighthouse <span aria-hidden="true">→</span>
-              </Link>
             </div>
           </article>
           <div className={styles.otherProjects}>

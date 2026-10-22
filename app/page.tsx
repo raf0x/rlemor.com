@@ -15,7 +15,8 @@ export default function Home() {
     <>
       <SiteHeader />
       <main className={styles.page} id="main-content" tabIndex={-1}>
-        <section className={`${styles.hero} ${styles.motionItem}`} data-motion-item aria-labelledby="intro-heading">
+        <div className={styles.scrollProgress} aria-hidden="true" />
+        <section className={styles.hero} aria-labelledby="intro-heading">
           <div>
             <p className={styles.greeting}>
               <span aria-hidden="true" />
@@ -58,13 +59,12 @@ export default function Home() {
         </section>
 
         <section
-          className={`${styles.experience} ${styles.motionItem}`}
-          data-motion-item
+          className={styles.experience}
           aria-labelledby="experience-heading"
         >
-          <p className={styles.eyebrow}>Professional experience</p>
-          <h2 id="experience-heading">From enterprise accounts to the world stage.</h2>
-          <article className={styles.experienceRow}>
+          <p className={`${styles.eyebrow} ${styles.motionItem}`} data-motion-item>Professional experience</p>
+          <h2 id="experience-heading" className={styles.motionItem} data-motion-item>From enterprise accounts to the world stage.</h2>
+          <article className={`${styles.experienceRow} ${styles.motionItem}`} data-motion-item>
             <h3>Global sports &amp; events</h3>
             <div>
               <p>
@@ -83,7 +83,7 @@ export default function Home() {
               </Link>
             </div>
           </article>
-          <article className={styles.experienceRow}>
+          <article className={`${styles.experienceRow} ${styles.motionItem}`} data-motion-item>
             <h3>Enterprise SaaS &amp; customer success</h3>
             <div>
               <p>
@@ -96,7 +96,7 @@ export default function Home() {
               </Link>
             </div>
           </article>
-          <article className={styles.experienceRow}>
+          <article className={`${styles.experienceRow} ${styles.motionItem}`} data-motion-item>
             <h3>Service operations &amp; leadership</h3>
             <div>
               <p>
@@ -164,14 +164,13 @@ export default function Home() {
         </aside>
 
         <section
-          className={`${styles.projects} ${styles.motionItem}`}
-          data-motion-item
+          className={styles.projects}
           id="projects"
           aria-labelledby="projects-heading"
         >
-          <p className={styles.eyebrow}>Independent projects</p>
-          <h2 id="projects-heading">What I’ve built with AI.</h2>
-          <p className={styles.projectsIntro}>
+          <p className={`${styles.eyebrow} ${styles.motionItem}`} data-motion-item>Independent projects</p>
+          <h2 id="projects-heading" className={styles.motionItem} data-motion-item>What I’ve built with AI.</h2>
+          <p className={`${styles.projectsIntro} ${styles.motionItem}`} data-motion-item>
             I started building because I kept finding problems I wanted to
             solve, at work and beyond it. AI-assisted tools now help me turn
             those questions into working products.

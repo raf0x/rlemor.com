@@ -46,7 +46,7 @@ export default function Home() {
               <Link href="/contact">Get in touch</Link>
             </div>
           </div>
-          <figure className={styles.portrait}>
+          <figure className={styles.portrait} data-motion-depth="0.7">
             <Image
               src="/images/rafael-portrait.jpg"
               alt="Rafael Lemor"
@@ -176,7 +176,7 @@ export default function Home() {
             those questions into working products.
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item>
-            <Link className={styles.lighthouseImageLink} href="/projects#lighthouse" aria-label="Explore Lighthouse project">
+            <Link className={styles.lighthouseImageLink} data-motion-depth="1.15" href="/projects#lighthouse" aria-label="Explore Lighthouse project">
               <Image
                 className={styles.projectImage}
                 src="/projects/lighthouse/concept-artwork.webp"
@@ -225,6 +225,7 @@ export default function Home() {
               <figure className={styles.projectFigure}>
                 <Link
                   className={styles.projectPreview}
+                  data-motion-depth="1"
                   href="/projects/mypepprotocol"
                   aria-label="Explore MyPepProtocol case study"
                 >
@@ -254,6 +255,7 @@ export default function Home() {
               <figure className={styles.projectFigure}>
                 <Link
                   className={styles.projectPreview}
+                  data-motion-depth="1"
                   href="/projects#world-cup-tracker"
                   aria-label="Explore World Cup Tracker project"
                 >

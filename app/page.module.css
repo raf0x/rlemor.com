@@ -844,3 +844,64 @@
     animation: none !important;
   }
 }
+
+
+/* Prototype B: Depth. Visual layers respond to actual scroll progress. */
+@media (prefers-reduced-motion: no-preference) {
+  .page[data-motion-ready="true"] .motionItem:not([data-motion-visible="true"]) {
+    transform: translate3d(0, 25px, 0) scale(0.99);
+  }
+  .page[data-motion-ready="true"] .motionItem {
+    transition-duration: 780ms;
+  }
+  .portrait img {
+    transform: translate3d(0, var(--motion-depth, 0px), 0) scale(1.015);
+    transition: transform 120ms linear;
+  }
+  .lighthouseImageLink,
+  .projectPreview {
+    overflow: hidden;
+  }
+  .lighthouseImageLink img {
+    transform: translate3d(0, var(--motion-depth, 0px), 0) scale(1.085);
+    transition: transform 130ms linear;
+  }
+  .projectPreview img {
+    transform: translate3d(0, var(--motion-depth, 0px), 0) scale(1.11);
+    transition: transform 130ms linear;
+  }
+  .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) .lighthouseImageLink,
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectFigure {
+    transform: translate3d(0, 26px, 0) scale(0.97);
+  }
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectFigure {
+    transform: translate3d(0, 26px, 0) scale(0.97);
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .lighthouseImageLink:hover img,
+  .lighthouseImageLink:focus-visible img {
+    transform: translate3d(0, var(--motion-depth, 0px), 0) scale(1.13);
+  }
+  .projectPreview:hover img,
+  .projectPreview:focus-visible img {
+    transform: translate3d(0, var(--motion-depth, 0px), 0) scale(1.16);
+  }
+}
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .lighthouseImageLink img {
+    transform: translate3d(0, var(--motion-depth, 0px), 0) scale(1.05);
+  }
+  .projectPreview img {
+    transform: translate3d(0, var(--motion-depth, 0px), 0) scale(1.075);
+  }
+  .portrait img {
+    transform: translate3d(0, var(--motion-depth, 0px), 0) scale(1.01);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portrait img, .lighthouseImageLink img, .projectPreview img {
+    transform: none !important;
+    transition: none !important;
+  }
+}

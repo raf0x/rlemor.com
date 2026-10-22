@@ -544,8 +544,7 @@
   .experienceRow p {
     font-size: 17px;
   }
-  .experienceRow a,
-  .lighthouse a {
+  .experienceRow a {
     margin-top: 9px;
     font-size: 16px;
   }
@@ -597,7 +596,7 @@
     gap: 23px;
   }
   .lighthouse h3 {
-    font-size: 28px;
+    font-size: 25px;
   }
   .lighthouse p {
     margin-top: 14px;
@@ -655,5 +654,193 @@
   .button {
     padding: 10px 15px;
     gap: 20px;
+  }
+}
+
+/* Expressive motion. Native scrolling remains untouched. */
+.scrollProgress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scrollProgress {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 40;
+    width: 100%;
+    height: 2px;
+    background: var(--color-accent);
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: scrollReadProgress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes scrollReadProgress {
+  to { transform: scaleX(1); }
+}
+
+.page[data-motion-ready="true"] .motionItem {
+  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.page[data-motion-ready="true"] .motionItem:not([data-motion-visible="true"]) {
+  opacity: 0;
+  transform: translate3d(0, 45px, 0) scale(0.98);
+}
+.page[data-motion-ready="true"] .motionItem[data-motion-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Let product imagery and copy arrive in a deliberate sequence. */
+.page[data-motion-ready="true"] .lighthouse.motionItem,
+.page[data-motion-ready="true"] .projectStory.motionItem {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.page[data-motion-ready="true"] .lighthouseImageLink,
+.page[data-motion-ready="true"] .lighthouse > div,
+.page[data-motion-ready="true"] .projectStoryCopy,
+.page[data-motion-ready="true"] .projectFigure {
+  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) .lighthouseImageLink,
+.page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectFigure {
+  opacity: 0;
+  transform: translate3d(42px, 30px, 0) scale(0.95);
+}
+.page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) > div,
+.page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectStoryCopy {
+  opacity: 0;
+  transform: translate3d(-32px, 28px, 0);
+}
+.page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectFigure {
+  transform: translate3d(-42px, 30px, 0) scale(0.95);
+}
+.page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectStoryCopy {
+  transform: translate3d(32px, 28px, 0);
+}
+.page[data-motion-ready="true"] .lighthouse[data-motion-visible="true"] .lighthouseImageLink,
+.page[data-motion-ready="true"] .lighthouse[data-motion-visible="true"] > div,
+.page[data-motion-ready="true"] .projectStory[data-motion-visible="true"] .projectStoryCopy,
+.page[data-motion-ready="true"] .projectStory[data-motion-visible="true"] .projectFigure {
+  opacity: 1;
+  transform: none;
+}
+.page[data-motion-ready="true"] .lighthouse > div,
+.page[data-motion-ready="true"] .projectStoryCopy {
+  transition-delay: 100ms;
+}
+
+/* First impression: stagger text, actions and portrait without changing layout. */
+@media (prefers-reduced-motion: no-preference) {
+  .greeting,
+  .hero h1,
+  .heroCopy,
+  .actions,
+  .portrait {
+    animation: heroArrival 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .hero h1 { animation-delay: 100ms; }
+  .heroCopy { animation-delay: 230ms; }
+  .actions { animation-delay: 360ms; }
+  .portrait { animation-delay: 160ms; }
+}
+@keyframes heroArrival {
+  from { opacity: 0; transform: translate3d(0, 30px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lighthouseImageLink {
+    overflow: hidden;
+  }
+  .lighthouseImageLink img,
+  .projectPreview img {
+    transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lighthouseImageLink:hover img,
+  .lighthouseImageLink:focus-visible img,
+  .projectPreview:hover img,
+  .projectPreview:focus-visible img {
+    transform: scale(1.055);
+  }
+  .lighthouseTitleLink span,
+  .otherProjects h3 a span {
+    display: inline-block;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lighthouseTitleLink:hover span,
+  .lighthouseTitleLink:focus-visible span,
+  .otherProjects h3 a:hover span,
+  .otherProjects h3 a:focus-visible span {
+    transform: translateX(8px);
+  }
+  .button {
+    transition: background-color 220ms ease, border-color 220ms ease,
+                transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .button:hover {
+    transform: translateY(-3px);
+  }
+}
+
+@media (max-width: 900px) {
+  .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) .lighthouseImageLink,
+  .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) > div,
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectFigure,
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectStoryCopy,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectFigure,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectStoryCopy {
+    transform: translate3d(0, 34px, 0) scale(0.98);
+  }
+}
+
+@media (max-width: 640px) {
+  .page[data-motion-ready="true"] .motionItem,
+  .page[data-motion-ready="true"] .lighthouseImageLink,
+  .page[data-motion-ready="true"] .lighthouse > div,
+  .page[data-motion-ready="true"] .projectStoryCopy,
+  .page[data-motion-ready="true"] .projectFigure {
+    transition-duration: 640ms;
+  }
+  .page[data-motion-ready="true"] .motionItem:not([data-motion-visible="true"]) {
+    transform: translate3d(0, 30px, 0);
+  }
+  .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) .lighthouseImageLink,
+  .page[data-motion-ready="true"] .lighthouse:not([data-motion-visible="true"]) > div,
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectFigure,
+  .page[data-motion-ready="true"] .projectStory:not([data-motion-visible="true"]) .projectStoryCopy,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectFigure,
+  .page[data-motion-ready="true"] .projectStory:last-child:not([data-motion-visible="true"]) .projectStoryCopy {
+    transform: translate3d(0, 24px, 0) scale(0.985);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollProgress { display: none; }
+  .page[data-motion-ready="true"] .motionItem,
+  .page[data-motion-ready="true"] .lighthouseImageLink,
+  .page[data-motion-ready="true"] .lighthouse > div,
+  .page[data-motion-ready="true"] .projectStoryCopy,
+  .page[data-motion-ready="true"] .projectFigure,
+  .lighthouseImageLink img,
+  .projectPreview img,
+  .lighthouseTitleLink span,
+  .otherProjects h3 a span,
+  .button,
+  .greeting,
+  .hero h1,
+  .heroCopy,
+  .actions,
+  .portrait {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
   }
 }

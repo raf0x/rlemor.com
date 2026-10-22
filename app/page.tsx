@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import HomepageMotion from "@/components/HomepageMotion";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export default function Home() {
     <>
       <SiteHeader />
       <main className={styles.page} id="main-content" tabIndex={-1}>
+        <div className={styles.scrollProgress} aria-hidden="true" />
         <section className={styles.hero} aria-labelledby="intro-heading">
           <div>
             <p className={styles.greeting}>
@@ -60,9 +62,9 @@ export default function Home() {
           className={styles.experience}
           aria-labelledby="experience-heading"
         >
-          <p className={styles.eyebrow}>Professional experience</p>
-          <h2 id="experience-heading">From enterprise accounts to the world stage.</h2>
-          <article className={styles.experienceRow}>
+          <p className={`${styles.eyebrow} ${styles.motionItem}`} data-motion-item>Professional experience</p>
+          <h2 id="experience-heading" className={styles.motionItem} data-motion-item>From enterprise accounts to the world stage.</h2>
+          <article className={`${styles.experienceRow} ${styles.motionItem}`} data-motion-item>
             <h3>Global sports &amp; events</h3>
             <div>
               <p>
@@ -81,7 +83,7 @@ export default function Home() {
               </Link>
             </div>
           </article>
-          <article className={styles.experienceRow}>
+          <article className={`${styles.experienceRow} ${styles.motionItem}`} data-motion-item>
             <h3>Enterprise SaaS &amp; customer success</h3>
             <div>
               <p>
@@ -94,7 +96,7 @@ export default function Home() {
               </Link>
             </div>
           </article>
-          <article className={styles.experienceRow}>
+          <article className={`${styles.experienceRow} ${styles.motionItem}`} data-motion-item>
             <h3>Service operations &amp; leadership</h3>
             <div>
               <p>
@@ -110,7 +112,8 @@ export default function Home() {
         </section>
 
         <aside
-          className={styles.relationships}
+          className={`${styles.relationships} ${styles.motionItem}`}
+          data-motion-item
           aria-labelledby="relationships-heading"
         >
           <h2 id="relationships-heading">
@@ -165,14 +168,14 @@ export default function Home() {
           id="projects"
           aria-labelledby="projects-heading"
         >
-          <p className={styles.eyebrow}>Independent projects</p>
-          <h2 id="projects-heading">What I’ve built with AI.</h2>
-          <p className={styles.projectsIntro}>
+          <p className={`${styles.eyebrow} ${styles.motionItem}`} data-motion-item>Independent projects</p>
+          <h2 id="projects-heading" className={styles.motionItem} data-motion-item>What I’ve built with AI.</h2>
+          <p className={`${styles.projectsIntro} ${styles.motionItem}`} data-motion-item>
             I started building because I kept finding problems I wanted to
             solve, at work and beyond it. AI-assisted tools now help me turn
             those questions into working products.
           </p>
-          <article className={styles.lighthouse}>
+          <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item>
             <Link className={styles.lighthouseImageLink} href="/projects#lighthouse" aria-label="Explore Lighthouse project">
               <Image
                 className={styles.projectImage}
@@ -206,7 +209,7 @@ export default function Home() {
             </div>
           </article>
           <div className={styles.otherProjects}>
-            <article className={styles.projectStory}>
+            <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>
               <div className={styles.projectStoryCopy}>
                 <h3>
                   <Link href="/projects/mypepprotocol">
@@ -236,7 +239,7 @@ export default function Home() {
                 <figcaption>MyPepProtocol dashboard, presented in an editorial laptop mockup.</figcaption>
               </figure>
             </article>
-            <article className={styles.projectStory}>
+            <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>
               <div className={styles.projectStoryCopy}>
                 <h3>
                   <Link href="/projects#world-cup-tracker">
@@ -268,7 +271,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.contact} aria-labelledby="contact-heading">
+        <section className={`${styles.contact} ${styles.motionItem}`} data-motion-item aria-labelledby="contact-heading">
           <div>
             <p className={styles.eyebrow}>Beyond the work</p>
             <h2 id="contact-heading">Let’s talk about what’s next.</h2>
@@ -290,6 +293,7 @@ export default function Home() {
             </a>
           </div>
         </section>
+        <HomepageMotion />
       </main>
       <SiteFooter />
     </>

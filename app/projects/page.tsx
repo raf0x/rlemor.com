@@ -51,12 +51,12 @@ export default function ProjectsPage() {
       <main className={styles.page} id="main-content" tabIndex={-1}>
         <section className={styles.intro}>
           <p className={styles.eyebrow}>Independent projects</p>
-          <h1>Curiosity, put to work.</h1>
+          <h1>Ideas into working products.</h1>
           <p>
-            My work with customers makes me curious about the systems behind
-            their experience. These independent, AI-assisted projects give that
-            curiosity somewhere practical to go: from the first question to a
-            working product.
+            My experience working with customers has shown me problems worth
+            solving. These independent projects are how I explore practical
+            solutions, using AI and modern tools to turn an idea into something
+            people can actually use.
           </p>
         </section>
 

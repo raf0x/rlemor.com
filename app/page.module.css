@@ -1072,3 +1072,56 @@
     opacity: 0.76;
   }
 }
+
+/*
+ * Composed A+B+C: Apple-like scale-to-settle, Lusion/Igloo depth, and
+ * Unseen/Studio tactile exploration. No wheel interception or new assets.
+ * The dedicated CSS scale/translate properties leave pointer tilt intact.
+ */
+@media (min-width: 641px) and (prefers-reduced-motion: no-preference) {
+  .page :global(.motion-cinematic-scene) img {
+    scale: var(--scene-scale, 1);
+    translate: 0 var(--scene-offset, 0px);
+    transition: scale 130ms linear, translate 130ms linear;
+  }
+
+  .page .lighthouseImageLink,
+  .page .projectPreview {
+    overflow: hidden;
+  }
+
+  /* Spatial continuity comes from staggered existing editorial sections. */
+  .page[data-motion-ready="true"] .experienceRow:nth-of-type(2) {
+    transition-delay: 85ms;
+  }
+  .page[data-motion-ready="true"] .experienceRow:nth-of-type(3) {
+    transition-delay: 145ms;
+  }
+  .page[data-motion-ready="true"] .relationships .partnerGroup:nth-child(2) {
+    transition-delay: 90ms;
+  }
+  .page[data-motion-ready="true"] .relationships .partnerGroup:nth-child(3) {
+    transition-delay: 150ms;
+  }
+
+  /* Enhance media presence without inventing card backgrounds. */
+  .page .lighthouseImageLink[data-motion-tilt],
+  .page .projectPreview[data-motion-tilt] {
+    box-shadow: 0 0 0 rgba(24, 35, 46, 0);
+    transition: transform 200ms ease-out, box-shadow 320ms ease;
+  }
+  .page .lighthouseImageLink[data-motion-tilt]:hover,
+  .page .lighthouseImageLink[data-motion-tilt]:focus-visible,
+  .page .projectPreview[data-motion-tilt]:hover,
+  .page .projectPreview[data-motion-tilt]:focus-visible {
+    box-shadow: 0 14px 32px rgba(24, 35, 46, 0.11);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page :global(.motion-cinematic-scene) img {
+    scale: 1 !important;
+    translate: none !important;
+    transition: none !important;
+  }
+}

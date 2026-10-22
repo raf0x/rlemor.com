@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import HomepageMotion from "@/components/HomepageMotion";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -14,7 +15,7 @@ export default function Home() {
     <>
       <SiteHeader />
       <main className={styles.page} id="main-content" tabIndex={-1}>
-        <section className={styles.hero} aria-labelledby="intro-heading">
+        <section className={`${styles.hero} ${styles.motionItem}`} data-motion-item aria-labelledby="intro-heading">
           <div>
             <p className={styles.greeting}>
               <span aria-hidden="true" />
@@ -57,7 +58,8 @@ export default function Home() {
         </section>
 
         <section
-          className={styles.experience}
+          className={`${styles.experience} ${styles.motionItem}`}
+          data-motion-item
           aria-labelledby="experience-heading"
         >
           <p className={styles.eyebrow}>Professional experience</p>
@@ -110,7 +112,8 @@ export default function Home() {
         </section>
 
         <aside
-          className={styles.relationships}
+          className={`${styles.relationships} ${styles.motionItem}`}
+          data-motion-item
           aria-labelledby="relationships-heading"
         >
           <h2 id="relationships-heading">
@@ -161,7 +164,8 @@ export default function Home() {
         </aside>
 
         <section
-          className={styles.projects}
+          className={`${styles.projects} ${styles.motionItem}`}
+          data-motion-item
           id="projects"
           aria-labelledby="projects-heading"
         >
@@ -172,7 +176,7 @@ export default function Home() {
             solve, at work and beyond it. AI-assisted tools now help me turn
             those questions into working products.
           </p>
-          <article className={styles.lighthouse}>
+          <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item>
             <Link className={styles.lighthouseImageLink} href="/projects#lighthouse" aria-label="Explore Lighthouse project">
               <Image
                 className={styles.projectImage}
@@ -206,7 +210,7 @@ export default function Home() {
             </div>
           </article>
           <div className={styles.otherProjects}>
-            <article className={styles.projectStory}>
+            <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>
               <div className={styles.projectStoryCopy}>
                 <h3>
                   <Link href="/projects/mypepprotocol">
@@ -236,7 +240,7 @@ export default function Home() {
                 <figcaption>MyPepProtocol dashboard, presented in an editorial laptop mockup.</figcaption>
               </figure>
             </article>
-            <article className={styles.projectStory}>
+            <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>
               <div className={styles.projectStoryCopy}>
                 <h3>
                   <Link href="/projects#world-cup-tracker">
@@ -268,7 +272,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.contact} aria-labelledby="contact-heading">
+        <section className={`${styles.contact} ${styles.motionItem}`} data-motion-item aria-labelledby="contact-heading">
           <div>
             <p className={styles.eyebrow}>Beyond the work</p>
             <h2 id="contact-heading">Let’s talk about what’s next.</h2>
@@ -290,6 +294,7 @@ export default function Home() {
             </a>
           </div>
         </section>
+        <HomepageMotion />
       </main>
       <SiteFooter />
     </>

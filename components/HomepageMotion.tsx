@@ -8,11 +8,30 @@ export default function HomepageMotion() {
     if (!root || !("IntersectionObserver" in window) ||
         window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const items = Array.from(root.querySelectorAll<HTMLElement>("[data-motion-item]"));
+    const isPhone = window.matchMedia("(max-width: 640px)").matches;
+    const sectionItems = Array.from(root.querySelectorAll<HTMLElement>("[data-motion-item]"));
+
+    // Tall mobile stories reveal their image, copy, and partner groups as
+    // separate reading moments. Desktop retains the existing Studio motion.
+    if (isPhone) {
+      for (const item of sectionItems) {
+        if (item.querySelector("[data-mobile-motion-item]")) {
+          item.dataset.motionVisible = "true";
+        }
+      }
+      root.dataset.mobileMotionReady = "true";
+    }
+
+    const items = [
+      ...sectionItems,
+      ...(isPhone
+        ? Array.from(root.querySelectorAll<HTMLElement>("[data-mobile-motion-item]"))
+        : []),
+    ];
     const viewportHeight = window.innerHeight;
     for (const item of items) {
       const bounds = item.getBoundingClientRect();
-      if (bounds.top < viewportHeight * 0.9 && bounds.bottom > 0) {
+      if (bounds.top < viewportHeight * (isPhone ? 1.08 : 0.9) && bounds.bottom > 0) {
         item.dataset.motionVisible = "true";
       }
     }
@@ -26,7 +45,10 @@ export default function HomepageMotion() {
           }
         }
       },
-      { rootMargin: "0px 0px -7% 0px", threshold: 0.08 },
+      {
+        rootMargin: isPhone ? "0px 0px 12% 0px" : "0px 0px -7% 0px",
+        threshold: isPhone ? 0.01 : 0.08,
+      },
     );
 
     for (const item of items) {

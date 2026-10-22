@@ -33,7 +33,11 @@
   font-size: clamp(40px, 4vw, 54px);
   line-height: 1.15;
 }
-.hero h1 span {
+.heroLead,
+.heroStatement {
+  display: block;
+}
+.hero h1 .heroHighlight {
   color: var(--color-accent);
 }
 .heroCopy {
@@ -48,6 +52,12 @@
   gap: 26px;
   margin-top: 27px;
   font-size: 17px;
+}
+.secondaryAction {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  transition: color 220ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .button {
   display: inline-flex;
@@ -739,19 +749,27 @@
 /* First impression: stagger text, actions and portrait without changing layout. */
 @media (prefers-reduced-motion: no-preference) {
   .greeting,
-  .hero h1,
   .heroCopy,
   .actions,
   .portrait {
     animation: heroArrival 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  .hero h1 { animation-delay: 100ms; }
+  .heroLead,
+  .heroStatement {
+    animation: heroHeadlineLineIn 540ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .heroLead { animation-delay: 35ms; }
+  .heroStatement { animation-delay: 200ms; }
   .heroCopy { animation-delay: 230ms; }
   .actions { animation-delay: 360ms; }
   .portrait { animation-delay: 160ms; }
 }
 @keyframes heroArrival {
   from { opacity: 0; transform: translate3d(0, 30px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes heroHeadlineLineIn {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
   to { opacity: 1; transform: none; }
 }
 
@@ -1035,14 +1053,12 @@
 
   /* A more confident first impression that doesn't delay scroll gestures. */
   .greeting,
-  .hero h1,
   .heroCopy,
   .actions,
   .portrait {
     animation-duration: 790ms;
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .hero h1 { animation-delay: 85ms; }
   .heroCopy { animation-delay: 175ms; }
   .actions { animation-delay: 290ms; }
   .portrait {
@@ -1070,5 +1086,64 @@
   .lighthouseTitleLink:active,
   .otherProjects h3 a:active {
     opacity: 0.76;
+  }
+}
+
+
+/*
+ * Hero + editorial hover refinement, Stage 1.
+ * Keeps all existing Studio scroll/reveal choreography intact.
+ */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  /* Experience is an editorial list, not a grid of boxed cards. */
+  .experienceRow {
+    position: relative;
+  }
+  .experienceRow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: 0 0 0 rgba(35, 44, 39, 0);
+    transition: box-shadow 280ms ease;
+  }
+  .experienceRow > h3,
+  .experienceRow > div {
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .experienceRow:hover > h3,
+  .experienceRow:hover > div,
+  .experienceRow:focus-within > h3,
+  .experienceRow:focus-within > div {
+    transform: translate3d(0, -4px, 0);
+  }
+  .experienceRow:hover::before,
+  .experienceRow:focus-within::before {
+    box-shadow: 0 10px 24px rgba(35, 44, 39, 0.055);
+  }
+
+  /* Studio already lifts linked media by 4px. Add only a soft shadow. */
+  .lighthouseImageLink[data-motion-tilt],
+  .projectPreview[data-motion-tilt] {
+    box-shadow: 0 0 0 rgba(35, 44, 39, 0);
+    transition: transform 180ms ease-out, box-shadow 260ms ease;
+  }
+  .lighthouseImageLink[data-motion-tilt]:hover,
+  .lighthouseImageLink[data-motion-tilt]:focus-visible,
+  .projectPreview[data-motion-tilt]:hover,
+  .projectPreview[data-motion-tilt]:focus-visible {
+    box-shadow: 0 12px 26px rgba(35, 44, 39, 0.11);
+  }
+
+  .button[data-motion-magnet]:hover {
+    transform: translate3d(
+      var(--magnet-x, 0px),
+      calc(-3px + var(--magnet-y, 0px)),
+      0
+    ) scale(1.012);
+  }
+  .secondaryAction:hover {
+    color: var(--color-accent);
+    transform: translate3d(0, -2px, 0);
   }
 }

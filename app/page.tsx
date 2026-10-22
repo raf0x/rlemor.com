@@ -227,14 +227,14 @@ export default function Home() {
                   aria-label="Explore MyPepProtocol case study"
                 >
                   <Image
-                    src="/projects/mypepprotocol/overview-desktop.png"
-                    alt="Actual MyPepProtocol desktop interface showing daily health metrics, active protocols, and connected records."
-                    width={2048}
-                    height={1342}
+                    src="/projects/mypepprotocol/MyPepProtocol%20Dark%20Mode%20Dashboard.png"
+                    alt="MyPepProtocol dashboard presented in an editorial laptop mockup, showing health trends, daily focus, and active protocols."
+                    width={1682}
+                    height={935}
                     sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 54vw, 630px"
                   />
                 </Link>
-                <figcaption>Inside MyPepProtocol, an actual product interface.</figcaption>
+                <figcaption>MyPepProtocol dashboard, presented in an editorial laptop mockup.</figcaption>
               </figure>
             </article>
             <article className={styles.projectStory}>

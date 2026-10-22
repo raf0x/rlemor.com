@@ -81,16 +81,16 @@ export default function MyPepProtocolCaseStudy() {
           </header>
 
           <div className={styles.overviewFigure}>
-            <ScreenshotViewer
-              title="MyPepProtocol"
-              src="/projects/mypepprotocol/overview-detail.webp"
-              alt="MyPepProtocol Today view with demo summary metrics and active protocol records."
-              width={1088}
-              height={1342}
-              sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 784px) calc(100vw - 64px), 720px"
-              caption="The Today view, shown with demo data. Enlarge to inspect the original interface."
-            />
-          </div>
+  <ScreenshotViewer
+    title="MyPepProtocol"
+    src="/projects/mypepprotocol/mypepprotocol_dashboard_workspace.png"
+    alt="MyPepProtocol shown in a warm workspace laptop view, highlighting health trends, active protocols, and the daily check-in experience."
+    width={1400}
+    height={1050}
+    sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 784px) calc(100vw - 64px), 720px"
+    caption="MyPepProtocol in context, highlighting the Today view and daily check-in experience."
+  />
+</div>
 
           <section className={styles.section}>
             <p className={styles.sectionLabel}>Product rules</p>

@@ -109,7 +109,7 @@ export default function AboutPage() {
             <figcaption>A quiet moment on the road in Southeast Asia.</figcaption>
           </figure>
           <div className={styles.storyCopy}>
-            <h2 id="beyond-work">Curiosity beyond work.</h2>
+            <h2 id="beyond-work">Outside of work.</h2>
             <p>
               Travel is one of my biggest interests. A three-month backpacking
               trip through Southeast Asia gave me time to explore new places,
@@ -127,10 +127,9 @@ export default function AboutPage() {
           <h2 id="building">Making useful things.</h2>
           <div className={styles.storyCopy}>
             <p>
-              More recently, I&apos;ve brought that curiosity into independent
-              product building. I use AI and modern development tools to take a
-              practical problem from an initial question to a working solution,
-              then test and refine it.
+              I&apos;ve also started building independent products. I use AI and
+              modern development tools to take a practical problem from an
+              initial question to a working solution, then test and refine it.
             </p>
             <p>
               It&apos;s another way to explore the things I care about at work:

@@ -947,3 +947,83 @@
     transition: none !important;
   }
 }
+
+/*
+ * Studio / mobile choreography.
+ * The desktop Studio rules above are intentionally untouched. On phones,
+ * each image, its description and each partner group reveal independently.
+ * Keep native momentum scrolling and avoid scroll-linked JavaScript.
+ */
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .motionItem {
+    transition-duration: 440ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .motionItem:not([data-motion-visible="true"]) {
+    transform: translate3d(0, 16px, 0);
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] [data-mobile-motion-item] {
+    opacity: 1;
+    transform: none;
+    transition: opacity 460ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] [data-mobile-motion-item]:not([data-motion-visible="true"]) {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.987);
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .projectStoryCopy[data-mobile-motion-item]:not([data-motion-visible="true"]),
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .lighthouse > div[data-mobile-motion-item]:not([data-motion-visible="true"]),
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .partnerGroup[data-mobile-motion-item]:not([data-motion-visible="true"]) {
+    transform: translate3d(0, 12px, 0);
+  }
+
+  /* Don't make phone users wait for an entire tall logo section to animate. */
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .relationships .partnerLogos img,
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .relationships .shibumiAccounts img {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .lighthouse > div,
+  .page[data-motion-ready="true"][data-mobile-motion-ready="true"] .projectStoryCopy {
+    transition-delay: 0ms;
+  }
+
+  .greeting,
+  .hero h1,
+  .heroCopy,
+  .actions,
+  .portrait {
+    animation-duration: 580ms;
+  }
+  .hero h1 { animation-delay: 45ms; }
+  .heroCopy { animation-delay: 95ms; }
+  .actions { animation-delay: 150ms; }
+  .portrait { animation-delay: 110ms; }
+}
+
+@media (max-width: 640px) and (hover: none) and (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+  /* Give taps tactile feedback instead of pretending phones have hover. */
+  .lighthouseImageLink img,
+  .projectPreview img,
+  .button {
+    transition: transform 165ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lighthouseImageLink:active img,
+  .projectPreview:active img {
+    transform: scale(1.018);
+  }
+  .button:active {
+    transform: scale(0.98);
+  }
+  .lighthouseTitleLink:active,
+  .otherProjects h3 a:active {
+    opacity: 0.76;
+  }
+}

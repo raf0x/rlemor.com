@@ -176,7 +176,7 @@ export default function Home() {
             those questions into working products.
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item>
-            <Link className={styles.lighthouseImageLink} data-motion-tilt data-mobile-motion-item href="/projects#lighthouse" aria-label="Explore Lighthouse project">
+            <Link className={styles.lighthouseImageLink} data-motion-tilt data-mobile-motion-item data-mobile-scroll-media href="/projects#lighthouse" aria-label="Explore Lighthouse project">
               <Image
                 className={styles.projectImage}
                 src="/projects/lighthouse/concept-artwork.webp"
@@ -226,6 +226,7 @@ export default function Home() {
                 <Link
                   className={styles.projectPreview}
                   data-motion-tilt
+                  data-mobile-scroll-media
                   href="/projects/mypepprotocol"
                   aria-label="Explore MyPepProtocol case study"
                 >
@@ -256,6 +257,7 @@ export default function Home() {
                 <Link
                   className={styles.projectPreview}
                   data-motion-tilt
+                  data-mobile-scroll-media
                   href="/projects#world-cup-tracker"
                   aria-label="Explore World Cup Tracker project"
                 >

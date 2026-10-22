@@ -56,50 +56,6 @@ export default function HomepageMotion() {
     }
     root.dataset.motionReady = "true";
 
-    // Phone-only scroll choreography: drive three image masks and image-depth
-    // transforms from the *actual finger scroll position*. This is not a timer,
-    // and it reverses naturally when scrolling upward. Desktop stays unchanged.
-    const media = isPhone
-      ? Array.from(root.querySelectorAll<HTMLElement>("[data-mobile-scroll-media]"))
-      : [];
-    let scrollFrame = 0;
-    const updateMedia = () => {
-      scrollFrame = 0;
-      const viewport = window.innerHeight || 1;
-      for (const layer of media) {
-        const rect = layer.getBoundingClientRect();
-        if (rect.bottom < -viewport * 0.25 || rect.top > viewport * 1.2) continue;
-
-        const wipeProgress = Math.max(
-          0,
-          Math.min(1, (viewport * 0.92 - rect.top) / (viewport * 0.48)),
-        );
-        const center = rect.top + rect.height / 2;
-        const position = Math.max(
-          -1,
-          Math.min(1, (viewport / 2 - center) / (viewport * 0.55)),
-        );
-
-        layer.style.setProperty(
-          "--mobile-wipe-right",
-          `${((1 - wipeProgress) * 100).toFixed(1)}%`,
-        );
-        layer.style.setProperty(
-          "--mobile-image-shift",
-          `${(-position * 11).toFixed(1)}px`,
-        );
-      }
-      root.dataset.mobileScrollReady = "true";
-    };
-    const scheduleMedia = () => {
-      if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateMedia);
-    };
-    if (isPhone) {
-      scheduleMedia();
-      window.addEventListener("scroll", scheduleMedia, { passive: true });
-      window.addEventListener("resize", scheduleMedia);
-    }
-
     // Prototype: interaction is pointer-driven, not a constant idle animation.
     // Browsers without fine hover pointers keep the native touch experience.
     const cleanups: Array<() => void> = [];
@@ -143,11 +99,6 @@ export default function HomepageMotion() {
     return () => {
       observer.disconnect();
       cleanups.forEach((cleanup) => cleanup());
-      if (isPhone) {
-        window.removeEventListener("scroll", scheduleMedia);
-        window.removeEventListener("resize", scheduleMedia);
-        if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
-      }
     };
   }, []);
 

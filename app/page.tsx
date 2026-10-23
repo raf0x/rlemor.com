@@ -46,7 +46,7 @@ export default function Home() {
                   alt="Shibumi"
                   width={370}
                   height={81}
-                />.
+                /><span className={styles.heroLogoPeriod}>.</span>
               </span>
               <span className={styles.heroCopySecondLine}>
                 CX leader using AI for better decisions and practical tools.

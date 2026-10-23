@@ -118,7 +118,7 @@ export default function HomepageMotion() {
         const ScrollTrigger = triggerModule.ScrollTrigger;
         gsap.registerPlugin(ScrollTrigger);
 
-        const hero = root.querySelector<HTMLElement("[class*='hero_']");
+        const hero = root.querySelector<HTMLElement>("[class*='hero_']");
         const lighthouse = root.querySelector<HTMLElement>("[data-gsap-lighthouse]");
         if (!hero || !lighthouse) return;
 

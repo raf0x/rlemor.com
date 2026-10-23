@@ -16,18 +16,20 @@ export default function Home() {
       <SiteHeader />
       <main className={styles.page} id="main-content" tabIndex={-1}>
         <div className={styles.scrollProgress} aria-hidden="true" />
-        <section className={styles.hero} aria-labelledby="intro-heading">
+        <section className={styles.hero} aria-labelledby="intro-heading" data-gsap-hero>
           <div>
-            <p className={styles.greeting}>
+            <p className={styles.greeting} data-gsap-greeting>
               <span aria-hidden="true" />
               Hello from Miami
             </p>
             <h1 id="intro-heading">
-              I’m Rafael.
-              <br />I turn <span>human relationships</span>
-              <br className={styles.heroLineBreak} /> into a competitive advantage.
+              <span className={styles.gsapHeroLine} data-gsap-hero-line>I’m Rafael.</span>
+              <span className={styles.gsapHeroLine} data-gsap-hero-line>
+                I turn <span>human relationships</span>
+                <br className={styles.heroLineBreak} /> into a competitive advantage.
+              </span>
             </h1>
-            <p className={styles.heroCopy}>
+            <p className={styles.heroCopy} data-gsap-copy>
               Managed{" "}
               <Image
                 className={styles.fifaHeroLogo}
@@ -39,14 +41,14 @@ export default function Home() {
               commercial partners and a $4M SaaS portfolio. CX leader using AI
               for better decisions and practical tools.
             </p>
-            <div className={styles.actions}>
+            <div className={styles.actions} data-gsap-actions>
               <Link className={styles.button} data-motion-magnet href="/work">
                 Explore work <span aria-hidden="true">↗</span>
               </Link>
               <Link href="/contact">Get in touch</Link>
             </div>
           </div>
-          <figure className={`${styles.portrait} motion-cinematic-scene`}>
+          <figure className={`${styles.portrait} motion-cinematic-scene`} data-gsap-portrait>
             <Image
               src="/images/rafael-portrait.jpg"
               alt="Rafael Lemor"
@@ -175,9 +177,10 @@ export default function Home() {
             solve, at work and beyond it. AI-assisted tools now help me turn
             those questions into working products.
           </p>
-          <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item>
-            <Link className={`${styles.lighthouseImageLink} motion-cinematic-scene`} data-motion-tilt data-mobile-motion-item data-mobile-scroll-media href="/projects#lighthouse" aria-label="Explore Lighthouse project">
-              <Image
+          <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item data-gsap-lighthouse>
+            <div className={styles.lighthouseStage} data-gsap-lighthouse-stage>
+              <Link className={`${styles.lighthouseImageLink} motion-cinematic-scene`} data-mobile-motion-item href="/projects#lighthouse" aria-label="Explore Lighthouse project">
+                <Image
                 className={styles.projectImage}
                 src="/projects/lighthouse/concept-artwork.webp"
                 alt="Illustrative Lighthouse concept artwork featuring account health, renewal risk, and a coastal lighthouse."
@@ -185,7 +188,16 @@ export default function Home() {
                 height={941}
                 sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 900px) calc(100vw - 64px), (max-width: 1244px) 56vw, 682px"
               />
-            </Link>
+              </Link>
+              <div className={styles.lighthouseCurtain} data-gsap-lighthouse-curtain aria-hidden="true">
+                <span>01 / SELECTED WORK</span>
+                <span>LIGHTHOUSE</span>
+              </div>
+              <div className={styles.lighthouseStageCaption} data-gsap-lighthouse-caption aria-hidden="true">
+                <span>ACCOUNT INTELLIGENCE</span>
+                <span>↗</span>
+              </div>
+            </div>
             <div data-mobile-motion-item>
               <h3><Link className={styles.lighthouseTitleLink} href="/projects#lighthouse">Lighthouse <span aria-hidden="true">→</span></Link></h3>
               <p>

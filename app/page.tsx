@@ -178,7 +178,7 @@ export default function Home() {
             those questions into working products.
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item data-gsap-lighthouse>
-            <Link className={`${styles.lighthouseImageLink} motion-cinematic-scene`} data-motion-tilt data-mobile-motion-item data-mobile-scroll-media href="/projects#lighthouse" aria-label="Explore Lighthouse project">
+            <Link className={`${styles.lighthouseImageLink} motion-cinematic-scene`} data-motion-tilt data-mobile-motion-item href="/projects#lighthouse" aria-label="Explore Lighthouse project">
               <Image
                 className={styles.projectImage}
                 src="/projects/lighthouse/concept-artwork.webp"

@@ -44,8 +44,8 @@ export default function Home() {
                   className={styles.shibumiHeroLogo}
                   src="/brands/shibumi-employer.png"
                   alt="Shibumi"
-                  width={400}
-                  height={100}
+                  width={370}
+                  height={81}
                 />.
               </span>
               <span className={styles.heroCopySecondLine}>

@@ -118,17 +118,17 @@ export default function HomepageMotion() {
         const ScrollTrigger = triggerModule.ScrollTrigger;
         gsap.registerPlugin(ScrollTrigger);
 
-        const hero = root.querySelector<HTMLElement>("[class*='hero_']");
+        const hero = root.querySelector<HTMLElement>("[data-gsap-hero]");
         const lighthouse = root.querySelector<HTMLElement>("[data-gsap-lighthouse]");
         if (!hero || !lighthouse) return;
 
         root.dataset.gsapActive = "true";
         const scope = gsap.context(() => {
           const lines = hero.querySelectorAll("[data-gsap-hero-line]");
-          const greeting = hero.querySelector("[class*='greeting_']");
-          const copy = hero.querySelector("[class*='heroCopy_']");
-          const actions = hero.querySelector("[class*='actions_']");
-          const portrait = hero.querySelector("[class*='portrait_']");
+          const greeting = hero.querySelector("[data-gsap-greeting]");
+          const copy = hero.querySelector("[data-gsap-copy]");
+          const actions = hero.querySelector("[data-gsap-actions]");
+          const portrait = hero.querySelector("[data-gsap-portrait]");
 
           const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
           if (greeting) timeline.from(greeting, { autoAlpha: 0, y: 12, duration: 0.7 }, 0.05);

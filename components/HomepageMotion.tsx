@@ -164,11 +164,11 @@ export default function HomepageMotion() {
               defaults: { ease: "power3.inOut" },
             });
             reveal
-              .to(curtain, { xPercent: 102, duration: 1.18, ease: "power3.inOut" }, 0)
-              .to(mediaImage, { scale: 1, duration: 1.55, ease: "power2.out" }, 0.14)
-              .to(caption, { autoAlpha: 1, y: 0, duration: 0.75, ease: "power3.out" }, 0.68);
-            if (title) reveal.to(title, { autoAlpha: 1, y: 0, duration: 0.95, ease: "power3.out" }, 0.42);
-            if (description) reveal.to(description, { autoAlpha: 1, y: 0, duration: 1.05, ease: "power3.out" }, 0.59);
+              .to(curtain, { xPercent: 102, duration: 3.1, ease: "power2.inOut" }, 0)
+              .to(mediaImage, { scale: 1, duration: 3.2, ease: "power2.out" }, 0.2)
+              .to(caption, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power3.out" }, 2.35);
+            if (title) reveal.to(title, { autoAlpha: 1, y: 0, duration: 1, ease: "power3.out" }, 1.45);
+            if (description) reveal.to(description, { autoAlpha: 1, y: 0, duration: 1.05, ease: "power3.out" }, 1.8);
             ScrollTrigger.create({
               trigger: lighthouse,
               start: "top 83%",

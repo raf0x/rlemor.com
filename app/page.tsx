@@ -178,8 +178,9 @@ export default function Home() {
             those questions into working products.
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item data-gsap-lighthouse>
-            <Link className={`${styles.lighthouseImageLink} motion-cinematic-scene`} data-motion-tilt data-mobile-motion-item href="/projects#lighthouse" aria-label="Explore Lighthouse project">
-              <Image
+            <div className={styles.lighthouseStage} data-gsap-lighthouse-stage>
+              <Link className={`${styles.lighthouseImageLink} motion-cinematic-scene`} data-mobile-motion-item href="/projects#lighthouse" aria-label="Explore Lighthouse project">
+                <Image
                 className={styles.projectImage}
                 src="/projects/lighthouse/concept-artwork.webp"
                 alt="Illustrative Lighthouse concept artwork featuring account health, renewal risk, and a coastal lighthouse."
@@ -187,7 +188,16 @@ export default function Home() {
                 height={941}
                 sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 900px) calc(100vw - 64px), (max-width: 1244px) 56vw, 682px"
               />
-            </Link>
+              </Link>
+              <div className={styles.lighthouseCurtain} data-gsap-lighthouse-curtain aria-hidden="true">
+                <span>01 / SELECTED WORK</span>
+                <span>LIGHTHOUSE</span>
+              </div>
+              <div className={styles.lighthouseStageCaption} data-gsap-lighthouse-caption aria-hidden="true">
+                <span>ACCOUNT INTELLIGENCE</span>
+                <span>↗</span>
+              </div>
+            </div>
             <div data-mobile-motion-item>
               <h3><Link className={styles.lighthouseTitleLink} href="/projects#lighthouse">Lighthouse <span aria-hidden="true">→</span></Link></h3>
               <p>

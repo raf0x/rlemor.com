@@ -1167,6 +1167,24 @@
 }
 
 /* GSAP immersion pilot: only hero and Lighthouse. No layout change. */
+/* Prevent the SSR-to-hydration flash. With JavaScript disabled the page
+   remains fully visible; reduced-motion users also bypass the hiding. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .page [data-gsap-hero] [data-gsap-greeting],
+  .page [data-gsap-hero] [data-gsap-hero-line],
+  .page [data-gsap-hero] [data-gsap-copy],
+  .page [data-gsap-hero] [data-gsap-actions],
+  .page [data-gsap-hero] [data-gsap-portrait] {
+    opacity: 0;
+  }
+}
+.page[data-gsap-active="true"] [data-gsap-hero] [data-gsap-greeting],
+.page[data-gsap-active="true"] [data-gsap-hero] [data-gsap-hero-line],
+.page[data-gsap-active="true"] [data-gsap-hero] [data-gsap-copy],
+.page[data-gsap-active="true"] [data-gsap-hero] [data-gsap-actions],
+.page[data-gsap-active="true"] [data-gsap-hero] [data-gsap-portrait] {
+  opacity: 1;
+}
 /* Stop the legacy hero keyframes from racing the dynamically loaded GSAP
    timeline. Keep content visible until GSAP takes ownership. */
 @media (prefers-reduced-motion: no-preference) {

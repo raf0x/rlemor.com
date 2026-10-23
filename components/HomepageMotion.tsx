@@ -131,14 +131,14 @@ export default function HomepageMotion() {
           const portrait = hero.querySelector("[data-gsap-portrait]");
 
           const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-          if (greeting) timeline.from(greeting, { autoAlpha: 0, y: 12, duration: 0.7 }, 0.05);
-          if (lines[0]) timeline.from(lines[0], { autoAlpha: 0, y: 42, duration: 1.15 }, 0.2);
-          if (lines[1]) timeline.from(lines[1], { autoAlpha: 0, y: 35, duration: 1.25 }, 0.43);
-          if (copy) timeline.from(copy, { autoAlpha: 0, y: 24, duration: 0.95 }, 0.72);
-          if (actions) timeline.from(actions, { autoAlpha: 0, y: 18, duration: 0.85 }, 0.99);
-          if (portrait) timeline.from(portrait, {
-            autoAlpha: 0, y: 36, scale: 0.92, duration: 1.35,
-          }, 0.42);
+          if (greeting) timeline.fromTo(greeting, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.7 }, 0.05);
+          if (lines[0]) timeline.fromTo(lines[0], { autoAlpha: 0, y: 42 }, { autoAlpha: 1, y: 0, duration: 1.15 }, 0.2);
+          if (lines[1]) timeline.fromTo(lines[1], { autoAlpha: 0, y: 35 }, { autoAlpha: 1, y: 0, duration: 1.25 }, 0.43);
+          if (copy) timeline.fromTo(copy, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.95 }, 0.72);
+          if (actions) timeline.fromTo(actions, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.85 }, 0.99);
+          if (portrait) timeline.fromTo(portrait, {
+            autoAlpha: 0, y: 36, scale: 0.92,
+          }, { autoAlpha: 1, y: 0, scale: 1, duration: 1.35 }, 0.42);
 
           // Editorial stage reveal: a dark cover travels off the real project
           // artwork, followed by the typographic index and narrative.

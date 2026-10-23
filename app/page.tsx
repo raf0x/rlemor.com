@@ -30,16 +30,27 @@ export default function Home() {
               </span>
             </h1>
             <p className={styles.heroCopy} data-gsap-copy>
-              Managed{" "}
-              <Image
-                className={styles.fifaHeroLogo}
-                src="/images/fifa-wordmark.svg"
-                alt="FIFA"
-                width={270}
-                height={89}
-              />{" "}
-              commercial partners and a $4M SaaS portfolio. CX leader using AI
-              for better decisions and practical tools.
+              <span className={styles.heroCopyFirstLine}>
+                Managed{" "}
+                <Image
+                  className={styles.fifaHeroLogo}
+                  src="/images/fifa-wordmark.svg"
+                  alt="FIFA"
+                  width={270}
+                  height={89}
+                />{" "}
+                commercial partners and a $4M SaaS portfolio at{" "}
+                <Image
+                  className={styles.shibumiHeroLogo}
+                  src="/brands/shibumi-employer.svg"
+                  alt="Shibumi"
+                  width={400}
+                  height={100}
+                />
+              </span>
+              <span className={styles.heroCopySecondLine}>
+                CX leader using AI for better decisions and practical tools.
+              </span>
             </p>
             <div className={styles.actions} data-gsap-actions>
               <Link className={styles.button} data-motion-magnet href="/work">

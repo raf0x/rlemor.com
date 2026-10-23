@@ -37,9 +37,32 @@
   color: var(--color-accent);
 }
 .heroCopy {
-  max-width: 640px;
+  max-width: none;
   margin-top: 24px;
   font-size: 20px;
+}
+.heroCopyFirstLine,
+.heroCopySecondLine {
+  display: block;
+}
+.heroCopyFirstLine {
+  white-space: nowrap;
+}
+.shibumiHeroLogo {
+  display: inline-block;
+  width: 102px;
+  height: auto;
+  vertical-align: -0.13em;
+}
+@media (max-width: 1100px) {
+  .heroCopyFirstLine {
+    white-space: normal;
+  }
+}
+@media (max-width: 640px) {
+  .shibumiHeroLogo {
+    width: 92px;
+  }
 }
 .actions {
   display: flex;

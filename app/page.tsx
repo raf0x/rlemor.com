@@ -16,9 +16,9 @@ export default function Home() {
       <SiteHeader />
       <main className={styles.page} id="main-content" tabIndex={-1}>
         <div className={styles.scrollProgress} aria-hidden="true" />
-        <section className={styles.hero} aria-labelledby="intro-heading">
+        <section className={styles.hero} aria-labelledby="intro-heading" data-gsap-hero>
           <div>
-            <p className={styles.greeting}>
+            <p className={styles.greeting} data-gsap-greeting>
               <span aria-hidden="true" />
               Hello from Miami
             </p>
@@ -29,7 +29,7 @@ export default function Home() {
                 <br className={styles.heroLineBreak} /> into a competitive advantage.
               </span>
             </h1>
-            <p className={styles.heroCopy}>
+            <p className={styles.heroCopy} data-gsap-copy>
               Managed{" "}
               <Image
                 className={styles.fifaHeroLogo}
@@ -41,14 +41,14 @@ export default function Home() {
               commercial partners and a $4M SaaS portfolio. CX leader using AI
               for better decisions and practical tools.
             </p>
-            <div className={styles.actions}>
+            <div className={styles.actions} data-gsap-actions>
               <Link className={styles.button} data-motion-magnet href="/work">
                 Explore work <span aria-hidden="true">↗</span>
               </Link>
               <Link href="/contact">Get in touch</Link>
             </div>
           </div>
-          <figure className={`${styles.portrait} motion-cinematic-scene`}>
+          <figure className={`${styles.portrait} motion-cinematic-scene`} data-gsap-portrait>
             <Image
               src="/images/rafael-portrait.jpg"
               alt="Rafael Lemor"

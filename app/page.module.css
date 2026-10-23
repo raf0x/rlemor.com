@@ -1165,3 +1165,47 @@
     box-shadow: 0 12px 26px rgba(24, 35, 46, 0.10);
   }
 }
+
+/* GSAP immersion pilot: only hero and Lighthouse. No layout change. */
+.gsapHeroLine {
+  display: block;
+}
+.hero h1 .gsapHeroLine {
+  color: inherit;
+}
+.hero h1 .gsapHeroLine > span {
+  color: var(--color-accent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .page[data-gsap-active="true"] .greeting,
+  .page[data-gsap-active="true"] .hero h1,
+  .page[data-gsap-active="true"] .heroCopy,
+  .page[data-gsap-active="true"] .actions,
+  .page[data-gsap-active="true"] .portrait {
+    animation: none !important;
+  }
+
+  .page[data-gsap-active="true"] [data-gsap-lighthouse] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .page[data-gsap-active="true"] [data-gsap-lighthouse] .lighthouseImageLink,
+  .page[data-gsap-active="true"] [data-gsap-lighthouse] > div {
+    opacity: 1;
+  }
+  .page[data-gsap-active="true"] [data-gsap-lighthouse] .lighthouseImageLink {
+    overflow: hidden;
+  }
+  /* Prevent legacy hover zoom from fighting the active GSAP scene. */
+  .page[data-gsap-active="true"] [data-gsap-lighthouse] .lighthouseImageLink:hover img,
+  .page[data-gsap-active="true"] [data-gsap-lighthouse] .lighthouseImageLink:focus-visible img {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gsapHeroLine,
+  .page [data-gsap-lighthouse] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

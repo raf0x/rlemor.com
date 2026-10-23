@@ -49,11 +49,7 @@
   white-space: nowrap;
 }
 .heroLogoPeriod {
-  display: inline-block;
-  margin-left: 4px;
-  font-size: 1em;
-  line-height: 1;
-  vertical-align: baseline;
+  margin-left: 3px;
   color: var(--color-foreground);
 }
 .shibumiHeroLogo {

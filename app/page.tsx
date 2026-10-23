@@ -23,9 +23,11 @@ export default function Home() {
               Hello from Miami
             </p>
             <h1 id="intro-heading">
-              I’m Rafael.
-              <br />I turn <span>human relationships</span>
-              <br className={styles.heroLineBreak} /> into a competitive advantage.
+              <span className={styles.gsapHeroLine} data-gsap-hero-line>I’m Rafael.</span>
+              <span className={styles.gsapHeroLine} data-gsap-hero-line>
+                I turn <span>human relationships</span>
+                <br className={styles.heroLineBreak} /> into a competitive advantage.
+              </span>
             </h1>
             <p className={styles.heroCopy}>
               Managed{" "}
@@ -175,7 +177,7 @@ export default function Home() {
             solve, at work and beyond it. AI-assisted tools now help me turn
             those questions into working products.
           </p>
-          <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item>
+          <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item data-gsap-lighthouse>
             <Link className={`${styles.lighthouseImageLink} motion-cinematic-scene`} data-motion-tilt data-mobile-motion-item data-mobile-scroll-media href="/projects#lighthouse" aria-label="Explore Lighthouse project">
               <Image
                 className={styles.projectImage}

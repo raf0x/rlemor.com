@@ -42,11 +42,11 @@ export default function Home() {
                 commercial partners and a $4M SaaS portfolio at{" "}
                 <Image
                   className={styles.shibumiHeroLogo}
-                  src="/brands/shibumi-employer.svg"
+                  src="/brands/shibumi-employer.png"
                   alt="Shibumi"
-                  width={400}
-                  height={100}
-                />
+                  width={370}
+                  height={81}
+                />.
               </span>
               <span className={styles.heroCopySecondLine}>
                 CX leader using AI for better decisions and practical tools.

@@ -1230,6 +1230,7 @@
   display: block;
 }
 .lighthouseCurtain {
+  display: none;
   position: absolute;
   z-index: 2;
   inset: 0;
@@ -1272,6 +1273,11 @@
   letter-spacing: .12em;
 }
 .lighthouseStageCaption span:last-child { font-size: 18px; letter-spacing: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .page[data-gsap-active="true"] .lighthouseCurtain {
+    display: flex;
+  }
+}
 @media (prefers-reduced-motion: no-preference) {
   .page[data-gsap-active="true"] [data-gsap-lighthouse] .lighthouseStage,
   .page[data-gsap-active="true"] [data-gsap-lighthouse] .lighthouseStage .lighthouseImageLink,

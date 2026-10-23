@@ -1167,6 +1167,18 @@
 }
 
 /* GSAP immersion pilot: only hero and Lighthouse. No layout change. */
+/* Stop the legacy hero keyframes from racing the dynamically loaded GSAP
+   timeline. Keep content visible until GSAP takes ownership. */
+@media (prefers-reduced-motion: no-preference) {
+  .page .hero .greeting,
+  .page .hero h1,
+  .page .hero .heroCopy,
+  .page .hero .actions,
+  .page .hero .portrait {
+    animation: none !important;
+  }
+}
+
 .gsapHeroLine {
   display: block;
 }

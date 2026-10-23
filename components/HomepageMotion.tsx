@@ -140,27 +140,42 @@ export default function HomepageMotion() {
             autoAlpha: 0, y: 36, scale: 0.92, duration: 1.35,
           }, 0.42);
 
-          const media = lighthouse.querySelector<HTMLElement>("a[data-motion-tilt]");
-          const image = media?.querySelector("img");
+          // Editorial stage reveal: a dark cover travels off the real project
+          // artwork, followed by the typographic index and narrative.
+          // One deliberate entrance, no scroll scrubbing or reverse jitter.
+          const stage = lighthouse.querySelector<HTMLElement>("[data-gsap-lighthouse-stage]");
+          const media = stage?.querySelector<HTMLElement>("a");
+          const curtain = stage?.querySelector<HTMLElement>("[data-gsap-lighthouse-curtain]");
+          const caption = stage?.querySelector<HTMLElement>("[data-gsap-lighthouse-caption]");
           const story = lighthouse.querySelector<HTMLElement>("div[data-mobile-motion-item]");
-          // One-shot scene: no scroll scrubbing, clipping, forced pinning or
-          // repeated transforms when users scroll back up.
-          if (media && image && story) {
-            gsap.set(media, { clipPath: "inset(9% 6% 9% 6% round 12px)", autoAlpha: 1 });
-            gsap.set(image, { scale: 1.09, transformOrigin: "center center" });
-            gsap.set(story, { autoAlpha: 0, y: 28 });
-            const reveal = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
-            reveal.to(media, { clipPath: "inset(0% 0% 0% 0% round 0px)", duration: 1.45 }, 0)
-              .to(image, { scale: 1, duration: 1.65 }, 0)
-              .to(story, { autoAlpha: 1, y: 0, duration: 1.05 }, 0.35);
+          if (stage && media && curtain && caption && story) {
+            const title = story.querySelector("h3");
+            const description = story.querySelector("p");
+            const mediaImage = media.querySelector("img");
+            gsap.set(stage, { overflow: "hidden" });
+            gsap.set(curtain, { xPercent: 0 });
+            gsap.set(caption, { autoAlpha: 0, y: 14 });
+            gsap.set(story, { autoAlpha: 1 });
+            if (title) gsap.set(title, { autoAlpha: 0, y: 28 });
+            if (description) gsap.set(description, { autoAlpha: 0, y: 22 });
+            if (mediaImage) gsap.set(mediaImage, { scale: 1.045, transformOrigin: "center" });
+            const reveal = gsap.timeline({
+              paused: true,
+              defaults: { ease: "power3.inOut" },
+            });
+            reveal
+              .to(curtain, { xPercent: 102, duration: 1.18, ease: "power3.inOut" }, 0)
+              .to(mediaImage, { scale: 1, duration: 1.55, ease: "power2.out" }, 0.14)
+              .to(caption, { autoAlpha: 1, y: 0, duration: 0.75, ease: "power3.out" }, 0.68);
+            if (title) reveal.to(title, { autoAlpha: 1, y: 0, duration: 0.95, ease: "power3.out" }, 0.42);
+            if (description) reveal.to(description, { autoAlpha: 1, y: 0, duration: 1.05, ease: "power3.out" }, 0.59);
             ScrollTrigger.create({
               trigger: lighthouse,
-              start: "top 85%",
+              start: "top 83%",
               once: true,
               onEnter: () => reveal.play(),
             });
-            // Deep-linked/restored scroll positions must never hide content.
-            if (lighthouse.getBoundingClientRect().top < innerHeight * 0.85) reveal.play();
+            if (lighthouse.getBoundingClientRect().top < innerHeight * 0.83) reveal.play();
           }
         }, root);
 

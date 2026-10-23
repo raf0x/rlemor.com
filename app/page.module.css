@@ -49,6 +49,8 @@
   white-space: nowrap;
 }
 .heroLogoPeriod {
+  position: relative;
+  top: 2px;
   margin-left: 3px;
   color: var(--color-foreground);
 }

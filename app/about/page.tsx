@@ -106,7 +106,7 @@ export default function AboutPage() {
               height={3024}
               sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1230px) 43vw, 480px"
             />
-            <figcaption>A quiet moment on the road in Southeast Asia.</figcaption>
+            <figcaption>Angkor Wat, Cambodia. Before sunrise, 4:30 a.m.</figcaption>
           </figure>
           <div className={styles.storyCopy}>
             <h2 id="beyond-work">Outside of work.</h2>

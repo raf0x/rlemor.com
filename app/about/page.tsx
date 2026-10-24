@@ -64,9 +64,9 @@ export default function AboutPage() {
                 During the 2026 World Cup, I supported the Miami Host City
                 Committee throughout the tournament. Just two or three days
                 before the sold-out Mexico–England match in Mexico City, my point
-                of contact called me directly. Four tickets intended for the
-                organization&apos;s CEO had mistakenly gone to other people
-                during their internal distribution.
+                of contact called me directly. During the committee&apos;s
+                internal ticket distribution, he had mistakenly assigned four
+                tickets intended for the organization&apos;s CEO to other recipients.
               </p>
               <p>
                 I started coordinating across FIFA teams, eventually reaching

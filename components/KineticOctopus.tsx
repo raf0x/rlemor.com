@@ -78,14 +78,17 @@ function createMechanicalOctopus(scene: THREE.Scene) {
 
   // A dark internal chassis, overlaid with twelve independently separable
   // ceramic shell plates. These are actual curved meshes, not a 2D sprite.
-  const chassis = addMesh(root, new THREE.SphereGeometry(0.86, 40, 28), graphite);
+  const xrayChassis = graphite.clone();
+  xrayChassis.transparent = true;
+  xrayChassis.depthWrite = false;
+  const chassis = addMesh(root, new THREE.SphereGeometry(0.86, 40, 28), xrayChassis);
   const platePorcelain = porcelain.clone();
   const plateAlt = porcelainAlt.clone();
   // Separate shell materials can become transparent without making the
   // articulated arms transparent in inspection mode.
   for (const mat of [platePorcelain, plateAlt]) {
     mat.transparent = true;
-    mat.depthWrite = true;
+    mat.depthWrite = false;
   }
   const internalRig = new THREE.Group();
   root.add(internalRig);
@@ -96,8 +99,8 @@ function createMechanicalOctopus(scene: THREE.Scene) {
     color: 0xf28d4e, emissive: 0xe55b27, emissiveIntensity: 0.76,
     metalness: 0.3, roughness: 0.31,
   });
-  const cage = addMesh(internalRig, new THREE.IcosahedronGeometry(0.68, 1), innerMetal);
-  cage.material.wireframe = true;
+  innerMetal.wireframe = true;
+  addMesh(internalRig, new THREE.IcosahedronGeometry(0.68, 1), innerMetal);
   for (let i = 0; i < 3; i++) {
     const axisRing = addMesh(
       internalRig, new THREE.TorusGeometry(0.61 + i * 0.06, 0.018, 8, 56),
@@ -219,6 +222,11 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   const collars = new THREE.InstancedMesh(torus, graphite, total);
   const signals = new THREE.InstancedMesh(marker, orange, total);
   const pins = new THREE.InstancedMesh(jointSphere, darkGlass, total);
+  const amber = new THREE.Color(0xff8248);
+  const rainbowColor = new THREE.Color();
+  const signalColor = new THREE.Color();
+  let lastSignalFrame = -1;
+  let hadRainbow = false;
 
   for (const mesh of [housing, spine, joints, collars, signals, pins]) {
     mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -300,14 +308,16 @@ function createMechanicalOctopus(scene: THREE.Scene) {
     const foldedRadius = baseRadius
       + (t > 0.65 ? Math.sin(curlAngle) * 0.58 - curled * 0.18 : 0);
     const straightRadius = 1.04 + 3.63 * t;
-    const radius = THREE.MathUtils.lerp(foldedRadius, straightRadius, pose.deploy);
+    const radius = THREE.MathUtils.lerp(foldedRadius, straightRadius, pose.deploy)
+      * (0.58 + 0.42 * armWake[arm].value);
 
     const foldedSide = hand * (1 - Math.cos(curlAngle)) * (0.66 + (arm % 3) * 0.09);
     const side = THREE.MathUtils.lerp(foldedSide, 0.06 * Math.sin(t * 4), pose.deploy)
       + breath * 0.12 * t;
     const depth = Math.sin(angle * 2.3) * 0.38 * t
       + (arm % 3 - 1) * 0.32 * curled
-      + breath * 0.23 * t;
+      + breath * 0.23 * t
+      + hoverField.power * (hoverField.arm === arm ? 0.19 * t : 0);
 
     output.set(
       Math.cos(angle) * radius - Math.sin(angle) * side,
@@ -361,6 +371,55 @@ function createMechanicalOctopus(scene: THREE.Scene) {
     }
     for (const mesh of [housing, spine, joints, collars, signals, pins]) {
       mesh.instanceMatrix.needsUpdate = true;
+    }
+  }
+
+  function updateDynamics(dt: number) {
+    // Semi-implicit damped spring, always running even when ambient rotation
+    // is paused. On release the target is zero, so parts pull themselves home.
+    const step = Math.min(0.033, Math.max(0.001, dt));
+    const stiffness = 91;
+    const drag = Math.exp(-13.8 * step);
+    for (let i = 0; i < springs.length; i++) {
+      const position = springs[i];
+      const velocity = springSpeeds[i];
+      const target = springTargets[i];
+      velocity.addScaledVector(
+        target.clone().sub(position), stiffness * step,
+      ).multiplyScalar(drag);
+      position.addScaledVector(velocity, step);
+      if (target.lengthSq() < 0.00001 &&
+          position.lengthSq() < 0.000001 &&
+          velocity.lengthSq() < 0.0001) {
+        position.set(0, 0, 0);
+        velocity.set(0, 0, 0);
+      }
+    }
+    hoverField.power += (hoverField.targetPower - hoverField.power)
+      * (1 - Math.exp(-step * 8));
+  }
+
+  function updateRadiance(phase: number) {
+    const glow = awake.iris;
+    orange.emissiveIntensity = 0.18 + glow * (0.8 + 0.2 * Math.sin(phase * 3.9));
+    innerGlow.emissiveIntensity = 0.25 + glow * 0.96;
+    const tick = Math.floor(phase * 26);
+    const rainbow = awake.rainbow;
+    if (tick !== lastSignalFrame || (rainbow < 0.001 && hadRainbow)) {
+      lastSignalFrame = tick;
+      hadRainbow = rainbow >= 0.001;
+      for (let arm = 0; arm < ARM_COUNT; arm++) {
+        for (let link = 0; link < LINKS_PER_ARM; link++) {
+          const t = link / LINKS_PER_ARM;
+          const stripe = (phase * 0.29 - t + arm * 0.135 + 4) % 1;
+          rainbowColor.setHSL(stripe, 0.89, 0.54);
+          const flicker = Math.pow(Math.max(0, Math.sin(phase * 6.2
+            - t * 8.8 - arm * 0.64)), 2);
+          signalColor.copy(amber).lerp(rainbowColor, rainbow * flicker);
+          signals.setColorAt(arm * LINKS_PER_ARM + link, signalColor);
+        }
+      }
+      if (signals.instanceColor) signals.instanceColor.needsUpdate = true;
     }
   }
 
@@ -448,20 +507,34 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   }
 
   function getManualOffset(part: Grabbable) {
-    if (part.kind === "arm") return manualArmOffsets[part.index];
-    if (part.kind === "plate") return manualPlateOffsets[part.index];
-    return manualOpticOffset;
+    if (part.kind === "arm") return armTargets[part.index];
+    if (part.kind === "plate") return plateTargets[part.index];
+    return opticTarget;
+  }
+
+  function releasePart(part: Grabbable) {
+    const target = getManualOffset(part);
+    target.set(0, 0, 0);
+  }
+
+  function proximity(part: Grabbable | null) {
+    if (part?.kind === "arm" && awake.value > 0.8) {
+      hoverField.arm = part.index;
+      hoverField.targetPower = 1;
+    } else hoverField.targetPower = 0;
   }
 
   function countMovedParts() {
-    return [...manualArmOffsets, ...manualPlateOffsets, manualOpticOffset]
-      .filter((point) => point.lengthSq() > 0.0036).length;
+    return springs.filter((point) => point.lengthSq() > 0.0036).length;
   }
 
   return {
-    root, renderArms, updateShell, rings, grid, pick, getManualOffset,
-    countMovedParts, manualArmAnchors, manualArmOffsets,
-    manualPlateOffsets, manualOpticOffset,
+    root, renderArms, updateShell, updateDynamics, updateRadiance, rings, grid,
+    pick, getManualOffset, releasePart, proximity, countMovedParts,
+    manualArmAnchors, manualArmOffsets, manualPlateOffsets, manualOpticOffset,
+    armTargets, plateTargets, opticTarget, springSpeeds, awake, armWake,
+    shellMaterials: [platePorcelain, plateAlt, xrayChassis],
+    optic, internalRig,
   };
 }
 

@@ -1,9 +1,10 @@
 .lab {
   --paper: #f7f7f3;
   --ink: #262d2d;
-  --muted: #737d7c;
+  --muted: #535e5c;
   --line: #dce0d9;
   --orange: #eb563b;
+  --orange-text: #ad3523;
   min-height: 100svh;
   background: var(--paper);
   color: var(--ink);
@@ -41,7 +42,7 @@
   place-items: center;
   height: 41px;
   width: 41px;
-  background: var(--orange);
+  background: #b53b26;
   color: #fff;
   font-size: 14px;
   letter-spacing: -0.07em;
@@ -122,7 +123,7 @@
   font-weight: 700;
   margin-bottom: 12px;
 }
-.kicker span { color: var(--orange); }
+.kicker span { color: var(--orange-text); }
 .heading h1 {
   font-family: var(--font-dm-sans), Arial, sans-serif;
   font-size: clamp(47px, 6.4vw, 102px);
@@ -156,7 +157,7 @@
   font-weight: 800;
   letter-spacing: -0.075em;
   line-height: 1;
-  color: #d7d9d2;
+  color: #68736f;
 }
 .headingIndex strong {
   font-size: 10px;
@@ -415,7 +416,7 @@
 }
 .mode:hover,
 .modeActive:hover { background: #f0f1ea; padding-left: 10px; }
-.modeActive { color: var(--orange); }
+.modeActive { color: var(--orange-text); }
 .modeActive .modeTitle { font-weight: 800; }
 .modeNumber {
   font-size: 10px;
@@ -448,7 +449,7 @@
   padding: 14px 12px;
   margin-top: 21px;
   min-height: 46px;
-  background: var(--orange);
+  background: #b53b26;
   color: white;
   font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
   font-size: 11px;
@@ -457,7 +458,7 @@
   cursor: pointer;
   transition: background-color 180ms ease;
 }
-.sequenceButton:hover:not(:disabled) { background: #cf442a; }
+.sequenceButton:hover:not(:disabled) { background: #98301f; }
 .sequenceButton:disabled { opacity: .5; cursor: not-allowed; }
 .noScript {
   position: absolute;
@@ -522,7 +523,7 @@
 .telemetry small {
   display: block;
   margin-top: 9px;
-  color: #929b97;
+  color: var(--muted);
   font-size: 9px;
   line-height: 1.4;
 }

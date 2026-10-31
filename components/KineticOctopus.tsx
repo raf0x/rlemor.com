@@ -839,7 +839,12 @@ export default function KineticOctopus() {
             <span>3D / REAL-TIME</span>
           </div>
           <div className={styles.stage} ref={stageRef}>
-            <canvas ref={canvasRef} className={styles.canvas} role="img" aria-label="Interactive 3D mechanical octopus. Drag to rotate, pinch or scroll to zoom." />
+            <canvas ref={canvasRef} className={styles.canvas} role="img" aria-label="Interactive 3D mechanical octopus. Drag an arm or shell panel to reposition it. Drag empty space to rotate. Pinch or scroll to zoom." />
+            <div className={styles.partStatus} role="status" aria-live="polite">
+              <span className={styles.partStatusDot} aria-hidden="true" />
+              {selectedPart ? `GRABBED / ${selectedPart}` : "DIRECT MANIPULATION / ENABLED"}
+              {selectedPart && <span className={styles.partStatusHint}>DRAG TO REPOSITION</span>}
+            </div>
             {!ready && !unsupported && <div className={styles.loading} role="status">INITIALIZING GEOMETRY <span aria-hidden="true">···</span></div>}
             <noscript><div className={styles.noScript}>Enable JavaScript to explore the live 3D model.</div></noscript>
             {unsupported && <div className={styles.unsupported} role="status">This device cannot display the live 3D scene. Motion controls require WebGL.</div>}
@@ -851,7 +856,7 @@ export default function KineticOctopus() {
             <div className={styles.axisLabel} aria-hidden="true">X / Y / Z</div>
           </div>
           <div className={styles.viewerFooter}>
-            <span><span className={styles.orangeDot} aria-hidden="true" /> DRAG TO ORBIT <span className={styles.sep}>/</span> SCROLL OR PINCH TO ZOOM</span>
+            <span><span className={styles.orangeDot} aria-hidden="true" /> DRAG AN ARM OR PANEL <span className={styles.sep}>/</span> EMPTY SPACE TO ORBIT</span>
             <span>NOT A RENDER. AN INTERACTIVE MODEL.</span>
           </div>
         </section>
@@ -861,7 +866,7 @@ export default function KineticOctopus() {
             <span className={styles.square} aria-hidden="true" />
             <span>BEHAVIOR CONTROL</span>
           </div>
-          <p className={styles.controlIntro}>Change the organism&apos;s physical state. Each mode transitions into the next.</p>
+          <p className={styles.controlIntro}>Drag a tentacle or shell piece to move it with your mouse or finger. Drag empty space to rotate the model.</p>
           <div className={styles.modes} role="group" aria-label="Choose animation behavior">
             <button type="button" className={mode === "orbit" ? styles.modeActive : styles.mode} aria-pressed={mode === "orbit"} onClick={() => selectMode("orbit")}>
               <span className={styles.modeNumber}>01</span><span className={styles.modeTitle}>Drift</span><span aria-hidden="true">↗</span>
@@ -878,6 +883,9 @@ export default function KineticOctopus() {
           </p>
           <button type="button" className={styles.sequenceButton} disabled={!ready} onClick={() => controllerRef.current?.runSequence()}>
             <span>▶</span> RUN FULL SEQUENCE <span>↗</span>
+          </button>
+          <button type="button" className={styles.reassembleButton} disabled={!ready} onClick={() => controllerRef.current?.reassemble()}>
+            <span>↺</span> REASSEMBLE ALL PARTS <span>{movedParts ? `${movedParts} MOVED` : "RESET"}</span>
           </button>
           <div className={styles.secondaryControls}>
             <button type="button" disabled={!ready} onClick={togglePlay}>{playing ? "Ⅱ  PAUSE MOTION" : "▷  PLAY MOTION"}</button>

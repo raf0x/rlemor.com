@@ -229,6 +229,8 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   const amber = new THREE.Color(0xff8248);
   const rainbowColor = new THREE.Color();
   const signalColor = new THREE.Color();
+  for (let i = 0; i < total; i++) signals.setColorAt(i, amber);
+  if (signals.instanceColor) signals.instanceColor.needsUpdate = true;
   let lastSignalFrame = -1;
   let hadRainbow = false;
 
@@ -403,13 +405,23 @@ function createMechanicalOctopus(scene: THREE.Scene) {
       * (1 - Math.exp(-step * 8));
   }
 
+  function hasSpringMovement() {
+    for (let i = 0; i < springs.length; i++) {
+      if (springs[i].lengthSq() > 0.000001 ||
+          springTargets[i].lengthSq() > 0.000001 ||
+          springSpeeds[i].lengthSq() > 0.0001) return true;
+    }
+    return hoverField.power > 0.003 || hoverField.targetPower > 0.003;
+  }
+
   function updateRadiance(phase: number) {
     const glow = awake.iris;
     orange.emissiveIntensity = 0.18 + glow * (0.8 + 0.2 * Math.sin(phase * 3.9));
     innerGlow.emissiveIntensity = 0.25 + glow * 0.96;
     const tick = Math.floor(phase * 26);
     const rainbow = awake.rainbow;
-    if (tick !== lastSignalFrame || (rainbow < 0.001 && hadRainbow)) {
+    if ((rainbow >= 0.001 || hadRainbow) &&
+      (tick !== lastSignalFrame || rainbow < 0.001)) {
       lastSignalFrame = tick;
       hadRainbow = rainbow >= 0.001;
       for (let arm = 0; arm < ARM_COUNT; arm++) {
@@ -533,7 +545,7 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   }
 
   return {
-    root, renderArms, updateShell, updateDynamics, updateRadiance, rings, grid,
+    root, renderArms, updateShell, updateDynamics, hasSpringMovement, updateRadiance, rings, grid,
     pick, getManualOffset, releasePart, proximity, countMovedParts,
     manualArmAnchors, manualArmOffsets, manualPlateOffsets, manualOpticOffset,
     armTargets, plateTargets, opticTarget, springSpeeds, awake, armWake,
@@ -584,7 +596,7 @@ export default function KineticOctopus() {
       }
       const mobile = window.matchMedia("(max-width: 700px)").matches;
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.4 : 1.75));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.2 : 1.5));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.14;
@@ -595,7 +607,7 @@ export default function KineticOctopus() {
       // surfaces realistic highlights without per-frame shadow passes.
       const environmentScene = new environmentModule.RoomEnvironment();
       const pmrem = new THREE.PMREMGenerator(renderer);
-      const environmentTexture = pmrem.fromScene(environmentScene, 0.055);
+      const environmentTexture = pmrem.fromScene(environmentScene, 0.075);
       scene.environment = environmentTexture.texture;
       environmentScene.dispose();
       pmrem.dispose();
@@ -670,6 +682,9 @@ export default function KineticOctopus() {
             setPlaying(false);
             return;
           }
+          // For heavily loaded/software WebGL, GSAP should keep real elapsed
+          // time rather than stretching a 9-second experience indefinitely.
+          gsap.ticker.lagSmoothing(0);
           // A discrete transformation, not a continuous scroll effect.
           // Intermittent spectral signals activate only during awakening.
           currentLifecycle = "awakening";
@@ -686,6 +701,7 @@ export default function KineticOctopus() {
             onComplete: () => {
               robot.awake.rainbow = 0;
               finishAwakening();
+              gsap.ticker.lagSmoothing(500, 33);
               setInteractionLabel("SYSTEM ONLINE / ALL EIGHT ARMS ACTIVE");
               running.current = true;
               setPlaying(true);
@@ -954,8 +970,12 @@ export default function KineticOctopus() {
       resize();
 
       let raf = 0;
+      let hasRenderedArms = false;
+      let lastRenderedDeploy = Number.NaN;
+      let lastRenderedExplode = Number.NaN;
       function draw(now: number) {
-        const delta = Math.min((now - lastTime) / 1000, 0.05);
+        const rawDelta = Math.max(0.001, (now - lastTime) / 1000);
+        const delta = Math.min(rawDelta, 0.05);
         lastTime = now;
         phase += delta;
         if (running.current) {
@@ -963,7 +983,18 @@ export default function KineticOctopus() {
           robot.root.position.y = Math.sin(phase * 0.7) * 0.085;
         }
         robot.updateDynamics(delta);
-        robot.renderArms(phase, pose, running.current);
+        const renderPose = running.current ||
+          currentLifecycle === "awakening" ||
+          robot.hasSpringMovement() ||
+          Math.abs(pose.deploy - lastRenderedDeploy) > 0.00001 ||
+          Math.abs(pose.explode - lastRenderedExplode) > 0.00001 ||
+          !hasRenderedArms;
+        if (renderPose) {
+          robot.renderArms(phase, pose, running.current);
+          lastRenderedDeploy = pose.deploy;
+          lastRenderedExplode = pose.explode;
+          hasRenderedArms = true;
+        }
         robot.updateShell(pose.explode);
         robot.updateRadiance(phase);
         controls.update();
@@ -974,7 +1005,7 @@ export default function KineticOctopus() {
           setTelemetry({
             yaw: Math.round(Math.atan2(position.x, position.z) * DEG),
             pitch: Math.round(Math.atan2(position.y, Math.hypot(position.x, position.z)) * DEG),
-            fps: Math.round(1 / Math.max(delta, 0.001)),
+            fps: Math.round(1 / rawDelta),
           });
           if (!activeDrag) {
             const remaining = robot.countMovedParts();
@@ -1009,6 +1040,7 @@ export default function KineticOctopus() {
         canvas!.removeEventListener("pointerleave", clearProximity);
         controls.dispose();
         awakeningTimeline?.kill();
+        gsap.ticker.lagSmoothing(500, 33);
         sequence?.kill();
         gsap.killTweensOf(pose);
         gsap.killTweensOf(camera.position);

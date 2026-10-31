@@ -130,7 +130,7 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   const springs = [...manualArmOffsets, ...manualPlateOffsets, manualOpticOffset];
   const springTargets = [...armTargets, ...plateTargets, opticTarget];
   const springSpeeds = springs.map(() => new THREE.Vector3());
-  const springGrip = { active: false };
+  const springDelta = new THREE.Vector3();
   const hoverField = {
     arm: -1, power: 0, targetPower: 0, theta: 0,
   };
@@ -385,7 +385,7 @@ function createMechanicalOctopus(scene: THREE.Scene) {
       const velocity = springSpeeds[i];
       const target = springTargets[i];
       velocity.addScaledVector(
-        target.clone().sub(position), stiffness * step,
+        springDelta.copy(target).sub(position), stiffness * step,
       ).multiplyScalar(drag);
       position.addScaledVector(velocity, step);
       if (target.lengthSq() < 0.00001 &&

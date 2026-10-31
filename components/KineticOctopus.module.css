@@ -438,6 +438,41 @@
   color: var(--muted);
   line-height: 1.6;
 }
+.sequenceButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  padding: 14px 12px;
+  margin-top: 21px;
+  min-height: 46px;
+  background: var(--orange);
+  color: white;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background-color 180ms ease;
+}
+.sequenceButton:hover:not(:disabled) { background: #cf442a; }
+.sequenceButton:disabled { opacity: .5; cursor: not-allowed; }
+.noScript {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: #f7f7f3;
+  text-align: center;
+  color: var(--muted);
+}
+@media (scripting: none) {
+  .loading { display: none; }
+}
 .secondaryControls {
   display: flex;
   flex-direction: column;

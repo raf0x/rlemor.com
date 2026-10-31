@@ -771,7 +771,10 @@
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .045em;
-  transition: border-color 180ms ease, background-color 180ms ease;
+  /* The active and inactive buttons have contrasting text colors. Never
+     interpolate the backgrounds between states or a brief unreadable
+     dark-text-on-dark-background frame appears on toggle. */
+  transition: border-color 180ms ease;
 }
 .inspectButtonActive {
   color: #f6f7f4;

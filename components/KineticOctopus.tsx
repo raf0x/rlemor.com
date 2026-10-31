@@ -210,9 +210,13 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   const direction = new THREE.Vector3();
   const poseMatrix = new THREE.Matrix4();
   const offset = new THREE.Vector3();
+  const jointPosition = new THREE.Vector3();
+  const collarPosition = new THREE.Vector3();
+  const signalPosition = new THREE.Vector3();
+  const pinPosition = new THREE.Vector3();
   const scaleVector = new THREE.Vector3();
 
-  function armPoint(arm: number, t: number, phase: number, pose: Pose, isPlaying: boolean) {
+  function armPoint(arm: number, t: number, phase: number, pose: Pose, isPlaying: boolean, output: THREE.Vector3) {
     const angle = (arm / ARM_COUNT) * TAU + 0.13;
     const curled = Math.max(0, (t - 0.65) / 0.35);
     const curlAngle = curled * Math.PI * (1.2 + (arm % 3) * 0.085);
@@ -234,7 +238,7 @@ function createMechanicalOctopus(scene: THREE.Scene) {
       + (arm % 3 - 1) * 0.32 * curled
       + breath * 0.23 * t;
 
-    return new THREE.Vector3(
+    return output.set(
       Math.cos(angle) * radius - Math.sin(angle) * side,
       Math.sin(angle) * radius + Math.cos(angle) * side,
       depth,
@@ -252,8 +256,8 @@ function createMechanicalOctopus(scene: THREE.Scene) {
         const idx = arm * LINKS_PER_ARM + joint;
         const t = joint / LINKS_PER_ARM;
         const tNext = (joint + 1) / LINKS_PER_ARM;
-        start.copy(armPoint(arm, t, phase, pose, isPlaying));
-        end.copy(armPoint(arm, tNext, phase, pose, isPlaying));
+        armPoint(arm, t, phase, pose, isPlaying, start);
+        armPoint(arm, tNext, phase, pose, isPlaying, end);
         middle.copy(start).add(end).multiplyScalar(0.5);
         direction.copy(end).sub(start);
         const length = direction.length();
@@ -262,8 +266,7 @@ function createMechanicalOctopus(scene: THREE.Scene) {
         qFromZ.setFromUnitVectors(zAxis, direction);
         const thickness = Math.max(0.067, 0.24 - t * 0.145);
         const separation = pose.explode * ((joint % 3 === 1 ? 0.17 : 0.04) + t * 0.13);
-        const radial = middle.clone().normalize();
-        offset.copy(radial).multiplyScalar(separation);
+        offset.copy(middle).normalize().multiplyScalar(separation);
         middle.add(offset);
 
         scaleVector.set(thickness * 1.9, Math.max(0.07, length * 0.76), thickness * 1.9);
@@ -271,13 +274,13 @@ function createMechanicalOctopus(scene: THREE.Scene) {
         scaleVector.set(thickness * 0.92, length * 1.10, thickness * 0.92);
         put(spine, idx, middle, qFromY, scaleVector);
         scaleVector.setScalar(thickness * 1.74);
-        put(joints, idx, end.clone().add(offset), identity, scaleVector);
+        put(joints, idx, jointPosition.copy(end).add(offset), identity, scaleVector);
         scaleVector.set(thickness * 2.15, thickness * 2.15, thickness * 2.15);
-        put(collars, idx, start.clone().add(offset), qFromZ, scaleVector);
+        put(collars, idx, collarPosition.copy(start).add(offset), qFromZ, scaleVector);
         scaleVector.set(thickness * 0.70, Math.max(0.028, length * 0.18), thickness * 0.5);
-        put(signals, idx, middle.clone().addScaledVector(new THREE.Vector3(0, 0, 1), thickness), qFromY, scaleVector);
+        put(signals, idx, signalPosition.copy(middle).addScaledVector(zAxis, thickness), qFromY, scaleVector);
         scaleVector.setScalar(thickness * 0.45);
-        put(pins, idx, end.clone().add(offset).addScaledVector(new THREE.Vector3(0, 0, 1), thickness * 0.91), identity, scaleVector);
+        put(pins, idx, pinPosition.copy(end).add(offset).addScaledVector(zAxis, thickness * 0.91), identity, scaleVector);
       }
     }
     for (const mesh of [housing, spine, joints, collars, signals, pins]) {

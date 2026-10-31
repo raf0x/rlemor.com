@@ -630,3 +630,76 @@
 @media (prefers-reduced-motion: reduce) {
   .lab * { scroll-behavior: auto !important; transition-duration: 0ms !important; }
 }
+
+/* Native mouse, pen and touch manipulation, preview only. */
+.partStatus {
+  position: absolute;
+  z-index: 3;
+  top: 15px;
+  left: 17px;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: calc(100% - 34px);
+  padding: 9px 12px;
+  border: 1px solid #d0d8d1;
+  background: rgba(247, 247, 243, 0.96);
+  color: #33423d;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.035em;
+  pointer-events: none;
+}
+.partStatusDot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  background: var(--orange);
+  border-radius: 50%;
+}
+.partStatusHint {
+  width: 100%;
+  padding-left: 14px;
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.reassembleButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  width: 100%;
+  min-height: 43px;
+  margin-top: 9px;
+  padding: 11px 12px;
+  border: 1px solid #a5b5ae;
+  background: transparent;
+  color: #273633;
+  cursor: pointer;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+.reassembleButton:hover:not(:disabled) {
+  border-color: var(--orange-text);
+  background: #f0ede7;
+}
+.reassembleButton:disabled { opacity: 0.5; cursor: not-allowed; }
+.reassembleButton > span:first-child { font-size: 17px; line-height: 1; }
+.reassembleButton > span:last-child { color: var(--muted); font-size: 9px; }
+
+@media (max-width: 640px) {
+  .partStatus {
+    top: 12px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+    font-size: 9px;
+  }
+  .reassembleButton { min-height: 47px; }
+}

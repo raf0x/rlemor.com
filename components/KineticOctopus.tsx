@@ -441,19 +441,32 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
   }
 
   function updateDynamics(dt: number) {
-    // Semi-implicit damped spring, always running even when ambient rotation
-    // is paused. On release the target is zero, so parts pull themselves home.
-    const step = Math.min(0.033, Math.max(0.001, dt));
-    const stiffness = 91;
-    const drag = Math.exp(-13.8 * step);
+    // Exact critically damped spring solution. Frame-rate independent:
+    // parts return to their dock in real elapsed time even at very low FPS.
+    const step = Math.min(0.75, Math.max(0.001, dt));
+    const omega = 10.8;
+    const decay = Math.exp(-omega * step);
     for (let i = 0; i < springs.length; i++) {
       const position = springs[i];
       const velocity = springSpeeds[i];
       const target = springTargets[i];
-      velocity.addScaledVector(
-        springDelta.copy(target).sub(position), stiffness * step,
-      ).multiplyScalar(drag);
-      position.addScaledVector(velocity, step);
+      springDelta.copy(position).sub(target);
+      const bx = velocity.x + omega * springDelta.x;
+      const by = velocity.y + omega * springDelta.y;
+      const bz = velocity.z + omega * springDelta.z;
+      const vx = velocity.x;
+      const vy = velocity.y;
+      const vz = velocity.z;
+      position.set(
+        target.x + (springDelta.x + bx * step) * decay,
+        target.y + (springDelta.y + by * step) * decay,
+        target.z + (springDelta.z + bz * step) * decay,
+      );
+      velocity.set(
+        (vx - omega * bx * step) * decay,
+        (vy - omega * by * step) * decay,
+        (vz - omega * bz * step) * decay,
+      );
       if (target.lengthSq() < 0.00001 &&
           position.lengthSq() < 0.000001 &&
           velocity.lengthSq() < 0.0001) {
@@ -964,7 +977,10 @@ export default function KineticOctopus() {
           robot.proximity(null);
           return;
         }
-        if (currentLifecycle !== "alive") finishAwakening();
+        // Preserve the explicitly dormant state until AWAKEN is pressed.
+        // If grabbed mid-awakening, settle the rig first to avoid competing
+        // camera and arm transforms during direct manipulation.
+        if (currentLifecycle === "awakening") finishAwakening();
         lastPicked = part;
         robot.proximity(null);
         // Capture before OrbitControls begins its own single-pointer gesture.
@@ -1050,6 +1066,7 @@ export default function KineticOctopus() {
       let hasRenderedArms = false;
       let lastRenderedDeploy = Number.NaN;
       let lastRenderedExplode = Number.NaN;
+      let lastRenderedArmWake = Number.NaN;
       function draw(now: number) {
         const rawDelta = Math.max(0.001, (now - lastTime) / 1000);
         const delta = Math.min(rawDelta, 0.05);
@@ -1059,17 +1076,20 @@ export default function KineticOctopus() {
           robot.root.rotation.y += delta * 0.085;
           robot.root.position.y = Math.sin(phase * 0.7) * 0.085;
         }
-        robot.updateDynamics(delta);
+        robot.updateDynamics(rawDelta);
+        const armWakeSum = robot.armWake.reduce((sum, arm) => sum + arm.value, 0);
         const renderPose = running.current ||
           currentLifecycle === "awakening" ||
           robot.hasSpringMovement() ||
           Math.abs(pose.deploy - lastRenderedDeploy) > 0.00001 ||
           Math.abs(pose.explode - lastRenderedExplode) > 0.00001 ||
+          Math.abs(armWakeSum - lastRenderedArmWake) > 0.00001 ||
           !hasRenderedArms;
         if (renderPose) {
           robot.renderArms(phase, pose, running.current);
           lastRenderedDeploy = pose.deploy;
           lastRenderedExplode = pose.explode;
+          lastRenderedArmWake = armWakeSum;
           hasRenderedArms = true;
         }
         robot.updateShell(pose.explode);

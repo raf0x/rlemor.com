@@ -741,7 +741,12 @@
     #eb5137, #ffae35, #e2d743, #60bf73, #4b97ec, #8764c9, #e05d9c, #eb5137);
   animation: octaveSpectrum 1.35s linear infinite;
 }
-.spectralStrip[data-phase="alive"] { background: #4c9f78; }
+.spectralStrip[data-phase="alive"] {
+  background-image: linear-gradient(90deg,
+    #eb5137, #ffae35, #e2d743, #60bf73, #4b97ec, #8764c9, #e05d9c, #eb5137);
+  background-size: 300% 100%;
+  animation: octaveSpectrum 7s linear infinite;
+}
 @keyframes octaveSpectrum {
   to { background-position: -300% center; }
 }

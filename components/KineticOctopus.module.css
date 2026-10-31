@@ -703,3 +703,152 @@
   }
   .reassembleButton { min-height: 47px; }
 }
+
+
+/* OCTAVE / 08 v2: wake / inspection / mechanical return controls. */
+.awakenButton {
+  margin-top: 22px;
+  width: 100%;
+  min-height: 56px;
+  padding: 12px 15px;
+  display: grid;
+  grid-template-columns: 25px 1fr 15px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #242f32;
+  background: #242f32;
+  color: #f8f7f2;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.065em;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+.awakenButton:hover:not(:disabled) { background: #34434a; border-color: #34434a; }
+.awakenButton:disabled { opacity: .69; cursor: wait; }
+.awakenGlyph { color: #ff8653; font-size: 22px; line-height: 1; }
+.awakenButton > span:last-child { text-align: right; color: #ff8653; }
+.spectralStrip {
+  height: 3px;
+  background: #b7c5bd;
+  background-size: 300% 100%;
+  transition: background-color .25s;
+}
+.spectralStrip[data-phase="awakening"] {
+  background-image: linear-gradient(90deg,
+    #eb5137, #ffae35, #e2d743, #60bf73, #4b97ec, #8764c9, #e05d9c, #eb5137);
+  animation: octaveSpectrum 1.35s linear infinite;
+}
+.spectralStrip[data-phase="alive"] { background: #4c9f78; }
+@keyframes octaveSpectrum {
+  to { background-position: -300% center; }
+}
+.systemActivity {
+  min-height: 22px;
+  margin: 8px 0 13px;
+  color: var(--muted);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .05em;
+}
+.inspectButton,
+.inspectButtonActive {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 12px;
+  border: 1px solid #b4c1bb;
+  background: transparent;
+  color: #273633;
+  cursor: pointer;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .045em;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+.inspectButtonActive {
+  color: #f6f7f4;
+  border-color: #3c6679;
+  background: #305a70;
+}
+.inspectButton:hover:not(:disabled) { border-color: var(--orange-text); background: #f0ede7; }
+.inspectButtonActive:hover:not(:disabled) { background: #25485c; }
+.inspectButton:disabled, .inspectButtonActive:disabled { opacity: .5; cursor: not-allowed; }
+.inspectButton > span:first-child, .inspectButtonActive > span:first-child {
+  font-size: 18px;
+  line-height: 1;
+}
+.inspectButton > span:last-child, .inspectButtonActive > span:last-child { font-size: 15px; }
+.lifecycleChip {
+  position: absolute;
+  z-index: 3;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  border: 1px solid #d0d8d1;
+  background: rgba(247,247,243,.96);
+  color: #344b43;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  pointer-events: none;
+}
+.indicator, .pulseIndicator {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3c956a;
+}
+.pulseIndicator {
+  background: #d45830;
+  animation: octaveHeartbeat 770ms ease-in-out infinite alternate;
+}
+@keyframes octaveHeartbeat { to { opacity: .25; transform: scale(.68); } }
+.inspectOverlay {
+  position: absolute;
+  z-index: 3;
+  right: 17px;
+  bottom: 67px;
+  width: min(240px, 55%);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(29, 45, 54, .92);
+  color: #f8f9f6;
+  border-top: 2px solid #fc8854;
+  pointer-events: none;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  line-height: 1.4;
+  backdrop-filter: blur(4px);
+}
+.inspectOverlay p {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: #f6b792;
+}
+.inspectOverlay strong { font-size: 12px; font-weight: 800; }
+.inspectOverlay span { color: #d9e4e1; font-size: 9px; letter-spacing: .035em; }
+@media (max-width: 640px) {
+  .lifecycleChip { top: 12px; right: 9px; font-size: 8px; }
+  .partStatus { max-width: 68%; }
+  .inspectOverlay { right: 9px; bottom: 59px; padding: 11px; width: min(202px, 66%); }
+  .inspectOverlay span { font-size: 8px; }
+  .awakenButton { min-height: 55px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spectralStrip, .pulseIndicator { animation: none !important; }
+}

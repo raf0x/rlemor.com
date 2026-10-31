@@ -651,7 +651,14 @@ export default function KineticOctopus() {
       }
       const mobile = window.matchMedia("(max-width: 700px)").matches;
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.2 : 1.5));
+      const context = renderer.getContext();
+      const debugInfo = context.getExtension("WEBGL_debug_renderer_info");
+      const deviceLabel = String(debugInfo
+        ? context.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+        : context.getParameter(context.RENDERER));
+      const isSoftware = /swiftshader|llvmpipe|software/i.test(deviceLabel);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1,
+        isSoftware ? 0.78 : mobile ? 1.2 : 1.5));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.14;
@@ -660,12 +667,15 @@ export default function KineticOctopus() {
       const scene = new THREE.Scene();
       // A baked studio environment gives brushed titanium and ceramic
       // surfaces realistic highlights without per-frame shadow passes.
-      const environmentScene = new environmentModule.RoomEnvironment();
-      const pmrem = new THREE.PMREMGenerator(renderer);
-      const environmentTexture = pmrem.fromScene(environmentScene, 0.075);
-      scene.environment = environmentTexture.texture;
-      environmentScene.dispose();
-      pmrem.dispose();
+      let environmentTexture: THREE.WebGLRenderTarget | null = null;
+      if (!isSoftware) {
+        const environmentScene = new environmentModule.RoomEnvironment();
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        environmentTexture = pmrem.fromScene(environmentScene, 0.075);
+        scene.environment = environmentTexture.texture;
+        environmentScene.dispose();
+        pmrem.dispose();
+      }
       scene.add(new THREE.HemisphereLight(0xffffff, 0x89939b, 2.2));
       const light1 = new THREE.DirectionalLight(0xffffff, 3.3);
       light1.position.set(-3, 5, 7);
@@ -706,6 +716,7 @@ export default function KineticOctopus() {
       function finishAwakening() {
         awakeningTimeline?.kill();
         awakeningTimeline = null;
+        gsap.ticker.lagSmoothing(500, 33);
         for (const arm of robot.armWake) arm.value = 1;
         Object.assign(robot.awake, { value: 1, iris: 1, rainbow: 0 });
         currentLifecycle = "alive";
@@ -1101,7 +1112,7 @@ export default function KineticOctopus() {
         gsap.killTweensOf(camera.position);
         gsap.killTweensOf(controls.target);
         for (const material of robot.shellMaterials) gsap.killTweensOf(material);
-        environmentTexture.dispose();
+        environmentTexture?.dispose();
         controllerRef.current = null;
         const geometries = new Set<THREE.BufferGeometry>();
         const materials = new Set<THREE.Material>();

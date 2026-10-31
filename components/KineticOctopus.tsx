@@ -220,7 +220,11 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   const spine = new THREE.InstancedMesh(narrowCylinder, graphite, total);
   const joints = new THREE.InstancedMesh(jointSphere, gunmetal, total);
   const collars = new THREE.InstancedMesh(torus, graphite, total);
-  const signals = new THREE.InstancedMesh(marker, orange, total);
+  const signalPaint = new THREE.MeshStandardMaterial({
+    color: 0xffffff, metalness: 0.3, roughness: 0.25,
+    emissive: 0x2a1a10, emissiveIntensity: 0.3,
+  });
+  const signals = new THREE.InstancedMesh(marker, signalPaint, total);
   const pins = new THREE.InstancedMesh(jointSphere, darkGlass, total);
   const amber = new THREE.Color(0xff8248);
   const rainbowColor = new THREE.Color();
@@ -1126,14 +1130,27 @@ export default function KineticOctopus() {
               <div className={styles.partStatus} role="status" aria-live="polite">
                 <span className={styles.partStatusDot} aria-hidden="true" />
                 {selectedPart
-                  ? `${isGrabbing ? "GRABBED" : "SELECTED"} / ${selectedPart}`
-                  : "DIRECT MANIPULATION / ENABLED"}
+                  ? `${isGrabbing ? "GRABBED" : "MAGNETIC RETURN"} / ${selectedPart}`
+                  : lifecycle === "dormant" ? "SYSTEM DORMANT / READY TO AWAKEN" : "DIRECT MANIPULATION / ENABLED"}
                 {selectedPart && <span className={styles.partStatusHint}>DRAG TO REPOSITION</span>}
               </div>
             )}
             {!ready && !unsupported && <div className={styles.loading} role="status">INITIALIZING GEOMETRY <span aria-hidden="true">···</span></div>}
             <noscript><div className={styles.noScript}>Enable JavaScript to explore the live 3D model.</div></noscript>
             {unsupported && <div className={styles.unsupported} role="status">This device cannot display the live 3D scene. Motion controls require WebGL.</div>}
+            <div className={styles.lifecycleChip} aria-live="polite">
+              <span className={lifecycle === "awakening" ? styles.pulseIndicator : styles.indicator} aria-hidden="true" />
+              {lifecycle === "dormant" ? "DORMANT" : lifecycle === "awakening" ? "AWAKENING" : "SYSTEM ONLINE"}
+            </div>
+            {xray && (
+              <div className={styles.inspectOverlay} aria-live="polite">
+                <p>XR-01 / INTERNAL INSPECTION</p>
+                <strong>{selectedPart ?? "OPTICAL CORE"}</strong>
+                <span>12 CERAMIC PANELS / TRANSLUCENT</span>
+                <span>COUPLED TITANIUM FRAME / EXPOSED</span>
+                <span>ENERGY DISTRIBUTION / ACTIVE</span>
+              </div>
+            )}
             <div className={styles.crosshair} aria-hidden="true"><span /><span /></div>
             <div className={styles.stageCode} aria-hidden="true">
               <span>OC-08 / PROTOTYPE</span>
@@ -1142,7 +1159,7 @@ export default function KineticOctopus() {
             <div className={styles.axisLabel} aria-hidden="true">X / Y / Z</div>
           </div>
           <div className={styles.viewerFooter}>
-            <span><span className={styles.orangeDot} aria-hidden="true" /> DRAG AN ARM OR PANEL <span className={styles.sep}>/</span> EMPTY SPACE TO ORBIT</span>
+            <span><span className={styles.orangeDot} aria-hidden="true" /> PULL A COMPONENT / RELEASE TO AUTO-DOCK <span className={styles.sep}>/</span> DRAG EMPTY SPACE TO ORBIT</span>
             <span>NOT A RENDER. AN INTERACTIVE MODEL.</span>
           </div>
         </section>
@@ -1152,7 +1169,19 @@ export default function KineticOctopus() {
             <span className={styles.square} aria-hidden="true" />
             <span>BEHAVIOR CONTROL</span>
           </div>
-          <p className={styles.controlIntro}>Drag a tentacle or shell piece to move it with your mouse or finger. Drag empty space to rotate the model.</p>
+          <p className={styles.controlIntro}>Drag a tentacle or shell piece to move it with your mouse or finger. Release to watch it spring back to its original mount.</p>
+          <button
+            type="button"
+            className={styles.awakenButton}
+            disabled={!ready || lifecycle === "awakening"}
+            onClick={() => controllerRef.current?.awaken()}
+          >
+            <span className={styles.awakenGlyph} aria-hidden="true">◉</span>
+            {lifecycle === "dormant" ? "AWAKEN SYSTEM" : lifecycle === "awakening" ? "AWAKENING / RAINBOW SEQUENCE" : "REPLAY AWAKENING"}
+            <span aria-hidden="true">↗</span>
+          </button>
+          <div className={styles.spectralStrip} data-phase={lifecycle} aria-hidden="true" />
+          <p className={styles.systemActivity} aria-live="polite">{interactionLabel}</p>
           <div className={styles.modes} role="group" aria-label="Choose animation behavior">
             <button type="button" className={mode === "orbit" ? styles.modeActive : styles.mode} aria-pressed={mode === "orbit"} onClick={() => selectMode("orbit")}>
               <span className={styles.modeNumber}>01</span><span className={styles.modeTitle}>Drift</span><span aria-hidden="true">↗</span>
@@ -1167,6 +1196,17 @@ export default function KineticOctopus() {
           <p className={styles.modeDescription}>
             {mode === "orbit" ? "Ambient rotation with independently undulating arms." : mode === "deploy" ? "The manipulators extend outward into a wider configuration." : "The chassis plates separate and the links open into an exploded view."}
           </p>
+          <button
+            type="button"
+            className={xray ? styles.inspectButtonActive : styles.inspectButton}
+            disabled={!ready}
+            aria-pressed={xray}
+            onClick={() => controllerRef.current?.inspect()}
+          >
+            <span aria-hidden="true">◎</span>
+            {xray ? "EXIT X-RAY INSPECTION" : "X-RAY INSPECTION"}
+            <span aria-hidden="true">{xray ? "×" : "↗"}</span>
+          </button>
           <button type="button" className={styles.sequenceButton} disabled={!ready} onClick={() => controllerRef.current?.runSequence()}>
             <span>▶</span> RUN FULL SEQUENCE <span>↗</span>
           </button>
@@ -1174,7 +1214,7 @@ export default function KineticOctopus() {
             <span>↺</span> REASSEMBLE ALL PARTS <span>{movedParts ? `${movedParts} MOVED` : "RESET"}</span>
           </button>
           <div className={styles.secondaryControls}>
-            <button type="button" disabled={!ready} onClick={togglePlay}>{playing ? "Ⅱ  PAUSE MOTION" : "▷  PLAY MOTION"}</button>
+            <button type="button" disabled={!ready} onClick={togglePlay}>{playing ? "Ⅱ  PAUSE MOTION" : "▷  RESUME MOTION"}</button>
             <button type="button" disabled={!ready} onClick={() => controllerRef.current?.resetView()}>↺  RESET CAMERA</button>
           </div>
           <div className={styles.telemetry}>

@@ -7,6 +7,7 @@ import type { OrbitControls as OrbitControlsType } from "three/addons/controls/O
 import styles from "./KineticOctopus.module.css";
 
 type MotionMode = "orbit" | "deploy" | "disassemble";
+type Lifecycle = "dormant" | "awakening" | "alive";
 type Pose = { deploy: number; explode: number };
 type Controller = {
   setMode: (mode: MotionMode) => void;
@@ -14,6 +15,8 @@ type Controller = {
   resetView: () => void;
   runSequence: () => void;
   reassemble: () => void;
+  awaken: () => void;
+  inspect: () => void;
 };
 type Telemetry = { yaw: number; pitch: number; fps: number };
 type Grabbable = {
@@ -47,35 +50,90 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   scene.add(root);
 
   const porcelain = new THREE.MeshPhysicalMaterial({
-    color: 0xf0f1ed, metalness: 0.28, roughness: 0.28,
-    clearcoat: 0.56, clearcoatRoughness: 0.19,
+    color: 0xf2f2ed, metalness: 0.43, roughness: 0.24,
+    clearcoat: 0.84, clearcoatRoughness: 0.12,
+    envMapIntensity: 1.25,
   });
   const porcelainAlt = new THREE.MeshStandardMaterial({
-    color: 0xd6d9d5, metalness: 0.64, roughness: 0.29,
+    color: 0xdce0df, metalness: 0.72, roughness: 0.21,
+    envMapIntensity: 1.15,
   });
   const graphite = new THREE.MeshStandardMaterial({
-    color: 0x252c31, metalness: 0.68, roughness: 0.3,
+    color: 0x26313a, metalness: 0.75, roughness: 0.23,
+    envMapIntensity: 1.3,
   });
   const darkGlass = new THREE.MeshPhysicalMaterial({
-    color: 0x111b22, metalness: 0.35, roughness: 0.17,
-    clearcoat: 0.9, clearcoatRoughness: 0.09,
+    color: 0x111e29, metalness: 0.5, roughness: 0.115,
+    clearcoat: 0.94, clearcoatRoughness: 0.065,
+    envMapIntensity: 1.4,
   });
   const orange = new THREE.MeshStandardMaterial({
     color: 0xf05536, metalness: 0.37, roughness: 0.28,
     emissive: 0x5d150b, emissiveIntensity: 0.38,
   });
   const gunmetal = new THREE.MeshStandardMaterial({
-    color: 0x7e8989, metalness: 0.86, roughness: 0.25,
+    color: 0x8797a1, metalness: 0.92, roughness: 0.19,
+    envMapIntensity: 1.2,
   });
 
   // A dark internal chassis, overlaid with twelve independently separable
   // ceramic shell plates. These are actual curved meshes, not a 2D sprite.
-  addMesh(root, new THREE.SphereGeometry(0.86, 40, 28), graphite);
+  const chassis = addMesh(root, new THREE.SphereGeometry(0.86, 40, 28), graphite);
+  const platePorcelain = porcelain.clone();
+  const plateAlt = porcelainAlt.clone();
+  // Separate shell materials can become transparent without making the
+  // articulated arms transparent in inspection mode.
+  for (const mat of [platePorcelain, plateAlt]) {
+    mat.transparent = true;
+    mat.depthWrite = true;
+  }
+  const internalRig = new THREE.Group();
+  root.add(internalRig);
+  const innerMetal = new THREE.MeshStandardMaterial({
+    color: 0x778b95, metalness: 0.84, roughness: 0.23,
+  });
+  const innerGlow = new THREE.MeshStandardMaterial({
+    color: 0xf28d4e, emissive: 0xe55b27, emissiveIntensity: 0.76,
+    metalness: 0.3, roughness: 0.31,
+  });
+  const cage = addMesh(internalRig, new THREE.IcosahedronGeometry(0.68, 1), innerMetal);
+  cage.material.wireframe = true;
+  for (let i = 0; i < 3; i++) {
+    const axisRing = addMesh(
+      internalRig, new THREE.TorusGeometry(0.61 + i * 0.06, 0.018, 8, 56),
+      i === 1 ? innerGlow : gunmetal,
+    );
+    axisRing.rotation.set(i * 0.78, (i + 1) * 0.72, 0);
+  }
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * TAU;
+    const spoke = addMesh(
+      internalRig, new THREE.CylinderGeometry(0.022, 0.022, 1.35, 9),
+      i % 3 === 0 ? innerGlow : gunmetal,
+    );
+    spoke.rotation.z = angle - Math.PI / 2;
+  }
   const plates: { mesh: THREE.Mesh; outward: THREE.Vector3; angle: number }[] = [];
   const manualPlateOffsets = Array.from({ length: 12 }, () => new THREE.Vector3());
   const manualArmOffsets = Array.from({ length: ARM_COUNT }, () => new THREE.Vector3());
   const manualArmAnchors = Array(ARM_COUNT).fill(0.77) as number[];
   const manualOpticOffset = new THREE.Vector3();
+
+  // Distinct spring goals let fingers pull parts naturally without snapping
+  // their visible geometry onto the pointer, and release always returns home.
+  const plateTargets = manualPlateOffsets.map(() => new THREE.Vector3());
+  const armTargets = manualArmOffsets.map(() => new THREE.Vector3());
+  const opticTarget = new THREE.Vector3();
+  const springs = [...manualArmOffsets, ...manualPlateOffsets, manualOpticOffset];
+  const springTargets = [...armTargets, ...plateTargets, opticTarget];
+  const springSpeeds = springs.map(() => new THREE.Vector3());
+  const springGrip = { active: false };
+  const hoverField = {
+    arm: -1, power: 0, targetPower: 0, theta: 0,
+  };
+  const awake = { value: 0, rainbow: 0, iris: 0 };
+  const armWake = Array.from({ length: ARM_COUNT }, () => ({ value: 0 }));
+
   const armPickPoints = Array.from({ length: LINKS_TOTAL }, () => new THREE.Vector3());
   const plateCount = 12;
   for (let i = 0; i < plateCount; i++) {
@@ -84,7 +142,7 @@ function createMechanicalOctopus(scene: THREE.Scene) {
     const geometry = new THREE.SphereGeometry(
       0.98, 14, 22, phi, segment, 0.19, Math.PI - 0.38,
     );
-    const plate = addMesh(root, geometry, i % 3 === 0 ? porcelainAlt : porcelain);
+    const plate = addMesh(root, geometry, i % 3 === 0 ? plateAlt : platePorcelain);
     plates.push({
       mesh: plate,
       outward: new THREE.Vector3(

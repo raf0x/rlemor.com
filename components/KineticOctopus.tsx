@@ -578,7 +578,6 @@ export default function KineticOctopus() {
         plane: THREE.Plane;
         localStart: THREE.Vector3;
         offsetStart: THREE.Vector3;
-        wasPlaying: boolean;
         startX: number;
         startY: number;
       };
@@ -595,11 +594,9 @@ export default function KineticOctopus() {
 
       function releaseDrag(event?: PointerEvent) {
         if (!activeDrag || (event && activeDrag.pointerId !== event.pointerId)) return;
-        const wasPlaying = activeDrag.wasPlaying;
         const pointerId = activeDrag.pointerId;
         activeDrag = null;
         controls.enabled = true;
-        running.current = wasPlaying && !reduced;
         canvas!.style.cursor = "grab";
         setIsGrabbing(false);
         if (canvas!.hasPointerCapture(pointerId)) canvas!.releasePointerCapture(pointerId);
@@ -643,11 +640,11 @@ export default function KineticOctopus() {
           plane,
           localStart,
           offsetStart: targetOffset.clone(),
-          wasPlaying: running.current,
           startX: event.clientX,
           startY: event.clientY,
         };
         running.current = false;
+        setPlaying(false);
         setSelectedPart(part.label);
         setIsGrabbing(true);
         canvas!.style.cursor = "grabbing";

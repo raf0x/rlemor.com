@@ -12,6 +12,7 @@ type Controller = {
   setMode: (mode: MotionMode) => void;
   setPlaying: (playing: boolean) => void;
   resetView: () => void;
+  runSequence: () => void;
 };
 type Telemetry = { yaw: number; pitch: number; fps: number };
 
@@ -371,11 +372,15 @@ export default function KineticOctopus() {
       const robot = createMechanicalOctopus(scene);
       const pose: Pose = { deploy: 0, explode: 0 };
       const running = { current: !reduced };
+      if (reduced) setPlaying(false);
+      let sequence: ReturnType<typeof gsap.timeline> | null = null;
       let phase = 0;
       let lastTime = performance.now();
       let lastReadout = 0;
 
       function setMotionMode(nextMode: MotionMode) {
+        sequence?.kill();
+        sequence = null;
         const next = {
           deploy: nextMode === "deploy" ? 1 : nextMode === "disassemble" ? 0.54 : 0,
           explode: nextMode === "disassemble" ? 1 : 0,
@@ -387,7 +392,34 @@ export default function KineticOctopus() {
 
       controllerRef.current = {
         setMode: setMotionMode,
-        setPlaying(value: boolean) { running.current = value && !reduced; },
+        setPlaying(value: boolean) {
+          running.current = value && !reduced;
+          sequence?.paused(!value);
+        },
+        runSequence() {
+          sequence?.kill();
+          gsap.killTweensOf(pose);
+          if (reduced) {
+            Object.assign(pose, { deploy: 0.54, explode: 1 });
+            setMode("disassemble");
+            return;
+          }
+          running.current = true;
+          setPlaying(true);
+          sequence = gsap.timeline({
+            onComplete: () => {
+              setMode("orbit");
+              sequence = null;
+            },
+          });
+          sequence
+            .call(() => setMode("deploy"), [], 0)
+            .to(pose, { deploy: 1, explode: 0, duration: 2.15, ease: "power3.inOut" }, 0)
+            .call(() => setMode("disassemble"), [], 2.65)
+            .to(pose, { deploy: 0.54, explode: 1, duration: 2.45, ease: "power3.inOut" }, 2.65)
+            .call(() => setMode("orbit"), [], 5.85)
+            .to(pose, { deploy: 0, explode: 0, duration: 2.5, ease: "power3.inOut" }, 5.85);
+        },
         resetView() {
           gsap.killTweensOf(camera.position);
           if (reduced) camera.position.set(0.15, 0.7, mobile ? 14.8 : 12.0);
@@ -450,6 +482,7 @@ export default function KineticOctopus() {
         canvas!.removeEventListener("webglcontextlost", onContextLost);
         ro.disconnect();
         controls.dispose();
+        sequence?.kill();
         gsap.killTweensOf(pose);
         gsap.killTweensOf(camera.position);
         controllerRef.current = null;
@@ -564,6 +597,7 @@ export default function KineticOctopus() {
           <div className={styles.stage} ref={stageRef}>
             <canvas ref={canvasRef} className={styles.canvas} role="img" aria-label="Interactive 3D mechanical octopus. Drag to rotate, pinch or scroll to zoom." />
             {!ready && !unsupported && <div className={styles.loading} role="status">INITIALIZING GEOMETRY <span aria-hidden="true">···</span></div>}
+            <noscript><div className={styles.noScript}>Enable JavaScript to explore the live 3D model.</div></noscript>
             {unsupported && <div className={styles.unsupported} role="status">This device cannot display the live 3D scene. Motion controls require WebGL.</div>}
             <div className={styles.crosshair} aria-hidden="true"><span /><span /></div>
             <div className={styles.stageCode} aria-hidden="true">
@@ -598,6 +632,9 @@ export default function KineticOctopus() {
           <p className={styles.modeDescription}>
             {mode === "orbit" ? "Ambient rotation with independently undulating arms." : mode === "deploy" ? "The manipulators extend outward into a wider configuration." : "The chassis plates separate and the links open into an exploded view."}
           </p>
+          <button type="button" className={styles.sequenceButton} disabled={!ready} onClick={() => controllerRef.current?.runSequence()}>
+            <span>▶</span> RUN FULL SEQUENCE <span>↗</span>
+          </button>
           <div className={styles.secondaryControls}>
             <button type="button" disabled={!ready} onClick={togglePlay}>{playing ? "Ⅱ  PAUSE MOTION" : "▷  PLAY MOTION"}</button>
             <button type="button" disabled={!ready} onClick={() => controllerRef.current?.resetView()}>↺  RESET CAMERA</button>

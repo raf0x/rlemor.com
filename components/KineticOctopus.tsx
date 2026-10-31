@@ -417,6 +417,7 @@ export default function KineticOctopus() {
   const [unsupported, setUnsupported] = useState(false);
   const [telemetry, setTelemetry] = useState<Telemetry>({ yaw: 0, pitch: 0, fps: 0 });
   const [selectedPart, setSelectedPart] = useState<string | null>(null);
+  const [isGrabbing, setIsGrabbing] = useState(false);
   const [movedParts, setMovedParts] = useState(0);
 
   useEffect(() => {
@@ -521,6 +522,7 @@ export default function KineticOctopus() {
           });
           setMode("orbit");
           setSelectedPart(null);
+          setIsGrabbing(false);
           setMovedParts(0);
         },
         setPlaying(value: boolean) {
@@ -599,6 +601,7 @@ export default function KineticOctopus() {
         controls.enabled = true;
         running.current = wasPlaying && !reduced;
         canvas!.style.cursor = "grab";
+        setIsGrabbing(false);
         if (canvas!.hasPointerCapture(pointerId)) canvas!.releasePointerCapture(pointerId);
         setMovedParts(robot.countMovedParts());
       }
@@ -646,6 +649,7 @@ export default function KineticOctopus() {
         };
         running.current = false;
         setSelectedPart(part.label);
+        setIsGrabbing(true);
         canvas!.style.cursor = "grabbing";
         canvas!.setPointerCapture(event.pointerId);
         event.preventDefault();
@@ -840,11 +844,15 @@ export default function KineticOctopus() {
           </div>
           <div className={styles.stage} ref={stageRef}>
             <canvas ref={canvasRef} className={styles.canvas} role="img" aria-label="Interactive 3D mechanical octopus. Drag an arm or shell panel to reposition it. Drag empty space to rotate. Pinch or scroll to zoom." />
-            <div className={styles.partStatus} role="status" aria-live="polite">
-              <span className={styles.partStatusDot} aria-hidden="true" />
-              {selectedPart ? `GRABBED / ${selectedPart}` : "DIRECT MANIPULATION / ENABLED"}
-              {selectedPart && <span className={styles.partStatusHint}>DRAG TO REPOSITION</span>}
-            </div>
+            {ready && !unsupported && (
+              <div className={styles.partStatus} role="status" aria-live="polite">
+                <span className={styles.partStatusDot} aria-hidden="true" />
+                {selectedPart
+                  ? `${isGrabbing ? "GRABBED" : "SELECTED"} / ${selectedPart}`
+                  : "DIRECT MANIPULATION / ENABLED"}
+                {selectedPart && <span className={styles.partStatusHint}>DRAG TO REPOSITION</span>}
+              </div>
+            )}
             {!ready && !unsupported && <div className={styles.loading} role="status">INITIALIZING GEOMETRY <span aria-hidden="true">···</span></div>}
             <noscript><div className={styles.noScript}>Enable JavaScript to explore the live 3D model.</div></noscript>
             {unsupported && <div className={styles.unsupported} role="status">This device cannot display the live 3D scene. Motion controls require WebGL.</div>}

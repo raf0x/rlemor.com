@@ -45,15 +45,19 @@ function addMesh(
   return mesh;
 }
 
-function createMechanicalOctopus(scene: THREE.Scene) {
+function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false) {
   const root = new THREE.Group();
   scene.add(root);
 
-  const porcelain = new THREE.MeshPhysicalMaterial({
-    color: 0xf2f2ed, metalness: 0.43, roughness: 0.24,
-    clearcoat: 0.84, clearcoatRoughness: 0.12,
-    envMapIntensity: 1.25,
-  });
+  const porcelain = simplifiedMaterials
+    ? new THREE.MeshStandardMaterial({
+      color: 0xf2f2ed, metalness: 0.3, roughness: 0.34,
+    })
+    : new THREE.MeshPhysicalMaterial({
+      color: 0xf2f2ed, metalness: 0.43, roughness: 0.24,
+      clearcoat: 0.84, clearcoatRoughness: 0.12,
+      envMapIntensity: 1.25,
+    });
   const porcelainAlt = new THREE.MeshStandardMaterial({
     color: 0xdce0df, metalness: 0.72, roughness: 0.21,
     envMapIntensity: 1.15,
@@ -62,11 +66,15 @@ function createMechanicalOctopus(scene: THREE.Scene) {
     color: 0x26313a, metalness: 0.75, roughness: 0.23,
     envMapIntensity: 1.3,
   });
-  const darkGlass = new THREE.MeshPhysicalMaterial({
-    color: 0x111e29, metalness: 0.5, roughness: 0.115,
-    clearcoat: 0.94, clearcoatRoughness: 0.065,
-    envMapIntensity: 1.4,
-  });
+  const darkGlass = simplifiedMaterials
+    ? new THREE.MeshStandardMaterial({
+      color: 0x192833, metalness: 0.4, roughness: 0.2,
+    })
+    : new THREE.MeshPhysicalMaterial({
+      color: 0x111e29, metalness: 0.5, roughness: 0.115,
+      clearcoat: 0.94, clearcoatRoughness: 0.065,
+      envMapIntensity: 1.4,
+    });
   const orange = new THREE.MeshStandardMaterial({
     color: 0xf05536, metalness: 0.37, roughness: 0.28,
     emissive: 0x5d150b, emissiveIntensity: 0.38,
@@ -483,8 +491,11 @@ function createMechanicalOctopus(scene: THREE.Scene) {
           rainbowColor.setHSL(stripe, 0.89, 0.54);
           const flicker = Math.pow(Math.max(0, Math.sin(phase * 6.2
             - t * 8.8 - arm * 0.64)), 2);
-          signalColor.copy(amber).lerp(rainbowColor, rainbow * flicker);
-          housingColor.copy(white).lerp(rainbowColor, rainbow * flicker * 0.84);
+          // Every arm receives a prismatic base tint, with brighter pulses
+          // sweeping intermittently along each segmented tentacle.
+          const spectrum = rainbow * (0.37 + 0.63 * flicker);
+          signalColor.copy(amber).lerp(rainbowColor, spectrum);
+          housingColor.copy(white).lerp(rainbowColor, spectrum * 0.90);
           signals.setColorAt(arm * LINKS_PER_ARM + link, signalColor);
           housing.setColorAt(arm * LINKS_PER_ARM + link, housingColor);
         }
@@ -701,7 +712,7 @@ export default function KineticOctopus() {
       controls.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;
       controls.target.set(0, 0, 0);
 
-      const robot = createMechanicalOctopus(scene);
+      const robot = createMechanicalOctopus(scene, isSoftware);
       const pose: Pose = { deploy: 0, explode: 0 };
       const running = { current: false };
       let sequence: ReturnType<typeof gsap.timeline> | null = null;

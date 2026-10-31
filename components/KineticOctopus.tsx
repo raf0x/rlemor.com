@@ -13,8 +13,16 @@ type Controller = {
   setPlaying: (playing: boolean) => void;
   resetView: () => void;
   runSequence: () => void;
+  reassemble: () => void;
 };
 type Telemetry = { yaw: number; pitch: number; fps: number };
+type Grabbable = {
+  kind: "arm" | "plate" | "optic";
+  index: number;
+  anchor: number;
+  worldPosition: THREE.Vector3;
+  label: string;
+};
 
 const ARM_COUNT = 8;
 const LINKS_PER_ARM = 18;
@@ -64,6 +72,11 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   // ceramic shell plates. These are actual curved meshes, not a 2D sprite.
   addMesh(root, new THREE.SphereGeometry(0.86, 40, 28), graphite);
   const plates: { mesh: THREE.Mesh; outward: THREE.Vector3; angle: number }[] = [];
+  const manualPlateOffsets = Array.from({ length: 12 }, () => new THREE.Vector3());
+  const manualArmOffsets = Array.from({ length: ARM_COUNT }, () => new THREE.Vector3());
+  const manualArmAnchors = Array(ARM_COUNT).fill(0.77) as number[];
+  const manualOpticOffset = new THREE.Vector3();
+  const armPickPoints = Array.from({ length: LINKS_TOTAL }, () => new THREE.Vector3());
   const plateCount = 12;
   for (let i = 0; i < plateCount; i++) {
     const phi = (i / plateCount) * TAU + 0.035;
@@ -238,11 +251,15 @@ function createMechanicalOctopus(scene: THREE.Scene) {
       + (arm % 3 - 1) * 0.32 * curled
       + breath * 0.23 * t;
 
-    return output.set(
+    output.set(
       Math.cos(angle) * radius - Math.sin(angle) * side,
       Math.sin(angle) * radius + Math.cos(angle) * side,
       depth,
     );
+    // Dragging a link bends the distal portion while leaving its root docked.
+    const weight = THREE.MathUtils.smoothstep(t, 0.015, manualArmAnchors[arm]);
+    output.addScaledVector(manualArmOffsets[arm], weight);
+    return output;
   }
 
   function put(mesh: THREE.InstancedMesh, index: number, pos: THREE.Vector3, rotation: THREE.Quaternion, size: THREE.Vector3) {
@@ -268,6 +285,7 @@ function createMechanicalOctopus(scene: THREE.Scene) {
         const separation = pose.explode * ((joint % 3 === 1 ? 0.17 : 0.04) + t * 0.13);
         offset.copy(middle).normalize().multiplyScalar(separation);
         middle.add(offset);
+        armPickPoints[idx].copy(middle);
 
         scaleVector.set(thickness * 1.9, Math.max(0.07, length * 0.76), thickness * 1.9);
         put(housing, idx, middle, qFromY, scaleVector);
@@ -289,20 +307,104 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   }
 
   function updateShell(explode: number) {
-    for (const plate of plates) {
-      plate.mesh.position.copy(plate.outward).multiplyScalar(explode * 0.51);
+    for (let i = 0; i < plates.length; i++) {
+      const plate = plates[i];
+      plate.mesh.position.copy(plate.outward).multiplyScalar(explode * 0.51).add(manualPlateOffsets[i]);
       plate.mesh.rotation.set(
         Math.sin(plate.angle) * explode * 0.19,
         Math.cos(plate.angle) * explode * 0.19,
         0,
       );
     }
-    optic.position.z = 0.92 + explode * 0.56;
+    optic.position.set(
+      manualOpticOffset.x,
+      manualOpticOffset.y,
+      0.92 + explode * 0.56 + manualOpticOffset.z,
+    );
     crown.position.y = 0.88 + explode * 0.25;
     equator.scale.setScalar(1 + explode * 0.14);
   }
 
-  return { root, renderArms, updateShell, rings, grid };
+  const opticMeshes: THREE.Mesh[] = [];
+  optic.traverse((object) => {
+    if (object instanceof THREE.Mesh) opticMeshes.push(object);
+  });
+  const raycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2();
+  const projected = new THREE.Vector3();
+  const coreTargets = [...opticMeshes, ...plates.map((plate) => plate.mesh)];
+
+  function pick(
+    camera: THREE.PerspectiveCamera,
+    rect: DOMRect,
+    clientX: number,
+    clientY: number,
+    isTouch: boolean,
+  ): Grabbable | null {
+    pointer.set(
+      ((clientX - rect.left) / rect.width) * 2 - 1,
+      -((clientY - rect.top) / rect.height) * 2 + 1,
+    );
+    camera.updateMatrixWorld();
+    root.updateWorldMatrix(true, true);
+    raycaster.setFromCamera(pointer, camera);
+    const hit = raycaster.intersectObjects(coreTargets, false)[0];
+
+    // A generous screen-space grab radius makes narrow tentacles usable
+    // on phones. Pick only on pointer-down, never during continuous motion.
+    let armMatch: { index: number; distance: number } | null = null;
+    for (let i = 2; i < armPickPoints.length; i++) {
+      if (i % LINKS_PER_ARM < 2) continue;
+      projected.copy(armPickPoints[i]).applyMatrix4(root.matrixWorld).project(camera);
+      if (projected.z > 1 || projected.z < -1) continue;
+      const screenX = rect.left + (projected.x * 0.5 + 0.5) * rect.width;
+      const screenY = rect.top + (1 - (projected.y * 0.5 + 0.5)) * rect.height;
+      const distance = Math.hypot(clientX - screenX, clientY - screenY);
+      if (!armMatch || distance < armMatch.distance) armMatch = { index: i, distance };
+    }
+    const tolerance = isTouch ? 27 : 18;
+    if (armMatch && (armMatch.distance < tolerance * 0.65 || (!hit && armMatch.distance < tolerance))) {
+      const index = Math.floor(armMatch.index / LINKS_PER_ARM);
+      const link = armMatch.index % LINKS_PER_ARM;
+      return {
+        kind: "arm",
+        index,
+        anchor: (link + 0.5) / LINKS_PER_ARM,
+        worldPosition: armPickPoints[armMatch.index].clone().applyMatrix4(root.matrixWorld),
+        label: `ARM ${String(index + 1).padStart(2, "0")} / LINK ${String(link + 1).padStart(2, "0")}`,
+      };
+    }
+    if (!hit) return null;
+    if (opticMeshes.includes(hit.object as THREE.Mesh)) {
+      return {
+        kind: "optic", index: 0, anchor: 1, worldPosition: hit.point.clone(),
+        label: "OPTICAL CORE",
+      };
+    }
+    const plateIndex = plates.findIndex((plate) => plate.mesh === hit.object);
+    if (plateIndex === -1) return null;
+    return {
+      kind: "plate", index: plateIndex, anchor: 1, worldPosition: hit.point.clone(),
+      label: `SHELL PANEL ${String(plateIndex + 1).padStart(2, "0")}`,
+    };
+  }
+
+  function getManualOffset(part: Grabbable) {
+    if (part.kind === "arm") return manualArmOffsets[part.index];
+    if (part.kind === "plate") return manualPlateOffsets[part.index];
+    return manualOpticOffset;
+  }
+
+  function countMovedParts() {
+    return [...manualArmOffsets, ...manualPlateOffsets, manualOpticOffset]
+      .filter((point) => point.lengthSq() > 0.0036).length;
+  }
+
+  return {
+    root, renderArms, updateShell, rings, grid, pick, getManualOffset,
+    countMovedParts, manualArmAnchors, manualArmOffsets,
+    manualPlateOffsets, manualOpticOffset,
+  };
 }
 
 export default function KineticOctopus() {
@@ -314,6 +416,8 @@ export default function KineticOctopus() {
   const [ready, setReady] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
   const [telemetry, setTelemetry] = useState<Telemetry>({ yaw: 0, pitch: 0, fps: 0 });
+  const [selectedPart, setSelectedPart] = useState<string | null>(null);
+  const [movedParts, setMovedParts] = useState(0);
 
   useEffect(() => {
     const node = stageRef.current;

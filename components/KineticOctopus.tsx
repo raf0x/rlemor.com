@@ -228,9 +228,10 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
   const spine = new THREE.InstancedMesh(narrowCylinder, graphite, total);
   const joints = new THREE.InstancedMesh(jointSphere, gunmetal, total);
   const collars = new THREE.InstancedMesh(torus, graphite, total);
-  const signalPaint = new THREE.MeshStandardMaterial({
-    color: 0xffffff, metalness: 0.3, roughness: 0.25,
-    emissive: 0x2a1a10, emissiveIntensity: 0.3,
+  // An unlit LED shader ensures spectral pulses retain distinct hues
+  // instead of being washed out by studio illumination or tone mapping.
+  const signalPaint = new THREE.MeshBasicMaterial({
+    color: 0xffffff, toneMapped: false,
   });
   const signals = new THREE.InstancedMesh(marker, signalPaint, total);
   const pins = new THREE.InstancedMesh(jointSphere, darkGlass, total);

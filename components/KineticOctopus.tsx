@@ -124,7 +124,7 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
     );
     spoke.rotation.z = angle - Math.PI / 2;
   }
-  const plates: { mesh: THREE.Mesh; outward: THREE.Vector3; angle: number }[] = [];
+  const plates: { mesh: THREE.Mesh; outward: THREE.Vector3 }[] = [];
   const manualPlateOffsets = Array.from({ length: 12 }, () => new THREE.Vector3());
   const manualArmOffsets = Array.from({ length: ARM_COUNT }, () => new THREE.Vector3());
   const manualArmAnchors = Array(ARM_COUNT).fill(0.77) as number[];
@@ -156,12 +156,13 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
     const plate = addMesh(root, geometry, i % 3 === 0 ? plateAlt : platePorcelain);
     plates.push({
       mesh: plate,
+      // SphereGeometry's azimuth maps to (-cos(phi), 0, sin(phi)).
+      // Move each panel along its actual surface normal, never sideways.
       outward: new THREE.Vector3(
+        -Math.cos(phi + segment / 2),
+        0,
         Math.sin(phi + segment / 2),
-        Math.cos((i / plateCount) * TAU) * 0.18,
-        Math.cos(phi + segment / 2),
       ).normalize(),
-      angle: phi,
     });
     // Real, thin gasket edges reinforce the mechanical panel design.
     const edges = new THREE.LineSegments(
@@ -268,10 +269,13 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
     root.add(mesh);
   }
 
-  // Mechanical docking collars at the root of each arm.
+  // Keep docking collars aligned with complete arm assemblies when
+  // disassembling. Individual links must never appear randomly detached.
+  const armHubs: THREE.Group[] = [];
   for (let i = 0; i < ARM_COUNT; i++) {
-    const theta = (i / ARM_COUNT) * TAU;
+    const theta = (i / ARM_COUNT) * TAU + 0.13;
     const hub = new THREE.Group();
+    armHubs.push(hub);
     hub.position.set(Math.cos(theta) * 0.91, Math.sin(theta) * 0.91, 0.02);
     hub.rotation.z = theta - Math.PI / 2;
     root.add(hub);
@@ -418,6 +422,22 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
           ikPath[j].add(ikDelta);
         }
       }
+      // A single coherent translation for the entire tentacle rig,
+      // including its shoulder mount. No per-link jitter or fake gaps.
+      const azimuth = arm / ARM_COUNT * TAU + 0.13;
+      const outward = pose.explode * 0.64;
+      const radialX = Math.cos(azimuth);
+      const radialY = Math.sin(azimuth);
+      const depth = pose.explode * (arm % 2 === 0 ? 0.06 : -0.06);
+      ikDelta.set(radialX * outward, radialY * outward, depth);
+      for (let joint = 0; joint <= LINKS_PER_ARM; joint++) {
+        ikPath[joint].add(ikDelta);
+      }
+      armHubs[arm].position.set(
+        radialX * (0.91 + outward),
+        radialY * (0.91 + outward),
+        0.02 + depth,
+      );
       for (let joint = 0; joint < LINKS_PER_ARM; joint++) {
         const idx = arm * LINKS_PER_ARM + joint;
         const t = joint / LINKS_PER_ARM;
@@ -430,9 +450,9 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
         qFromY.setFromUnitVectors(yAxis, direction);
         qFromZ.setFromUnitVectors(zAxis, direction);
         const thickness = Math.max(0.067, 0.24 - t * 0.145);
-        const separation = pose.explode * ((joint % 3 === 1 ? 0.17 : 0.04) + t * 0.13);
-        offset.copy(middle).normalize().multiplyScalar(separation);
-        middle.add(offset);
+        // All six visual sub-components share the exact same segment
+        // transform, keeping the shaft, joints and collars connected.
+        offset.set(0, 0, 0);
         armPickPoints[idx].copy(middle);
 
         scaleVector.set(thickness * 1.9, Math.max(0.07, length * 0.76), thickness * 1.9);
@@ -525,7 +545,7 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
     for (let arm = 0; arm < ARM_COUNT; arm++) {
       for (let link = 0; link < LINKS_PER_ARM; link++) {
         const t = link / LINKS_PER_ARM;
-        const hue = ((colorTime * 0.085 + arm / ARM_COUNT + t * 0.16) % 1 + 1) % 1;
+        const hue = ((colorTime * 0.28 + arm / ARM_COUNT + t * 0.16) % 1 + 1) % 1;
         rainbowColor.setHSL(hue, 1, 0.61);
         const pulse = 0.85 + 0.15 * Math.sin(colorTime * 3.1 - t * 5.4 - arm * 0.65);
         signalColor.copy(amber).lerp(rainbowColor, rainbow);
@@ -544,20 +564,21 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
   function updateShell(explode: number) {
     for (let i = 0; i < plates.length; i++) {
       const plate = plates[i];
-      plate.mesh.position.copy(plate.outward).multiplyScalar(explode * 0.51).add(manualPlateOffsets[i]);
-      plate.mesh.rotation.set(
-        Math.sin(plate.angle) * explode * 0.19,
-        Math.cos(plate.angle) * explode * 0.19,
-        0,
-      );
+      // Preserve each plate's orientation and geometry. Rotating a
+      // pre-centered spherical wedge about the model origin distorted it.
+      plate.mesh.position.copy(plate.outward)
+        .multiplyScalar(explode * 0.50)
+        .add(manualPlateOffsets[i]);
+      plate.mesh.rotation.set(0, 0, 0);
     }
     optic.position.set(
       manualOpticOffset.x,
       manualOpticOffset.y,
-      0.92 + explode * 0.56 + manualOpticOffset.z,
+      0.92 + explode * 0.47 + manualOpticOffset.z,
     );
-    crown.position.y = 0.88 + explode * 0.25;
-    equator.scale.setScalar(1 + explode * 0.14);
+    crown.position.y = 0.88 + explode * 0.22;
+    // The equatorial ring is part of the rigid frame, not a balloon.
+    equator.scale.setScalar(1);
   }
 
   const opticMeshes: THREE.Mesh[] = [];
@@ -775,12 +796,17 @@ export default function KineticOctopus() {
         sequence?.kill();
         sequence = null;
         const next = {
-          deploy: nextMode === "deploy" ? 1 : nextMode === "disassemble" ? 0.54 : 0,
+          deploy: nextMode === "deploy" ? 1 : nextMode === "disassemble" ? 0.12 : 0,
           explode: nextMode === "disassemble" ? 1 : 0,
         };
         gsap.killTweensOf(pose);
         if (reduced) Object.assign(pose, next);
-        else gsap.to(pose, { ...next, duration: 1.85, ease: "power3.inOut", overwrite: true });
+        else gsap.to(pose, {
+          ...next,
+          duration: nextMode === "disassemble" ? 2.35 : 1.9,
+          ease: "sine.inOut",
+          overwrite: true,
+        });
       }
 
       controllerRef.current = {
@@ -907,7 +933,7 @@ export default function KineticOctopus() {
           sequence?.kill();
           gsap.killTweensOf(pose);
           if (reduced) {
-            Object.assign(pose, { deploy: 0.54, explode: 1 });
+            Object.assign(pose, { deploy: 0.12, explode: 1 });
             setMode("disassemble");
             return;
           }
@@ -921,11 +947,12 @@ export default function KineticOctopus() {
           });
           sequence
             .call(() => setMode("deploy"), [], 0)
-            .to(pose, { deploy: 1, explode: 0, duration: 2.15, ease: "power3.inOut" }, 0)
-            .call(() => setMode("disassemble"), [], 2.65)
-            .to(pose, { deploy: 0.54, explode: 1, duration: 2.45, ease: "power3.inOut" }, 2.65)
-            .call(() => setMode("orbit"), [], 5.85)
-            .to(pose, { deploy: 0, explode: 0, duration: 2.5, ease: "power3.inOut" }, 5.85);
+            .to(pose, { deploy: 1, explode: 0, duration: 2.15, ease: "sine.inOut" }, 0)
+            .to(pose, { deploy: 0.12, duration: 1.2, ease: "sine.inOut" }, 2.35)
+            .call(() => setMode("disassemble"), [], 3.65)
+            .to(pose, { explode: 1, duration: 2.35, ease: "sine.inOut" }, 3.65)
+            .call(() => setMode("orbit"), [], 7.1)
+            .to(pose, { explode: 0, deploy: 0, duration: 2.4, ease: "sine.inOut" }, 7.1);
         },
         resetView() {
           gsap.killTweensOf(camera.position);
@@ -1344,7 +1371,7 @@ export default function KineticOctopus() {
             </button>
           </div>
           <p className={styles.modeDescription}>
-            {mode === "orbit" ? "Ambient rotation with independently undulating arms." : mode === "deploy" ? "The manipulators extend outward into a wider configuration." : "The chassis plates separate and the links open into an exploded view."}
+            {mode === "orbit" ? "Ambient rotation with independently undulating arms." : mode === "deploy" ? "The manipulators extend outward into a wider configuration." : "The shell panels lift along their surface normals while eight intact arm assemblies detach cleanly from their mounts."}
           </p>
           <button
             type="button"

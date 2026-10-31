@@ -543,7 +543,10 @@ export default function KineticOctopus() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const controllerRef = useRef<Controller | null>(null);
   const [mode, setMode] = useState<MotionMode>("orbit");
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  const [lifecycle, setLifecycle] = useState<Lifecycle>("dormant");
+  const [xray, setXray] = useState(false);
+  const [interactionLabel, setInteractionLabel] = useState("SYSTEM DORMANT");
   const [ready, setReady] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
   const [telemetry, setTelemetry] = useState<Telemetry>({ yaw: 0, pitch: 0, fps: 0 });
@@ -562,7 +565,8 @@ export default function KineticOctopus() {
     void Promise.all([
       import("gsap"),
       import("three/addons/controls/OrbitControls.js"),
-    ]).then(([gsapModule, controlsModule]) => {
+      import("three/addons/environments/RoomEnvironment.js"),
+    ]).then(([gsapModule, controlsModule, environmentModule]) => {
       if (disposed) return;
       const gsap = gsapModule.gsap;
       let renderer: THREE.WebGLRenderer;
@@ -583,7 +587,15 @@ export default function KineticOctopus() {
       renderer.setClearColor(0xf7f7f3, 0);
 
       const scene = new THREE.Scene();
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x89939b, 2.4));
+      // A baked studio environment gives brushed titanium and ceramic
+      // surfaces realistic highlights without per-frame shadow passes.
+      const environmentScene = new environmentModule.RoomEnvironment();
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      const environmentTexture = pmrem.fromScene(environmentScene, 0.055);
+      scene.environment = environmentTexture.texture;
+      environmentScene.dispose();
+      pmrem.dispose();
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x89939b, 2.2));
       const light1 = new THREE.DirectionalLight(0xffffff, 3.3);
       light1.position.set(-3, 5, 7);
       scene.add(light1);
@@ -610,14 +622,27 @@ export default function KineticOctopus() {
 
       const robot = createMechanicalOctopus(scene);
       const pose: Pose = { deploy: 0, explode: 0 };
-      const running = { current: !reduced };
-      if (reduced) setPlaying(false);
+      const running = { current: false };
       let sequence: ReturnType<typeof gsap.timeline> | null = null;
+      let awakeningTimeline: ReturnType<typeof gsap.timeline> | null = null;
+      let inspectionEnabled = false;
+      let lastPicked: Grabbable | null = null;
+      let currentLifecycle: Lifecycle = "dormant";
       let phase = 0;
       let lastTime = performance.now();
       let lastReadout = 0;
 
+      function finishAwakening() {
+        awakeningTimeline?.kill();
+        awakeningTimeline = null;
+        for (const arm of robot.armWake) arm.value = 1;
+        Object.assign(robot.awake, { value: 1, iris: 1, rainbow: 0 });
+        currentLifecycle = "alive";
+        setLifecycle("alive");
+      }
+
       function setMotionMode(nextMode: MotionMode) {
+        if (currentLifecycle !== "alive") finishAwakening();
         sequence?.kill();
         sequence = null;
         const next = {
@@ -630,6 +655,97 @@ export default function KineticOctopus() {
       }
 
       controllerRef.current = {
+        awaken() {
+          awakeningTimeline?.kill();
+          sequence?.kill();
+          sequence = null;
+          gsap.killTweensOf(pose);
+          if (reduced) {
+            finishAwakening();
+            running.current = false;
+            setPlaying(false);
+            return;
+          }
+          // A discrete transformation, not a continuous scroll effect.
+          // Intermittent spectral signals activate only during awakening.
+          currentLifecycle = "awakening";
+          setLifecycle("awakening");
+          setInteractionLabel("POWER SEQUENCE / IN PROGRESS");
+          running.current = false;
+          setPlaying(false);
+          robot.awake.value = 0;
+          robot.awake.rainbow = 0;
+          robot.awake.iris = 0;
+          for (const arm of robot.armWake) arm.value = 0;
+          gsap.killTweensOf(camera.position);
+          awakeningTimeline = gsap.timeline({
+            onComplete: () => {
+              robot.awake.rainbow = 0;
+              finishAwakening();
+              setInteractionLabel("SYSTEM ONLINE / ALL EIGHT ARMS ACTIVE");
+              running.current = true;
+              setPlaying(true);
+            },
+          });
+          awakeningTimeline
+            .to(robot.awake, {
+              value: 1, iris: 1, duration: 1.65, ease: "power2.inOut",
+            }, 0.45)
+            .to(robot.awake, {
+              rainbow: 1, duration: 1.55, ease: "power2.inOut",
+            }, 1.58)
+            .to(camera.position, {
+              x: mobile ? 1.8 : 2.15,
+              y: mobile ? 1.45 : 1.6,
+              z: mobile ? 13.6 : 11.35,
+              duration: 4.25, ease: "power3.inOut",
+            }, 2.7)
+            .to(robot.awake, {
+              rainbow: 0, duration: 2.1, ease: "power2.inOut",
+            }, 6.8);
+          robot.armWake.forEach((arm, i) => {
+            awakeningTimeline?.to(arm, {
+              value: 1, duration: 1.35, ease: "back.out(1.15)",
+            }, 2.2 + i * 0.28);
+          });
+          awakeningTimeline.to({}, { duration: 0.4 }, 8.8);
+        },
+        inspect() {
+          inspectionEnabled = !inspectionEnabled;
+          setXray(inspectionEnabled);
+          for (const material of robot.shellMaterials) {
+            gsap.killTweensOf(material);
+            const opacity = inspectionEnabled
+              ? (material === robot.shellMaterials[2] ? 0.17 : 0.22)
+              : 1;
+            if (reduced) material.opacity = opacity;
+            else gsap.to(material, { opacity, duration: 0.84, ease: "power2.inOut" });
+          }
+          const focus = inspectionEnabled && lastPicked
+            ? lastPicked.worldPosition.clone() : new THREE.Vector3(0, 0, 0);
+          const targetPos = inspectionEnabled
+            ? {
+              x: focus.x + (mobile ? 0.95 : 1.45),
+              y: focus.y + 0.65,
+              z: focus.z + (mobile ? 9.2 : 7.55),
+            }
+            : { x: 0.15, y: 0.7, z: mobile ? 14.8 : 12.0 };
+          gsap.killTweensOf(camera.position);
+          gsap.killTweensOf(controls.target);
+          if (reduced) {
+            camera.position.set(targetPos.x, targetPos.y, targetPos.z);
+            controls.target.copy(focus);
+            controls.update();
+          } else {
+            gsap.to(camera.position, { ...targetPos, duration: 1.15, ease: "power3.inOut" });
+            gsap.to(controls.target, {
+              x: focus.x, y: focus.y, z: focus.z,
+              duration: 1.15, ease: "power3.inOut",
+            });
+          }
+          setInteractionLabel(inspectionEnabled
+            ? "X-RAY / INTERNAL FRAME EXPOSED" : "NORMAL VIEW / SHELL RESTORED");
+        },
         setMode: setMotionMode,
         reassemble() {
           sequence?.kill();

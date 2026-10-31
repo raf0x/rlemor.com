@@ -213,17 +213,30 @@ function createMechanicalOctopus(scene: THREE.Scene) {
 
   function armPoint(arm: number, t: number, phase: number, pose: Pose, isPlaying: boolean) {
     const angle = (arm / ARM_COUNT) * TAU + 0.13;
-    const tip = Math.max(0, (t - 0.66) / 0.34);
-    const breath = isPlaying ? Math.sin(phase * 0.89 + arm * 0.87 + t * 6.2) : 0;
-    const reach = 1.02 + (3.17 + pose.deploy * 0.56) * Math.sin(t * 1.42);
-    const curlBack = (1 - pose.deploy * 0.76) * tip * tip * 0.65;
-    const tangent = (1 - pose.deploy * 0.45) * tip * tip * 1.1
-      + breath * 0.16 * t;
+    const curled = Math.max(0, (t - 0.65) / 0.35);
+    const curlAngle = curled * Math.PI * (1.2 + (arm % 3) * 0.085);
+    const hand = arm % 2 === 0 ? 1 : -1;
+    const breath = isPlaying ? Math.sin(phase * 0.83 + arm * 0.93 + t * 5.4) : 0;
+
+    // The final third turns back toward the chassis: a genuine terminal curl,
+    // not a uniformly straight radial spoke. Deploy uncoils the same rig.
+    const baseRadius = 1.04 + 3.52 * Math.min(t, 0.65);
+    const foldedRadius = baseRadius
+      + (t > 0.65 ? Math.sin(curlAngle) * 0.58 - curled * 0.18 : 0);
+    const straightRadius = 1.04 + 3.63 * t;
+    const radius = THREE.MathUtils.lerp(foldedRadius, straightRadius, pose.deploy);
+
+    const foldedSide = hand * (1 - Math.cos(curlAngle)) * (0.66 + (arm % 3) * 0.09);
+    const side = THREE.MathUtils.lerp(foldedSide, 0.06 * Math.sin(t * 4), pose.deploy)
+      + breath * 0.12 * t;
+    const depth = Math.sin(angle * 2.3) * 0.38 * t
+      + (arm % 3 - 1) * 0.32 * curled
+      + breath * 0.23 * t;
+
     return new THREE.Vector3(
-      Math.cos(angle) * (reach - curlBack) - Math.sin(angle) * tangent,
-      Math.sin(angle) * (reach - curlBack) + Math.cos(angle) * tangent,
-      Math.sin(angle * 2.4) * 0.45 * t + breath * 0.31 * t
-        - pose.deploy * 0.30 * tip,
+      Math.cos(angle) * radius - Math.sin(angle) * side,
+      Math.sin(angle) * radius + Math.cos(angle) * side,
+      depth,
     );
   }
 

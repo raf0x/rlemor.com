@@ -751,18 +751,13 @@ export default function KineticOctopus() {
           sequence?.kill();
           sequence = null;
           gsap.killTweensOf(pose);
-          const offsets = [
-            ...robot.manualArmOffsets,
-            ...robot.manualPlateOffsets,
-            robot.manualOpticOffset,
-          ];
-          for (const value of offsets) {
-            gsap.killTweensOf(value);
-            if (reduced) value.set(0, 0, 0);
-            else gsap.to(value, {
-              x: 0, y: 0, z: 0, duration: 1.45, ease: "power3.inOut",
-            });
-          }
+          // Return targets to their docks. The same inertial spring used
+          // for direct dragging handles the entire reassembly naturally.
+          for (const value of [
+            ...robot.armTargets,
+            ...robot.plateTargets,
+            robot.opticTarget,
+          ]) value.set(0, 0, 0);
           if (reduced) Object.assign(pose, { deploy: 0, explode: 0 });
           else gsap.to(pose, {
             deploy: 0, explode: 0, duration: 1.55, ease: "power3.inOut",
@@ -771,12 +766,15 @@ export default function KineticOctopus() {
           setSelectedPart(null);
           setIsGrabbing(false);
           setMovedParts(0);
+          setInteractionLabel("MAGNETIC REASSEMBLY / ACTIVE");
         },
         setPlaying(value: boolean) {
+          if (value && currentLifecycle !== "alive") finishAwakening();
           running.current = value && !reduced;
           sequence?.paused(!value);
         },
         runSequence() {
+          if (currentLifecycle !== "alive") finishAwakening();
           sequence?.kill();
           gsap.killTweensOf(pose);
           if (reduced) {
@@ -842,8 +840,10 @@ export default function KineticOctopus() {
       function releaseDrag(event?: PointerEvent) {
         if (!activeDrag || (event && activeDrag.pointerId !== event.pointerId)) return;
         const pointerId = activeDrag.pointerId;
+        robot.releasePart(activeDrag.part);
         activeDrag = null;
         controls.enabled = true;
+        setInteractionLabel("MAGNETIC RETURN / DOCKING");
         canvas!.style.cursor = "grab";
         setIsGrabbing(false);
         if (canvas!.hasPointerCapture(pointerId)) canvas!.releasePointerCapture(pointerId);
@@ -864,8 +864,12 @@ export default function KineticOctopus() {
         );
         if (!part) {
           setSelectedPart(null);
+          robot.proximity(null);
           return;
         }
+        if (currentLifecycle !== "alive") finishAwakening();
+        lastPicked = part;
+        robot.proximity(null);
         // Capture before OrbitControls begins its own single-pointer gesture.
         controls.enabled = false;
         sequence?.kill();
@@ -899,9 +903,22 @@ export default function KineticOctopus() {
         event.preventDefault();
       }
 
+      let lastHoverSample = 0;
       function onPointerMove(event: PointerEvent) {
         const drag = activeDrag;
-        if (!drag || drag.pointerId !== event.pointerId) return;
+        if (!drag) {
+          if (event.pointerType === "mouse" && event.timeStamp - lastHoverSample > 65) {
+            lastHoverSample = event.timeStamp;
+            const part = robot.pick(
+              camera, canvas!.getBoundingClientRect(),
+              event.clientX, event.clientY, false,
+            );
+            robot.proximity(part);
+            canvas!.style.cursor = part ? "pointer" : "grab";
+          }
+          return;
+        }
+        if (drag.pointerId !== event.pointerId) return;
         if (Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) < 2) return;
         updateRayFromPointer(event);
         if (!pointerRay.ray.intersectPlane(drag.plane, rayHit)) return;
@@ -916,8 +933,10 @@ export default function KineticOctopus() {
 
       canvas!.addEventListener("pointerdown", onPointerDown, { capture: true });
       canvas!.addEventListener("pointermove", onPointerMove, { capture: true });
+      const clearProximity = () => robot.proximity(null);
       canvas!.addEventListener("pointerup", releaseDrag);
       canvas!.addEventListener("pointercancel", releaseDrag);
+      canvas!.addEventListener("pointerleave", clearProximity);
 
       function resize() {
         const { width, height } = node!.getBoundingClientRect();
@@ -934,13 +953,15 @@ export default function KineticOctopus() {
       function draw(now: number) {
         const delta = Math.min((now - lastTime) / 1000, 0.05);
         lastTime = now;
+        phase += delta;
         if (running.current) {
-          phase += delta;
           robot.root.rotation.y += delta * 0.085;
           robot.root.position.y = Math.sin(phase * 0.7) * 0.085;
         }
+        robot.updateDynamics(delta);
         robot.renderArms(phase, pose, running.current);
         robot.updateShell(pose.explode);
+        robot.updateRadiance(phase);
         controls.update();
         renderer.render(scene, camera);
         if (now - lastReadout > 420) {
@@ -951,6 +972,14 @@ export default function KineticOctopus() {
             pitch: Math.round(Math.atan2(position.y, Math.hypot(position.x, position.z)) * DEG),
             fps: Math.round(1 / Math.max(delta, 0.001)),
           });
+          if (!activeDrag) {
+            const remaining = robot.countMovedParts();
+            setMovedParts((old) => old === remaining ? old : remaining);
+            if (remaining === 0 && lastPicked) {
+              lastPicked = null;
+              setSelectedPart(null);
+            }
+          }
         }
         raf = window.requestAnimationFrame(draw);
       }
@@ -973,10 +1002,15 @@ export default function KineticOctopus() {
         canvas!.removeEventListener("pointermove", onPointerMove, true);
         canvas!.removeEventListener("pointerup", releaseDrag);
         canvas!.removeEventListener("pointercancel", releaseDrag);
+        canvas!.removeEventListener("pointerleave", clearProximity);
         controls.dispose();
+        awakeningTimeline?.kill();
         sequence?.kill();
         gsap.killTweensOf(pose);
         gsap.killTweensOf(camera.position);
+        gsap.killTweensOf(controls.target);
+        for (const material of robot.shellMaterials) gsap.killTweensOf(material);
+        environmentTexture.dispose();
         controllerRef.current = null;
         const geometries = new Set<THREE.BufferGeometry>();
         const materials = new Set<THREE.Material>();

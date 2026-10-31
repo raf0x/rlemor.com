@@ -499,6 +499,30 @@ export default function KineticOctopus() {
 
       controllerRef.current = {
         setMode: setMotionMode,
+        reassemble() {
+          sequence?.kill();
+          sequence = null;
+          gsap.killTweensOf(pose);
+          const offsets = [
+            ...robot.manualArmOffsets,
+            ...robot.manualPlateOffsets,
+            robot.manualOpticOffset,
+          ];
+          for (const value of offsets) {
+            gsap.killTweensOf(value);
+            if (reduced) value.set(0, 0, 0);
+            else gsap.to(value, {
+              x: 0, y: 0, z: 0, duration: 1.45, ease: "power3.inOut",
+            });
+          }
+          if (reduced) Object.assign(pose, { deploy: 0, explode: 0 });
+          else gsap.to(pose, {
+            deploy: 0, explode: 0, duration: 1.55, ease: "power3.inOut",
+          });
+          setMode("orbit");
+          setSelectedPart(null);
+          setMovedParts(0);
+        },
         setPlaying(value: boolean) {
           running.current = value && !reduced;
           sequence?.paused(!value);
@@ -538,6 +562,114 @@ export default function KineticOctopus() {
           controls.update();
         },
       };
+
+      // Ray casting and a camera-facing drag plane use the same physical
+      // interaction for mouse, pen and single-finger touch. Empty-space
+      // gestures continue to belong to OrbitControls.
+      const pointerRay = new THREE.Raycaster();
+      const pointerNdc = new THREE.Vector2();
+      const rayHit = new THREE.Vector3();
+      const dragNormal = new THREE.Vector3();
+      type DragSession = {
+        pointerId: number;
+        part: Grabbable;
+        plane: THREE.Plane;
+        localStart: THREE.Vector3;
+        offsetStart: THREE.Vector3;
+        wasPlaying: boolean;
+        startX: number;
+        startY: number;
+      };
+      let activeDrag: DragSession | null = null;
+
+      function updateRayFromPointer(event: PointerEvent) {
+        const bounds = canvas!.getBoundingClientRect();
+        pointerNdc.set(
+          ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
+          -((event.clientY - bounds.top) / bounds.height) * 2 + 1,
+        );
+        pointerRay.setFromCamera(pointerNdc, camera);
+      }
+
+      function releaseDrag(event?: PointerEvent) {
+        if (!activeDrag || (event && activeDrag.pointerId !== event.pointerId)) return;
+        const wasPlaying = activeDrag.wasPlaying;
+        const pointerId = activeDrag.pointerId;
+        activeDrag = null;
+        controls.enabled = true;
+        running.current = wasPlaying && !reduced;
+        canvas!.style.cursor = "grab";
+        if (canvas!.hasPointerCapture(pointerId)) canvas!.releasePointerCapture(pointerId);
+        setMovedParts(robot.countMovedParts());
+      }
+
+      function onPointerDown(event: PointerEvent) {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        if (activeDrag) {
+          if (event.pointerType === "touch" && activeDrag.pointerId !== event.pointerId) {
+            releaseDrag();
+          }
+          return;
+        }
+        const part = robot.pick(
+          camera, canvas!.getBoundingClientRect(),
+          event.clientX, event.clientY, event.pointerType === "touch",
+        );
+        if (!part) {
+          setSelectedPart(null);
+          return;
+        }
+        // Capture before OrbitControls begins its own single-pointer gesture.
+        controls.enabled = false;
+        sequence?.kill();
+        sequence = null;
+        gsap.killTweensOf(pose);
+        const targetOffset = robot.getManualOffset(part);
+        gsap.killTweensOf(targetOffset);
+        if (part.kind === "arm") {
+          robot.manualArmAnchors[part.index] = Math.max(0.17, part.anchor);
+        }
+        camera.getWorldDirection(dragNormal);
+        const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(
+          dragNormal, part.worldPosition,
+        );
+        const localStart = robot.root.worldToLocal(part.worldPosition.clone());
+        activeDrag = {
+          pointerId: event.pointerId,
+          part,
+          plane,
+          localStart,
+          offsetStart: targetOffset.clone(),
+          wasPlaying: running.current,
+          startX: event.clientX,
+          startY: event.clientY,
+        };
+        running.current = false;
+        setSelectedPart(part.label);
+        canvas!.style.cursor = "grabbing";
+        canvas!.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      }
+
+      function onPointerMove(event: PointerEvent) {
+        const drag = activeDrag;
+        if (!drag || drag.pointerId !== event.pointerId) return;
+        if (Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) < 2) return;
+        updateRayFromPointer(event);
+        if (!pointerRay.ray.intersectPlane(drag.plane, rayHit)) return;
+        // Local-space offsets keep parts attached to the rotating organism.
+        const delta = robot.root.worldToLocal(rayHit.clone()).sub(drag.localStart);
+        robot.getManualOffset(drag.part)
+          .copy(drag.offsetStart)
+          .add(delta)
+          .clampLength(0, 3.0);
+        event.preventDefault();
+      }
+
+      canvas!.addEventListener("pointerdown", onPointerDown, { capture: true });
+      canvas!.addEventListener("pointermove", onPointerMove, { capture: true });
+      canvas!.addEventListener("pointerup", releaseDrag);
+      canvas!.addEventListener("pointercancel", releaseDrag);
 
       function resize() {
         const { width, height } = node!.getBoundingClientRect();
@@ -588,6 +720,11 @@ export default function KineticOctopus() {
         window.cancelAnimationFrame(raf);
         canvas!.removeEventListener("webglcontextlost", onContextLost);
         ro.disconnect();
+        releaseDrag();
+        canvas!.removeEventListener("pointerdown", onPointerDown, true);
+        canvas!.removeEventListener("pointermove", onPointerMove, true);
+        canvas!.removeEventListener("pointerup", releaseDrag);
+        canvas!.removeEventListener("pointercancel", releaseDrag);
         controls.dispose();
         sequence?.kill();
         gsap.killTweensOf(pose);

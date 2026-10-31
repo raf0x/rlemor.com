@@ -227,9 +227,15 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   const signals = new THREE.InstancedMesh(marker, signalPaint, total);
   const pins = new THREE.InstancedMesh(jointSphere, darkGlass, total);
   const amber = new THREE.Color(0xff8248);
+  const white = new THREE.Color(0xffffff);
   const rainbowColor = new THREE.Color();
   const signalColor = new THREE.Color();
-  for (let i = 0; i < total; i++) signals.setColorAt(i, amber);
+  const housingColor = new THREE.Color();
+  for (let i = 0; i < total; i++) {
+    signals.setColorAt(i, amber);
+    housing.setColorAt(i, white);
+  }
+  if (housing.instanceColor) housing.instanceColor.needsUpdate = true;
   if (signals.instanceColor) signals.instanceColor.needsUpdate = true;
   let lastSignalFrame = -1;
   let hadRainbow = false;
@@ -300,6 +306,14 @@ function createMechanicalOctopus(scene: THREE.Scene) {
   const signalPosition = new THREE.Vector3();
   const pinPosition = new THREE.Vector3();
   const scaleVector = new THREE.Vector3();
+  // Kinematic workspace shared by eight arm rigs, with no per-frame objects.
+  const ikPath = Array.from({ length: LINKS_PER_ARM + 1 }, () => new THREE.Vector3());
+  const ikLengths = new Float32Array(LINKS_PER_ARM);
+  const ikBase = new THREE.Vector3();
+  const ikGoal = new THREE.Vector3();
+  const ikRestAnchor = new THREE.Vector3();
+  const ikDelta = new THREE.Vector3();
+  const ikDirection = new THREE.Vector3();
 
   function armPoint(arm: number, t: number, phase: number, pose: Pose, isPlaying: boolean, output: THREE.Vector3) {
     const angle = (arm / ARM_COUNT) * TAU + 0.13;
@@ -330,9 +344,6 @@ function createMechanicalOctopus(scene: THREE.Scene) {
       Math.sin(angle) * radius + Math.cos(angle) * side,
       depth,
     );
-    // Dragging a link bends the distal portion while leaving its root docked.
-    const weight = THREE.MathUtils.smoothstep(t, 0.015, manualArmAnchors[arm]);
-    output.addScaledVector(manualArmOffsets[arm], weight);
     return output;
   }
 
@@ -343,12 +354,53 @@ function createMechanicalOctopus(scene: THREE.Scene) {
 
   function renderArms(phase: number, pose: Pose, isPlaying: boolean) {
     for (let arm = 0; arm < ARM_COUNT; arm++) {
+      for (let j = 0; j <= LINKS_PER_ARM; j++) {
+        armPoint(arm, j / LINKS_PER_ARM, phase, pose, isPlaying, ikPath[j]);
+      }
+      const offsetForArm = manualArmOffsets[arm];
+      if (offsetForArm.lengthSq() > 0.0000001) {
+        // FABRIK: solve the chain up to the grabbed joint, keeping the
+        // docking base fixed and every intervening link length constrained.
+        // Limited telescoping under extreme pulls prevents unnatural jumps.
+        const gripIndex = Math.min(LINKS_PER_ARM - 1,
+          Math.max(5, Math.round(manualArmAnchors[arm] * LINKS_PER_ARM)));
+        ikBase.copy(ikPath[0]);
+        ikRestAnchor.copy(ikPath[gripIndex]);
+        ikGoal.copy(ikRestAnchor).add(offsetForArm);
+        let maxReach = 0;
+        for (let j = 0; j < gripIndex; j++) {
+          ikLengths[j] = ikPath[j].distanceTo(ikPath[j + 1]);
+          maxReach += ikLengths[j];
+        }
+        const distance = ikGoal.distanceTo(ikBase);
+        if (distance > maxReach) {
+          const telescoping = Math.min(1.32, distance / Math.max(maxReach, 0.01));
+          maxReach *= telescoping;
+          for (let j = 0; j < gripIndex; j++) ikLengths[j] *= telescoping;
+          ikGoal.sub(ikBase).clampLength(0, maxReach - 0.0001).add(ikBase);
+        }
+        for (let iteration = 0; iteration < 4; iteration++) {
+          ikPath[gripIndex].copy(ikGoal);
+          for (let j = gripIndex - 1; j >= 0; j--) {
+            ikDirection.copy(ikPath[j]).sub(ikPath[j + 1]).normalize();
+            ikPath[j].copy(ikPath[j + 1]).addScaledVector(ikDirection, ikLengths[j]);
+          }
+          ikPath[0].copy(ikBase);
+          for (let j = 0; j < gripIndex; j++) {
+            ikDirection.copy(ikPath[j + 1]).sub(ikPath[j]).normalize();
+            ikPath[j + 1].copy(ikPath[j]).addScaledVector(ikDirection, ikLengths[j]);
+          }
+        }
+        ikDelta.copy(ikPath[gripIndex]).sub(ikRestAnchor);
+        for (let j = gripIndex + 1; j <= LINKS_PER_ARM; j++) {
+          ikPath[j].add(ikDelta);
+        }
+      }
       for (let joint = 0; joint < LINKS_PER_ARM; joint++) {
         const idx = arm * LINKS_PER_ARM + joint;
         const t = joint / LINKS_PER_ARM;
-        const tNext = (joint + 1) / LINKS_PER_ARM;
-        armPoint(arm, t, phase, pose, isPlaying, start);
-        armPoint(arm, tNext, phase, pose, isPlaying, end);
+        start.copy(ikPath[joint]);
+        end.copy(ikPath[joint + 1]);
         middle.copy(start).add(end).multiplyScalar(0.5);
         direction.copy(end).sub(start);
         const length = direction.length();
@@ -432,10 +484,13 @@ function createMechanicalOctopus(scene: THREE.Scene) {
           const flicker = Math.pow(Math.max(0, Math.sin(phase * 6.2
             - t * 8.8 - arm * 0.64)), 2);
           signalColor.copy(amber).lerp(rainbowColor, rainbow * flicker);
+          housingColor.copy(white).lerp(rainbowColor, rainbow * flicker * 0.84);
           signals.setColorAt(arm * LINKS_PER_ARM + link, signalColor);
+          housing.setColorAt(arm * LINKS_PER_ARM + link, housingColor);
         }
       }
       if (signals.instanceColor) signals.instanceColor.needsUpdate = true;
+      if (housing.instanceColor) housing.instanceColor.needsUpdate = true;
     }
   }
 

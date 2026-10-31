@@ -225,6 +225,17 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
   const marker = new THREE.BoxGeometry(1, 1, 1);
 
   const housing = new THREE.InstancedMesh(cylinder, porcelain, total);
+  // A thin, independently tinted sleeve covers each ceramic link.
+  // MeshBasicMaterial keeps rainbow hues vivid even under studio lighting,
+  // while its transparency retains the sculpted mechanical geometry.
+  const spectralMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    toneMapped: false,
+  });
+  const spectralSleeves = new THREE.InstancedMesh(cylinder, spectralMaterial, total);
   const spine = new THREE.InstancedMesh(narrowCylinder, graphite, total);
   const joints = new THREE.InstancedMesh(jointSphere, gunmetal, total);
   const collars = new THREE.InstancedMesh(torus, graphite, total);
@@ -243,13 +254,15 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
   for (let i = 0; i < total; i++) {
     signals.setColorAt(i, amber);
     housing.setColorAt(i, white);
+    spectralSleeves.setColorAt(i, amber);
   }
   if (housing.instanceColor) housing.instanceColor.needsUpdate = true;
   if (signals.instanceColor) signals.instanceColor.needsUpdate = true;
+  if (spectralSleeves.instanceColor) spectralSleeves.instanceColor.needsUpdate = true;
   let lastSignalFrame = -1;
   let hadRainbow = false;
 
-  for (const mesh of [housing, spine, joints, collars, signals, pins]) {
+  for (const mesh of [housing, spine, joints, collars, signals, pins, spectralSleeves]) {
     mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
     mesh.frustumCulled = false;
     root.add(mesh);
@@ -424,6 +437,10 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
 
         scaleVector.set(thickness * 1.9, Math.max(0.07, length * 0.76), thickness * 1.9);
         put(housing, idx, middle, qFromY, scaleVector);
+        // The prismatic overlay is just above the ceramic housing, but
+        // shorter than the link so its original joints remain legible.
+        scaleVector.set(thickness * 1.98, Math.max(0.07, length * 0.67), thickness * 1.98);
+        put(spectralSleeves, idx, middle, qFromY, scaleVector);
         scaleVector.set(thickness * 0.92, length * 1.10, thickness * 0.92);
         put(spine, idx, middle, qFromY, scaleVector);
         scaleVector.setScalar(thickness * 1.74);
@@ -436,7 +453,7 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
         put(pins, idx, pinPosition.copy(end).add(offset).addScaledVector(zAxis, thickness * 0.91), identity, scaleVector);
       }
     }
-    for (const mesh of [housing, spine, joints, collars, signals, pins]) {
+    for (const mesh of [housing, spine, joints, collars, signals, pins, spectralSleeves]) {
       mesh.instanceMatrix.needsUpdate = true;
     }
   }
@@ -488,35 +505,40 @@ function createMechanicalOctopus(scene: THREE.Scene, simplifiedMaterials = false
     return hoverField.power > 0.003 || hoverField.targetPower > 0.003;
   }
 
-  function updateRadiance(phase: number) {
+  function updateRadiance(colorTime: number) {
+    const rainbow = Math.max(0, Math.min(1, awake.rainbow));
     const glow = awake.iris;
-    orange.emissiveIntensity = 0.18 + glow * (0.8 + 0.2 * Math.sin(phase * 3.9));
+    orange.emissiveIntensity = 0.18 + glow * (0.8 + 0.2 * Math.sin(colorTime * 3.9));
     innerGlow.emissiveIntensity = 0.25 + glow * 0.96;
-    const tick = Math.floor(phase * 26);
-    const rainbow = awake.rainbow;
-    if ((rainbow >= 0.001 || hadRainbow) &&
-      (tick !== lastSignalFrame || rainbow < 0.001)) {
-      lastSignalFrame = tick;
-      hadRainbow = rainbow >= 0.001;
-      for (let arm = 0; arm < ARM_COUNT; arm++) {
-        for (let link = 0; link < LINKS_PER_ARM; link++) {
-          const t = link / LINKS_PER_ARM;
-          const stripe = (phase * 0.29 - t + arm * 0.135 + 4) % 1;
-          rainbowColor.setHSL(stripe, 0.89, 0.54);
-          const flicker = Math.pow(Math.max(0, Math.sin(phase * 6.2
-            - t * 8.8 - arm * 0.64)), 2);
-          // Every arm receives a prismatic base tint, with brighter pulses
-          // sweeping intermittently along each segmented tentacle.
-          const spectrum = rainbow * (0.37 + 0.63 * flicker);
-          signalColor.copy(amber).lerp(rainbowColor, spectrum);
-          housingColor.copy(white).lerp(rainbowColor, spectrum * 0.90);
-          signals.setColorAt(arm * LINKS_PER_ARM + link, signalColor);
-          housing.setColorAt(arm * LINKS_PER_ARM + link, housingColor);
-        }
+
+    // Once awakened, the entire mechanical casing retains a highly visible
+    // prismatic color layer. Its hue drifts continuously, never fading out.
+    // A small brightness pulse adds life without making any color disappear.
+    spectralMaterial.opacity = rainbow * 0.88;
+    spectralSleeves.visible = rainbow > 0.001;
+    const tick = Math.floor(colorTime * 22);
+    if (rainbow < 0.001 && !hadRainbow) return;
+    if (tick === lastSignalFrame && (rainbow > 0.001 || !hadRainbow)) return;
+
+    lastSignalFrame = tick;
+    hadRainbow = rainbow >= 0.001;
+    for (let arm = 0; arm < ARM_COUNT; arm++) {
+      for (let link = 0; link < LINKS_PER_ARM; link++) {
+        const t = link / LINKS_PER_ARM;
+        const hue = ((colorTime * 0.085 + arm / ARM_COUNT + t * 0.16) % 1 + 1) % 1;
+        rainbowColor.setHSL(hue, 1, 0.61);
+        const pulse = 0.85 + 0.15 * Math.sin(colorTime * 3.1 - t * 5.4 - arm * 0.65);
+        signalColor.copy(amber).lerp(rainbowColor, rainbow);
+        housingColor.copy(white).lerp(rainbowColor, rainbow * (0.90 + 0.10 * pulse));
+        const index = arm * LINKS_PER_ARM + link;
+        signals.setColorAt(index, signalColor);
+        housing.setColorAt(index, housingColor);
+        spectralSleeves.setColorAt(index, rainbowColor);
       }
-      if (signals.instanceColor) signals.instanceColor.needsUpdate = true;
-      if (housing.instanceColor) housing.instanceColor.needsUpdate = true;
     }
+    if (signals.instanceColor) signals.instanceColor.needsUpdate = true;
+    if (housing.instanceColor) housing.instanceColor.needsUpdate = true;
+    if (spectralSleeves.instanceColor) spectralSleeves.instanceColor.needsUpdate = true;
   }
 
   function updateShell(explode: number) {
@@ -743,7 +765,7 @@ export default function KineticOctopus() {
         awakeningTimeline = null;
         gsap.ticker.lagSmoothing(500, 33);
         for (const arm of robot.armWake) arm.value = 1;
-        Object.assign(robot.awake, { value: 1, iris: 1, rainbow: 0 });
+        Object.assign(robot.awake, { value: 1, iris: 1, rainbow: 1 });
         currentLifecycle = "alive";
         setLifecycle("alive");
       }
@@ -790,7 +812,6 @@ export default function KineticOctopus() {
           gsap.killTweensOf(camera.position);
           awakeningTimeline = gsap.timeline({
             onComplete: () => {
-              robot.awake.rainbow = 0;
               finishAwakening();
               gsap.ticker.lagSmoothing(500, 33);
               setInteractionLabel("SYSTEM ONLINE / ALL EIGHT ARMS ACTIVE");
@@ -810,10 +831,7 @@ export default function KineticOctopus() {
               y: mobile ? 1.45 : 1.6,
               z: mobile ? 13.6 : 11.35,
               duration: 4.25, ease: "power3.inOut",
-            }, 2.7)
-            .to(robot.awake, {
-              rainbow: 0, duration: 2.1, ease: "power2.inOut",
-            }, 6.8);
+            }, 2.7);
           robot.armWake.forEach((arm, i) => {
             awakeningTimeline?.to(arm, {
               value: 1, duration: 1.35, ease: "back.out(1.15)",
@@ -1094,7 +1112,9 @@ export default function KineticOctopus() {
           hasRenderedArms = true;
         }
         robot.updateShell(pose.explode);
-        robot.updateRadiance(phase);
+        // Rainbow motion uses real elapsed time, independent of render FPS.
+        // Reduced-motion users receive a vivid but stationary rainbow.
+        robot.updateRadiance(reduced ? 0 : now * 0.001);
         controls.update();
         renderer.render(scene, camera);
         if (now - lastReadout > 420) {

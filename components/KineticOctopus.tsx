@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsType } from "three/addons/controls/OrbitControls.js";
 import styles from "./KineticOctopus.module.css";
@@ -360,7 +361,6 @@ export default function KineticOctopus() {
       let phase = 0;
       let lastTime = performance.now();
       let lastReadout = 0;
-      let frame = 0;
 
       function setMotionMode(nextMode: MotionMode) {
         const next = {
@@ -411,7 +411,6 @@ export default function KineticOctopus() {
         robot.updateShell(pose.explode);
         controls.update();
         renderer.render(scene, camera);
-        frame++;
         if (now - lastReadout > 420) {
           lastReadout = now;
           const position = camera.position.clone().sub(controls.target);
@@ -420,7 +419,6 @@ export default function KineticOctopus() {
             pitch: Math.round(Math.atan2(position.y, Math.hypot(position.x, position.z)) * DEG),
             fps: Math.round(1 / Math.max(delta, 0.001)),
           });
-          frame = 0;
         }
         raf = window.requestAnimationFrame(draw);
       }
@@ -489,7 +487,7 @@ export default function KineticOctopus() {
         </div>
         <div className={styles.headerRight}>
           <span className={styles.live}><span aria-hidden="true" /> {ready ? "RENDER ACTIVE" : "INITIALIZING"}</span>
-          <a href="/" className={styles.backLink}>RETURN TO RLEMOR.COM <span aria-hidden="true">↗</span></a>
+          <Link href="/" className={styles.backLink}>RETURN TO RLEMOR.COM <span aria-hidden="true">↗</span></Link>
         </div>
       </header>
 
@@ -604,7 +602,7 @@ export default function KineticOctopus() {
       <footer className={styles.footer}>
         <span>OCTAVE / 08 <span className={styles.footSep}>·</span> INTERACTIVE SYSTEM STUDY</span>
         <span>BUILT WITH THREE.JS + GSAP <span className={styles.footSep}>·</span> EXPERIMENTAL, NOT PRODUCTION</span>
-        <a href="/">RLEMOR.COM ↗</a>
+        <Link href="/">RLEMOR.COM ↗</Link>
       </footer>
     </div>
   );

@@ -34,20 +34,30 @@ export function createCreatureStage(
  renderer.setPixelRatio(software?.8:Math.min(window.devicePixelRatio||1,mobile?1.25:1.6));
  renderer.outputColorSpace=THREE.SRGBColorSpace;
  renderer.toneMapping=THREE.ACESFilmicToneMapping;
- renderer.toneMappingExposure=1.1;
+ renderer.toneMappingExposure=.91;
  const scene=new THREE.Scene();
  scene.background=new THREE.Color(0x0a121a);
  scene.fog=new THREE.FogExp2(0x0b1620,.024);
  const camera=new THREE.PerspectiveCamera(mobile?44:38,1,.1,80);
- const defaultZ=mobile?11.3:9.0;
- camera.position.set(2.2,3.16,defaultZ);
+ // The manta is a broad, horizontal wing. It was almost edge-on in the
+ // original generic 3D viewer, so the creature read as a small silver line.
+ // Each species now has an intentionally framed museum portrait.
+ const view:Record<CreatureName,{position:[number,number,number];target:[number,number,number]}>={
+   aether:{position:[mobile?1.7:2.6,mobile?5.1:5.25,mobile?12.1:7.7],target:[0,1.8,0]},
+   medusa:{position:[1.8,3.65,mobile?11.6:9.7],target:[0,2.45,0]},
+   atlas:{position:[2.25,4.25,mobile?10.8:8.65],target:[0,1.76,0]},
+   frog:{position:[1.85,3.85,mobile?10.3:8.15],target:[0,1.56,0]},
+ };
+ const originalPosition=new THREE.Vector3(...view[id].position);
+ const originalTarget=new THREE.Vector3(...view[id].target);
+ camera.position.copy(originalPosition);
  const controls=new OrbitControls(camera,canvas);
- controls.target.set(0,2.25,0);
+ controls.target.copy(originalTarget);
  controls.enableDamping=true;controls.dampingFactor=.07;
  controls.enablePan=false;
  controls.rotateSpeed=.65;controls.zoomSpeed=.8;
- controls.minDistance=4.4;controls.maxDistance=18;
- controls.minPolarAngle=.35;controls.maxPolarAngle=2.0;
+ controls.minDistance=4.0;controls.maxDistance=17;
+ controls.minPolarAngle=.48;controls.maxPolarAngle=1.76;
  controls.update();
  const env=new THREE.PMREMGenerator(renderer);
  const room=new RoomEnvironment();
@@ -74,13 +84,13 @@ export function createCreatureStage(
   add(scene,new THREE.BoxGeometry(.1,5.6,.08),cyan,x,4,-8.15);
   add(scene,new THREE.BoxGeometry(.17,8.5,.4),graphite,x,4,-8.4);
  }
- const warm=new THREE.SpotLight(0xffa86e,260,27,.7,.7,1.2);
+ const warm=new THREE.SpotLight(0xffa86e,116,27,.7,.7,1.2);
  warm.position.set(-5.1,7,4.9);warm.target.position.set(0,2.4,0);scene.add(warm,warm.target);
- const cool=new THREE.SpotLight(0x69c9fa,280,28,.73,.67,1.2);
+ const cool=new THREE.SpotLight(0x69c9fa,118,28,.73,.67,1.2);
  cool.position.set(5.0,6.3,5.5);cool.target.position.set(0,2.2,0);scene.add(cool,cool.target);
- const top=new THREE.SpotLight(0xd4ecff,105,20,.8,.7);
+ const top=new THREE.SpotLight(0xd4ecff,58,20,.8,.7);
  top.position.set(0,8,2);top.target.position.set(0,2.7,0);scene.add(top,top.target);
- const hemi=new THREE.HemisphereLight(0xc6dfff,0x17232b,2.1);scene.add(hemi);
+ const hemi=new THREE.HemisphereLight(0xc6dfff,0x17232b,.93);scene.add(hemi);
  let statue:THREE.Group|null=null;
  let mixer:THREE.AnimationMixer|null=null;
  let actions:THREE.AnimationAction[]=[];
@@ -98,15 +108,55 @@ export function createCreatureStage(
   statue.name="Menagerie specimen / "+id;
   const bb=new THREE.Box3().setFromObject(statue);
   const size=bb.getSize(new THREE.Vector3());
-  const fit=Math.min(4.8/Math.max(.1,size.x),4.25/Math.max(.1,size.y),
-    4.4/Math.max(.1,size.z),1.9);
+  // Center each species within the same exhibit composition. The earlier
+  // bottom-only placement put a flying manta nearly flat against the
+  // platform and left most of the useful screen empty.
+  const fit=Math.min(6.0/Math.max(.1,size.x),4.45/Math.max(.1,size.y),
+    5.1/Math.max(.1,size.z),2.50);
+  const centerY=id==="medusa"?2.58:id==="aether"?2.48:id==="frog"?2.03:2.05;
   statue.scale.setScalar(fit);
   statue.position.set(-(bb.min.x+size.x*.5)*fit,
-    .50-bb.min.y*fit,
+    centerY-(bb.min.y+size.y*.5)*fit,
     -(bb.min.z+size.z*.5)*fit);
   statue.userData.restY=statue.position.y;
   statue.userData.restScale=fit;
   scene.add(statue);
+  statue.traverse(object=>{
+    if(object instanceof THREE.Mesh){
+      const materials=Array.isArray(object.material)?object.material:[object.material];
+      const replacement=materials.map(material=>{
+        if(material.name.startsWith("ENERGY | Electric blue")){
+          return new THREE.MeshBasicMaterial({name:material.name,color:id==="frog"?0x21fa9b:0x19b7f8,
+            toneMapped:false,side:THREE.DoubleSide});
+        }
+        if(material.name.startsWith("LIGHT | Silver cyan")){
+          return new THREE.MeshBasicMaterial({name:material.name,color:0x68d6f2,toneMapped:false,
+            side:THREE.DoubleSide});
+        }
+        if(material.name.startsWith("ENERGY | Amber")){
+          return new THREE.MeshBasicMaterial({name:material.name,color:0xff993c,toneMapped:false});
+        }
+        if(material.name.startsWith("LUMINOUS | Violet")){
+          return new THREE.MeshBasicMaterial({name:material.name,color:0xa044ed,toneMapped:false});
+        }
+        if(material.name.startsWith("LUMINOUS | Jade")){
+          return new THREE.MeshBasicMaterial({name:material.name,color:0x20df8d,toneMapped:false});
+        }
+        if(material.name.startsWith("GLASS | Deep smoke")){
+          return new THREE.MeshPhysicalMaterial({name:material.name,color:0x183947,
+            metalness:.12,roughness:.18,clearcoat:.9,
+            transparent:true,opacity:id==="medusa"?.38:.65,depthWrite:false,
+            side:THREE.DoubleSide});
+        }
+        if(material instanceof THREE.MeshStandardMaterial){
+          material.envMapIntensity=material.metalness>.5?.39:.28;
+          material.needsUpdate=true;
+        }
+        return material;
+      });
+      object.material=Array.isArray(object.material)?replacement:replacement[0];
+    }
+  });
   mixer=new THREE.AnimationMixer(statue);
   actions=gltf.animations.map(clip=>{
     const a=mixer!.clipAction(clip);
@@ -156,16 +206,16 @@ export function createCreatureStage(
  }
  function light(value:"cinematic"|"study"){
   const inspect=value==="study";
-  warm.intensity=inspect?175:260;
-  cool.intensity=inspect?170:280;
-  top.intensity=inspect?170:105;
-  hemi.intensity=inspect?3.2:2.1;
+  warm.intensity=inspect?165:155;
+  cool.intensity=inspect?172:160;
+  top.intensity=inspect?175:77;
+  hemi.intensity=inspect?2.7:1.2;
   (scene.background as THREE.Color).setHex(inspect?0x16232e:0x0a121a);
  }
  function reset(){
   controls.reset();
-  camera.position.set(2.2,3.16,defaultZ);
-  controls.target.set(0,2.25,0);controls.update();
+  camera.position.copy(originalPosition);
+  controls.target.copy(originalTarget);controls.update();
   light("cinematic");
   playing=!reduced;actionTime=0;
  }

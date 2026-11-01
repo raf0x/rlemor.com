@@ -346,6 +346,79 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
   // one Three.js renderer; no nested WebGL canvases or opaque screenshots.
   const mixers:THREE.AnimationMixer[]=[];
   const specimenRoots:THREE.Object3D[]=[];
+  const installed=new Set<string>();
+  const spectrum=new Map<number,THREE.MeshBasicMaterial>();
+  const creatureGlow=new Map<string,THREE.MeshBasicMaterial>();
+  const glowHues=new Map<string,number>();
+  const creatureLightColors:Record<string,number>={
+    "ENERGY | Electric blue":0x21bcff,
+    "LIGHT | Silver cyan":0x60d6f2,
+    "ENERGY | Amber microcell":0xffac57,
+    "LUMINOUS | Violet":0xc66cfa,
+    "LUMINOUS | Jade":0x34eaa1,
+  };
+  let lastSpectrumTick=-1;
+  // One shared glowing palette, no individual dynamic lights per suction cup.
+  function animateExhibitColors(t:number){
+    const tick=Math.floor(t*26);
+    if(tick===lastSpectrumTick)return;
+    lastSpectrumTick=tick;
+    for(const [group,mat] of spectrum){
+      const hue=((group/16+t*.35+.026*Math.sin(t*.8+group*.83))%1+1)%1;
+      const phase=t*(4.15+(group%3)*.42)+group*2.399963;
+      const burst=Math.pow(.5+.5*Math.sin(phase),2.2);
+      const energy=.26+.74*burst;
+      mat.color.setHSL(hue,1,.39+.25*energy);
+      mat.opacity=.57+.43*energy;
+    }
+    let index=0;
+    for(const [name,mat] of creatureGlow){
+      const hue=glowHues.get(name)??.55;
+      mat.color.setHSL((hue+.026*Math.sin(t*.85+index*1.9)+1)%1,.97,
+        .52+.08*Math.sin(t*2.1+index*1.5));
+      index++;
+    }
+  }
+  function convertExhibitMaterials(model:THREE.Object3D,id:string){
+    model.traverse(object=>{
+      if(!(object instanceof THREE.Mesh))return;
+      const sources=Array.isArray(object.material)?object.material:[object.material];
+      const mapped=sources.map(material=>{
+        const match=id==="octave-spectrum"?
+          /^SPECTRUM CUP (\d{2})/.exec(material.name):null;
+        if(match){
+          const group=Number(match[1]);
+          let color=spectrum.get(group);
+          if(!color){
+            color=new THREE.MeshBasicMaterial({name:material.name,color:0xffffff,
+              toneMapped:false,transparent:true,opacity:.96,
+              blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
+            spectrum.set(group,color);
+          }
+          return color;
+        }
+        let hex=creatureLightColors[material.name];
+        if(id==="frog"&&material.name==="ENERGY | Electric blue")hex=0x38eca3;
+        if(hex!==undefined){
+          const key=id+"|"+material.name;
+          let color=creatureGlow.get(key);
+          if(!color){
+            color=new THREE.MeshBasicMaterial({name:material.name,color:hex,
+              toneMapped:false,side:THREE.DoubleSide});
+            creatureGlow.set(key,color);
+            glowHues.set(key,color.color.getHSL({h:0,s:0,l:0}).h);
+          }
+          return color;
+        }
+        if(material instanceof THREE.MeshStandardMaterial){
+          material.envMapIntensity=material.metalness>.5?.5:.36;
+          material.needsUpdate=true;
+        }
+        return material;
+      });
+      object.material=Array.isArray(object.material)?mapped:mapped[0];
+    });
+  }
   const loader=new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
   const assets=[
@@ -373,8 +446,11 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
         -bb.min.y*scale,
         -bb.min.z*scale-size.z*scale*.5);
       sculpture.name="Installed exhibit: "+id;
+      convertExhibitMaterials(sculpture,id);
       mount.add(sculpture);
       specimenRoots.push(sculpture);
+      installed.add(id);
+      canvas.dataset.loadedExhibits=Array.from(installed).sort().join(",");
       const mixer=new THREE.AnimationMixer(sculpture);
       for(const clip of gltf.animations){
         const action=mixer.clipAction(clip);
@@ -537,6 +613,7 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
         restoreViewBounds();
       }
     }
+    if(!reduced)animateExhibitColors(elapsed);
     if(!reduced){
       for(let i=0;i<rings.length;i++){
         const hue=.51+Math.sin(elapsed*.35+i*.65)*.018;

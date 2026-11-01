@@ -8,7 +8,7 @@ import styles from "./OctaveSculpture.module.css";
 type Details = {meshes:number;triangles:number;bones:number;clips:number;clipName:string};
 const cameraLabels:Record<Shot,string>={hero:"THREE-QUARTER",profile:"PROFILE",detail:"CLOSE-UP"};
 
-export default function OctaveSculpture() {
+export default function OctaveSculpture({backHref="/"}:{backHref?:string}) {
   const canvas=useRef<HTMLCanvasElement|null>(null);
   const area=useRef<HTMLDivElement|null>(null);
   const stage=useRef<SculptureStage|null>(null);
@@ -90,7 +90,9 @@ export default function OctaveSculpture() {
           <span className={styles.mark} aria-hidden="true"><span>O</span><span>8</span></span>
           <div><strong>THE SYNTHETIC MENAGERIE</strong><small>EXHIBITION STUDY / 001</small></div>
         </div>
-        <Link className={styles.exit} href="/">RETURN TO RLEMOR.COM <span aria-hidden="true">↗</span></Link>
+        <Link className={styles.exit} href={backHref}>
+          {backHref==="/"? "RETURN TO RLEMOR.COM":"RETURN TO MUSEUM"} <span aria-hidden="true">↗</span>
+        </Link>
       </header>
 
       <div className={styles.intro}>
@@ -189,7 +191,7 @@ export default function OctaveSculpture() {
       <footer className={styles.footer}>
         <span>THE SYNTHETIC MENAGERIE <i>/</i> ORIGINAL 3D STUDY</span>
         <span>A PRIVATE PROTOTYPE. NOTHING ON THE MAIN WEBSITE HAS CHANGED.</span>
-        <Link href="/">RAFAEL LEMOR ↗</Link>
+        <Link href={backHref}>{backHref==="/"? "RAFAEL LEMOR":"MUSEUM COLLECTION"} ↗</Link>
       </footer>
     </main>
   );

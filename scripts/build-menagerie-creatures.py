@@ -43,17 +43,17 @@ def palette(kind):
     special=(.14,.59,.88) if kind!="frog" else (.20,.95,.48)
     accent=(.65,.27,.09) if kind!="medusa" else (.48,.13,.67)
     return dict(
-        obsidian=mat("CARBON | Obsidian ceramic",(.013,.024,.032),.82,.155),
-        obsidian2=mat("TITANIUM | Graphite armor",(.047,.08,.10),.88,.21),
-        silver=mat("SILVER | Machined chrome",(.33,.51,.60),.90,.20),
-        bronze=mat("GOLD | Champagne bronze",(.54,.31,.105),.82,.22),
+        obsidian=mat("CARBON | Obsidian ceramic",(.004,.010,.016),.55,.19),
+        obsidian2=mat("TITANIUM | Graphite armor",(.023,.038,.050),.70,.25),
+        silver=mat("SILVER | Machined chrome",(.12,.23,.29),.83,.27),
+        bronze=mat("GOLD | Champagne bronze",(.38,.20,.068),.84,.23),
         dark=mat("MECHANISM | Recessed graphite",(.018,.032,.049),.69,.32),
-        glow=mat("ENERGY | Electric blue",(.04,.23,.40),.06,.14,special,4.7),
-        pale=mat("LIGHT | Silver cyan",(.24,.77,.90),.14,.17,(.18,.61,.90),1.5),
+        glow=mat("ENERGY | Electric blue",(.02,.18,.32),.06,.22,special,2.65),
+        pale=mat("LIGHT | Silver cyan",(.12,.51,.70),.12,.23,(.08,.40,.72),1.15),
         warm=mat("ENERGY | Amber microcell",(.41,.16,.065),.12,.20,accent,2.7),
-        glass=mat("GLASS | Deep smoke",(.06,.19,.24),.15,.10,(.03,.10,.19),.35,.70),
-        violet=mat("LUMINOUS | Violet",(.32,.08,.51),.08,.15,(.54,.11,.87),3.5),
-        green=mat("LUMINOUS | Jade",(.02,.22,.17),.08,.14,(.03,.66,.40),3.5),
+        glass=mat("GLASS | Deep smoke",(.018,.070,.105),.07,.20,(.006,.027,.07),.18,.52),
+        violet=mat("LUMINOUS | Violet",(.23,.07,.36),.07,.22,(.38,.08,.72),2.05),
+        green=mat("LUMINOUS | Jade",(.025,.18,.15),.06,.21,(.025,.42,.31),1.95),
     )
 
 def smooth(obj):
@@ -204,11 +204,15 @@ def aether(m):
     line("Dorsal bronze dorsal seam",[(0,.86,.11),(0,.24,.30),(0,-.49,.31),(0,-1.0,.13)],.025,m["bronze"],root)
     for side in [-1,1]:
         pivot=group("AETHER | Left wing hinge" if side<0 else "AETHER | Right wing hinge",(side*.46,0,.09),root)
-        stations=moth_wing("AETHER | Articulated wing"+str(side),side,m["obsidian"],pivot)
+        stations=moth_wing("AETHER | Articulated wing"+str(side),side,m["obsidian2"],pivot)
         line("AETHER | Wing leading gold edge"+str(side),
              [(side*x-.0,front,.072+z) for x,front,back,z in stations],.024,m['bronze'],pivot)
         line("AETHER | Wing light artery"+str(side),
              [(side*x,front+back*.43,.070+z) for x,front,back,z in stations],.034,m['glow'],pivot)
+        for ridge in [.44,.67,.85]:
+            line("AETHER | Wing engraved bronze vane"+str(side)+str(ridge),
+                 [(side*(x+.04),front+back*ridge,.078+z) for x,front,back,z in stations],
+                 .007,m['bronze'],pivot)
         for t in [.65,1.2,1.8,2.3]:
             q=next(i for i,v in enumerate(stations) if v[0]>=t)
             x,front,back,z=stations[q]
@@ -269,6 +273,9 @@ def atlas(m):
     ellipsoid("ATLAS | Primary thorax",(0,0,.20),(.95,1.25,.64),m['obsidian'],root,48,28)
     ellipsoid("ATLAS | Lower armored plate",(0,.21,-.12),(.91,1.22,.38),m['silver'],root,40,24)
     ellipsoid("ATLAS | Frontal sensor head",(0,-1.20,.21),(.66,.53,.42),m['obsidian2'],root)
+    ellipsoid("ATLAS | Protective forehead shield",(0,-1.44,.51),(.50,.31,.20),m['obsidian'],root,42,22)
+    line("ATLAS | Forward dorsal center crest",
+         [(0,-1.70,.56),(0,-1.40,.70),(0,-.84,.88)],.026,m['bronze'],root)
     ellipsoid("ATLAS | Glowing underwing core",(0,.20,.51),(.61,.92,.36),m['glow'],root,40,24)
     for side in [-1,1]:
         shell=group("ATLAS | Left elytron" if side<0 else "ATLAS | Right elytron",(side*.12,.19,.62),root)
@@ -279,7 +286,12 @@ def atlas(m):
                 (side*.55,y,.315),.095,.025,m['silver'],shell)
         line("ATLAS | Armor illuminated dorsal line"+str(side),
             [(side*.20,-.78,.23),(side*.28,-.45,.32),(side*.34,.3,.34),(side*.36,.98,.23)],
-            .029,m['pale'],shell)
+            .024,m['glow'],shell)
+        for track in [.08,.42,.75]:
+            line("ATLAS | Brass armor micro-lamella"+str(side)+str(track),
+                 [(side*(.33+.20*track),-.79,.34),
+                  (side*(.38+.20*track),-.15,.39),
+                  (side*(.40+.20*track),.75,.34)],.010,m['bronze'],shell)
         animate(shell,1,-side*.44,pi/2,-0.0,-side*.16)
         animate(shell,2,-side*.055,.2)
         wing=group("ATLAS | Flight membrane hinge"+str(side),(side*.57,.22,.55),root)
@@ -305,8 +317,12 @@ def atlas(m):
                 (side*1.24,-.27+(j-1)*.31,-.84),.085,.024,m['glow'],shoulder)
             animate(shoulder,2,side*.08,j+side)
             animate(shoulder,1,.04,j*1.3+side)
-        ellipsoid("ATLAS | Paired eye"+str(side),(side*.37,-1.62,.37),(.19,.095,.17),m['glow'],root)
-        tor("ATLAS | Eye gold rim"+str(side),(side*.37,-1.69,.37),.19,.023,m['bronze'],root,axis="Y")
+        ellipsoid("ATLAS | Paired eye"+str(side),(side*.38,-1.62,.34),(.119,.067,.117),m['glow'],root)
+        tor("ATLAS | Eye gold rim"+str(side),(side*.38,-1.68,.34),.13,.016,m['bronze'],root,axis="Y")
+        rod("ATLAS | Mandible armored actuator"+str(side),
+            (side*.42,-1.49,.05),(side*.63,-1.91,-.14),.072,m['obsidian2'],root)
+        ellipsoid("ATLAS | Mandible gold tip"+str(side),
+            (side*.63,-1.90,-.14),(.095,.12,.09),m['bronze'],root)
     for j in range(4):
         line("ATLAS | Back illuminated spine"+str(j),
              [(-.43+j*.27,-.88,.71),(-.43+j*.27,.20,.79),(-.43+j*.27,1.02,.61)],
@@ -318,20 +334,26 @@ def frog(m):
     body=group("FROG | Breathing body",(0,0,0),root)
     ellipsoid("FROG | Black chrome anatomy",(0,.13,.72),(.70,1.0,.75),m['obsidian'],body,48,28)
     ellipsoid("FROG | Raised cranial carapace",(0,-.55,1.20),(.67,.53,.42),m['obsidian2'],body)
-    ellipsoid("FROG | Soft silver belly",(0,-.19,.38),(.55,.69,.45),m['silver'],body)
-    ellipsoid("FROG | Luminescent throat sac",(0,-.75,.53),(.42,.28,.38),m['glow'],body,40,28)
+    ellipsoid("FROG | Armored graphite belly",(0,-.19,.38),(.55,.69,.45),m['obsidian2'],body)
+    ellipsoid("FROG | Luminescent throat sac",(0,-.75,.53),(.32,.235,.31),m['dark'],body,40,28)
     throat=group("FROG | Throat rhythmic pump",(0,-.88,.60),body)
-    ellipsoid("FROG | Bright cyan central throat",(0,-.02,0),(.28,.18,.29),m['green'],throat)
+    ellipsoid("FROG | Jade breathing diaphragm",(0,-.02,0),(.23,.15,.23),m['green'],throat)
     pulse(throat,.14,1.0)
     for side in [-1,1]:
         # Large glass eyes with real corneal lenses and machined metallic rings.
-        eye=group("FROG | Eye swivel"+str(side),(side*.44,-.86,1.52),body)
+        eye=group("FROG | Eye swivel"+str(side),(side*.42,-.79,1.48),body)
+        # Proper eye scale keeps the silhouette frog-like without enormous
+        # toy-like lenses overpowering its black-chrome mechanical anatomy.
+        eye.scale=(.72,.72,.72)
         ellipsoid("FROG | Eye bronze socket"+str(side),(0,0,0),(.34,.26,.33),m['bronze'],eye,40,24)
         ellipsoid("FROG | Eye black lens"+str(side),(0,-.21,0),(.273,.135,.265),m['dark'],eye)
-        ellipsoid("FROG | Iris glow"+str(side),(0,-.315,.01),(.211,.058,.213),m['glow'],eye)
+        ellipsoid("FROG | Iris glow"+str(side),(0,-.315,.01),(.19,.055,.19),m['green'],eye)
         ellipsoid("FROG | Pupil sensor"+str(side),(0,-.361,.01),(.085,.026,.15),m['obsidian'],eye)
-        ellipsoid("FROG | Iris reflection"+str(side),(-.07,-.369,.09),(.06,.021,.06),m['pale'],eye)
-        animate(eye,2,.06,.75+side)
+        ellipsoid("FROG | Iris reflection"+str(side),(-.07,-.369,.09),(.035,.014,.035),m['pale'],eye)
+        line("FROG | Encapsulating orbital brow"+str(side),
+             [(side*.28,-.50,1.65),(side*.43,-.70,1.74),(side*.58,-.86,1.66)],
+             .045,m['obsidian'],body)
+        animate(eye,2,.045,.75+side)
         # Four limbs are distinct hinged mechanical assemblies. Rear limbs
         # curl back toward powerful haunches and splay into toe pads.
         for rear in [False,True]:

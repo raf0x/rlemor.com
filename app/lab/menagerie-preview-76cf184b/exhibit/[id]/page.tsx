@@ -39,17 +39,9 @@ export default async function ExhibitPage({
    );
  }
  if(id==="octave-spectrum"){
-  return (
-   <div style={{background:"#080e15",color:"#e9f1f4"}}>
-     <nav style={{padding:"14px 22px",borderBottom:"1px solid #344b58",
-       fontFamily:"ui-monospace,Consolas,monospace",fontSize:"12px"}}>
-       <Link href={HOME} style={{color:"#9adeee"}}>
-         ← RETURN TO THE SYNTHETIC MENAGERIE
-       </Link>
-     </nav>
-     <OctaveSculpture/>
-   </div>
-  );
+   // The polished original exhibit already owns its gallery header.
+   // Do not nest a second navigation bar; link it back to the museum.
+   return <OctaveSculpture backHref={HOME}/>;
  }
  return <CreatureViewer exhibit={exhibit}/>;
 }

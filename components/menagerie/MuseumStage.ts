@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { EXHIBITS, type Exhibit } from "./exhibits";
+import { azimuthFrom, clampIntoMuseum, orbitLimits } from "./cameraConstraints";
 
 export type LightMode = "cinematic" | "study";
 export type MuseumStage = {
@@ -315,10 +316,10 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
   controls.enablePan=false;
   controls.rotateSpeed=.48;
   controls.zoomSpeed=.67;
-  controls.minDistance=3.1;
-  controls.maxDistance=32;
-  controls.minPolarAngle=.32;
-  controls.maxPolarAngle=Math.PI*.69;
+  // Restricted entrance orbit: the original unlimited angle and 32m dolly
+  // could move the visitor behind the shell or face only blank walls.
+  Object.assign(controls,orbitLimits("entrance",
+    azimuthFrom(entrancePos,entranceTarget)));
   controls.touches.ONE=THREE.TOUCH.ROTATE;
   controls.touches.TWO=THREE.TOUCH.DOLLY_ROTATE;
   controls.update();
@@ -342,22 +343,58 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
   const cameraGoal=entrancePos.clone();
   const targetGoal=entranceTarget.clone();
   let traveling=false;
+  let activeFocus:number|null=null;
   let raf=0,last=performance.now(),elapsed=0;
   const minFrame=software?56:mobile?28:18;
-  const still=paramsStill();
+  const search=new URLSearchParams(window.location.search);
+  const still=search.get("still")==="1";
+  // A read-only camera trace for automated stress testing. Never enabled
+  // during normal visits or used for analytics.
+  const cameraDebug=search.get("cameraDebug")==="1";
 
-  function paramsStill(){
-    return new URLSearchParams(window.location.search).get("still")==="1";
+  function restoreViewBounds(fromCurrent=false){
+    const position=fromCurrent?camera.position:cameraGoal;
+    const target=fromCurrent?controls.target:targetGoal;
+    Object.assign(controls,orbitLimits(activeFocus===null?"entrance":"exhibit",
+      azimuthFrom(position,target)));
+    controls.enableDamping=true;
+    if(fromCurrent){
+      // An interrupted guided move should not yank the camera abruptly
+      // from its midway location to the next exhibit.
+      const radius=camera.position.distanceTo(controls.target);
+      controls.minDistance=Math.min(controls.minDistance,radius);
+      controls.maxDistance=Math.max(controls.maxDistance,radius+.05);
+    }
   }
-  const onControlsStart=()=>{traveling=false;};
+
+  function prepareGuidedTravel(){
+    // These bounds are released ONLY while our own interpolation moves
+    // between two known-safe camera poses inside the room. Otherwise the
+    // OrbitControls zoom bounds would snap a 22m entrance shot to an 8m
+    // exhibit shot mid-animation, causing the camera to jump.
+    controls.minAzimuthAngle=-Infinity;
+    controls.maxAzimuthAngle=Infinity;
+    controls.minPolarAngle=0;
+    controls.maxPolarAngle=Math.PI;
+    controls.minDistance=0;
+    controls.maxDistance=100;
+    controls.enableDamping=false;
+  }
+
+  const onControlsStart=()=>{
+    if(!traveling)return;
+    traveling=false;
+    restoreViewBounds(true);
+  };
   controls.addEventListener("start",onControlsStart);
 
   function focus(index:number|null,immediate=false) {
+    if(index!==null&&!EXHIBITS[index])return;
+    activeFocus=index;
     if(index===null){
       cameraGoal.copy(entrancePos);targetGoal.copy(entranceTarget);
     }else{
       const e=EXHIBITS[index];
-      if(!e)return;
       // Approach an exhibit from the central aisle. The back of the sculpture
       // position remains clear when actual models are installed later.
       const direction=e.x<0?-1:1;
@@ -366,10 +403,15 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
       if(mobile)cameraGoal.x+=direction*.35;
     }
     traveling=!immediate&&!reduced;
-    if(!traveling){
+    if(traveling){
+      prepareGuidedTravel();
+    }else{
       camera.position.copy(cameraGoal);
       controls.target.copy(targetGoal);
+      restoreViewBounds();
       controls.update();
+      clampIntoMuseum(camera.position);
+      camera.lookAt(controls.target);
     }
   }
 
@@ -406,17 +448,23 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
   function draw(now:number){
     if(dead)return;
     if(now-last<minFrame){raf=requestAnimationFrame(draw);return;}
-    const dt=Math.min(.09,Math.max(0,(now-last)/1000));
+    const realDt=Math.max(0,(now-last)/1000);
+    const dt=Math.min(.09,realDt);
     last=now;
     if(!reduced)elapsed+=dt;
     if(traveling){
-      const ease=1-Math.exp(-dt*3.35);
+      // Guided camera travel uses wall-clock time, not the capped lighting
+      // frame delta. Otherwise software WebGL and busy phones can make a
+      // short exhibit transition take many seconds or appear stuck.
+      const ease=1-Math.exp(-Math.min(.45,realDt)*4.1);
       camera.position.lerp(cameraGoal,ease);
       controls.target.lerp(targetGoal,ease);
-      if(camera.position.distanceTo(cameraGoal)<.014&&
-        controls.target.distanceTo(targetGoal)<.014){
-        camera.position.copy(cameraGoal);controls.target.copy(targetGoal);
+      if(camera.position.distanceTo(cameraGoal)<.032&&
+        controls.target.distanceTo(targetGoal)<.032){
+        camera.position.copy(cameraGoal);
+        controls.target.copy(targetGoal);
         traveling=false;
+        restoreViewBounds();
       }
     }
     if(!reduced){
@@ -426,6 +474,23 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
       }
     }
     controls.update();
+    // Last-resort guard against zoom/rotation edge cases, including kinetic
+    // touch gestures and attempts to orbit through the ceiling or side walls.
+    const beforeClamp=camera.position.clone();
+    clampIntoMuseum(camera.position);
+    if(!camera.position.equals(beforeClamp))camera.lookAt(controls.target);
+    if(cameraDebug){
+      canvas.dataset.cameraPos=[
+        camera.position.x.toFixed(3),camera.position.y.toFixed(3),
+        camera.position.z.toFixed(3),
+      ].join(",");
+      canvas.dataset.cameraDistance=
+        camera.position.distanceTo(controls.target).toFixed(3);
+      canvas.dataset.cameraAzimuth=controls.getAzimuthalAngle().toFixed(4);
+      canvas.dataset.cameraPolar=controls.getPolarAngle().toFixed(4);
+      canvas.dataset.cameraMode=traveling?"travel":
+        activeFocus===null?"entrance":"exhibit";
+    }
     renderer.render(scene,camera);
     if(!still)raf=requestAnimationFrame(draw);
   }

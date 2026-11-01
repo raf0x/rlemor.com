@@ -24,6 +24,7 @@ export interface MechanismInput {
   teardown: number;
   cutaway: number;
   isolateArm: number | null;
+  isolationWeight: number;
   manualArmOffsets?: readonly Vec3[];
   manualPanelOffsets?: readonly Vec3[];
   manualEyeOffset?: Vec3;
@@ -59,6 +60,7 @@ export interface MachineFrame {
   teardown: number;
   cutaway: number;
   isolateArm: number | null;
+  isolationWeight: number;
   arms: ArmPose[];
   panels: PanelPose[];
   opticalPosition: Vec3;
@@ -104,19 +106,24 @@ export function cueAt(time: number): TourCue {
 export function tourAt(time: number): MechanismInput {
   const t=((time%TOUR_DURATION)+TOUR_DURATION)%TOUR_DURATION;
   const ramp=(begin:number,end:number)=>smooth((t-begin)/(end-begin));
-  const energy=mix(.34,1,ramp(1.1,3.6));
+  const energy=t<24?mix(.34,1,ramp(1.1,3.6)):
+    mix(1,.34,ramp(24,TOUR_DURATION));
   const extension= t<2.5 ? .12 :
     t<6.3 ? mix(.12,.9,ramp(2.5,6.3)) :
     t<9 ? mix(.9,.15,ramp(6.3,9)) :
     t<20.5 ? .15 :
-    t<24.5 ? mix(.15,.42,ramp(20.5,24.5)) : .42;
+    t<24.5 ? mix(.15,.42,ramp(20.5,24.5)) :
+    mix(.42,.12,ramp(24.5,TOUR_DURATION));
   const teardown=t<9.4?0:t<12.5?ramp(9.4,12.5):
     t<19?1:t<22.1?1-ramp(19,22.1):0;
   const cutaway=t<12.3?0:t<14.2?ramp(12.3,14.2):
     t<18.0?1:t<20.1?1-ramp(18,20.1):0;
+  const isolationWeight=t<17.5?0:t<18.3?ramp(17.5,18.3):
+    t<19.4?1:t<20.2?1-ramp(19.4,20.2):0;
   return {
     time:t,energy,extension,teardown,cutaway,
     isolateArm:t>=17.5&&t<20.2?2:null,
+    isolationWeight,
   };
 }
 
@@ -124,16 +131,16 @@ export function modeInput(
   mode: MachineMode, time: number, focusArm: number = 2,
 ): MechanismInput {
   if(mode==="teardown")return {
-    time,energy:1,extension:.16,teardown:1,cutaway:.1,isolateArm:null,
+    time,energy:1,extension:.16,teardown:1,cutaway:.1,isolateArm:null,isolationWeight:0,
   };
   if(mode==="cutaway")return {
-    time,energy:1,extension:.22,teardown:.52,cutaway:1,isolateArm:null,
+    time,energy:1,extension:.22,teardown:.52,cutaway:1,isolateArm:null,isolationWeight:0,
   };
   if(mode==="isolate")return {
-    time,energy:1,extension:.25,teardown:.60,cutaway:.34,isolateArm:focusArm,
+    time,energy:1,extension:.25,teardown:.60,cutaway:.34,isolateArm:focusArm,isolationWeight:1,
   };
   return {
-    time,energy:1,extension:.52,teardown:0,cutaway:0,isolateArm:null,
+    time,energy:1,extension:.52,teardown:0,cutaway:0,isolateArm:null,isolationWeight:0,
   };
 }
 
@@ -157,12 +164,12 @@ function armJoint(
       +growth*(1-curlStart)*curled
       -(growth*(1-curlStart)+.14)*curled*curled
       +.45*Math.sin(theta);
-  const quietSwing=Math.sin(input.time*.83+arm*.71+t*5.1)*.052*t*clamp01(input.energy);
+  const quietSwing=Math.sin(input.time*(4*TAU/TOUR_DURATION)+arm*.71+t*5.1)*.052*t*clamp01(input.energy);
   const tangent=handed*.70*(1-Math.cos(theta))+quietSwing;
   const depth=Math.sin(angle*2.2)*.34*t
     +handed*(.12*Math.sin(theta)+.15*curled)
     +quietSwing*.8;
-  const separation=.76*tear*(input.isolateArm===arm?1.32:1);
+  const separation=.76*tear*(1+(input.isolateArm===arm?.32*input.isolationWeight:0));
   const manual=input.manualArmOffsets?.[arm]??([0,0,0] as Vec3);
   const weight=smooth((t-.08)/.72);
   return [
@@ -183,6 +190,7 @@ export function poseAt(input: MechanismInput): MachineFrame {
   const extension=clamp01(input.extension);
   const tear=smooth(input.teardown);
   const cutaway=smooth(input.cutaway);
+  const isolationWeight=clamp01(input.isolationWeight);
   const arms:ArmPose[]=[];
   for(let i=0;i<ARM_COUNT;i++){
     const angle=TAU*(i/ARM_COUNT)+Math.PI/8;
@@ -209,7 +217,7 @@ export function poseAt(input: MechanismInput): MachineFrame {
     (tear>.95?ARM_COUNT+PANEL_COUNT+1:Math.round((ARM_COUNT+PANEL_COUNT+1)*tear));
   const phase=cueAt(input.time).label;
   return {
-    time:input.time,energy,extension,teardown:tear,cutaway,isolateArm:input.isolateArm,
+    time:input.time,energy,extension,teardown:tear,cutaway,isolateArm:input.isolateArm,isolationWeight,
     arms,panels,opticalPosition:eye,crownHeight:.87+tear*.22,
     readout:{
       links:TOTAL_LINKS,arms:ARM_COUNT,panels:PANEL_COUNT,

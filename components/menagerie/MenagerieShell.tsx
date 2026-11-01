@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { EXHIBITS, getExhibit, nextExhibit } from "./exhibits";
-import { createMuseumStage, type MuseumStage, type LightMode } from "./MuseumStage";
+import { createMuseumStage, type MuseumStage, type LightMode, type PlaquePosition } from "./MuseumStage";
 import styles from "./MenagerieShell.module.css";
 
 type Nav = {
@@ -16,6 +16,7 @@ export default function MenagerieShell(){
   const stageRef=useRef<HTMLCanvasElement|null>(null);
   const stageHolder=useRef<HTMLDivElement|null>(null);
   const controlsRef=useRef<Nav|null>(null);
+  const plaqueRefs=useRef<(HTMLDivElement|null)[]>([]);
   const [ready,setReady]=useState(false);
   const [unsupported,setUnsupported]=useState(false);
   const [failure,setFailure]=useState("");
@@ -133,6 +134,20 @@ export default function MenagerieShell(){
           onReady(){if(mounted)setReady(true);},
           onFailure(reason){if(mounted){setUnsupported(true);setFailure(reason);}},
           onSelect(index){if(mounted){current=index;setActive(index);}},
+          onPlaques(positions:readonly PlaquePosition[]){
+            if(!mounted)return;
+            // Deliberately update DOM styles directly to avoid 60 React
+            // re-renders per second as the camera glides along the rail.
+            positions.forEach(({index,x,y,opacity,visible})=>{
+              const plaque=plaqueRefs.current[index];
+              if(!plaque)return;
+              plaque.style.visibility=visible?"visible":"hidden";
+              if(!visible)return;
+              plaque.style.transform="translate3d("+x.toFixed(1)+"px,"+
+                y.toFixed(1)+"px,0) translate(-50%,-50%)";
+              plaque.style.opacity=String(opacity);
+            });
+          },
         });
         const bounds=holder.getBoundingClientRect();
         stage.resize(bounds.width,bounds.height);
@@ -227,6 +242,19 @@ export default function MenagerieShell(){
             tabIndex={0}
             aria-label="Interactive 3D museum. All six animated creatures appear in one horizontal row on a white wall. Swipe left or right or scroll to move between exhibits; tap a creature or use the buttons below to select it."
           />
+          <div className={styles.stagePlaques} aria-hidden="true">
+            {EXHIBITS.map((e,i)=>(
+              <div className={styles.plaque} key={e.id}
+                data-plaque={e.id}
+                ref={element=>{plaqueRefs.current[i]=element;}}>
+                <span className={styles.plaqueNumber}>{e.number}</span>
+                <span className={styles.plaqueCopy}>
+                  <strong>{e.name}</strong>
+                  <span>{e.subtitle}</span>
+                </span>
+              </div>
+            ))}
+          </div>
           <div className={styles.stageTopLeft} aria-hidden="true">
             <span>THE SYNTHETIC MENAGERIE</span>
             <span>{picked?picked.wing:"HORIZONTAL GALLERY"}</span>

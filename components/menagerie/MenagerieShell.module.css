@@ -123,6 +123,34 @@
   outline-offset:-6px!important;
 }
 .canvas:active{cursor:grabbing;}
+/* Native HTML plaques, spatially anchored to each 3D shelf by projection.
+   Text remains Retina-sharp at every zoom level and camera position. */
+.stagePlaques{
+  position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;
+}
+.plaque{
+  position:absolute;top:0;left:0;visibility:hidden;opacity:0;
+  width:max-content;max-width:250px;min-width:195px;
+  display:flex;align-items:center;gap:13px;
+  padding:11px 15px 12px;
+  background:#fffffffa;border:1px solid #bdcccf;
+  box-shadow:0 3px 14px #294f6015;
+  color:#243d47;
+  will-change:transform;
+}
+.plaqueNumber{
+  font:700 12px/1.4 var(--mono);letter-spacing:.04em;color:#277b8a;
+  min-width:22px;border-right:1px solid #dce5e6;padding-right:10px;
+}
+.plaqueCopy{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.plaqueCopy strong{
+  font:500 21px/1.15 var(--font-lora),Georgia,serif;
+  letter-spacing:-.03em;
+}
+.plaqueCopy>span{
+  color:#556f79;font:650 10px/1.4 var(--mono);letter-spacing:.025em;
+  white-space:nowrap;
+}
 .stageTopLeft,.coordinates,.sceneFooter{
   z-index:2;position:absolute;pointer-events:none;
   font:700 10px/1.6 var(--mono);letter-spacing:.085em;
@@ -139,7 +167,7 @@
   color:#667e84;
 }
 .sceneFooter{
-  width:100%;left:0;bottom:0;
+  z-index:4;width:100%;left:0;bottom:0;
   display:flex;justify-content:space-between;gap:15px;
   padding:17px clamp(17px,2.2vw,32px);
   background:#f8f9f7e8;border-top:1px solid #dce4e3;

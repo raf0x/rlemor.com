@@ -5,77 +5,92 @@ import {join,resolve} from "node:path";
 import {createRequire} from "node:module";
 import ts from "typescript";
 
-const dir=mkdtempSync(join(tmpdir(),"menagerie-camera-"));
-try {
-  for (const [source,out] of [
-    ["components/menagerie/cameraConstraints.ts","camera.cjs"],
+const folder=mkdtempSync(join(tmpdir(),"menagerie-v4-"));
+try{
+  for(const [file,out] of [
     ["components/menagerie/exhibits.ts","exhibits.cjs"],
-  ]) {
-    writeFileSync(join(dir,out),ts.transpileModule(
-      readFileSync(resolve(source),"utf8"),{
-        compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}
-      }
-    ).outputText);
+    ["components/menagerie/galleryRail.ts","galleryRail.cjs"],
+  ]){
+    const source=readFileSync(resolve(file),"utf8");
+    writeFileSync(join(folder,out),ts.transpileModule(source,{
+      compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022},
+    }).outputText);
   }
-  const require=createRequire(import.meta.url);
-  const camera=require(join(dir,"camera.cjs"));
-  const {EXHIBITS}=require(join(dir,"exhibits.cjs"));
-  const p=(x,y,z)=>({x,y,z});
-  const entrance={position:p(0,3.75,18),target:p(0,2.65,-4.1)};
-  const mobileEntrance={position:p(0,3.4,17.2),target:p(0,2.65,-4.1)};
-  const checks=[];
-  const verify=(type,position,target,label)=>{
-    const base=camera.azimuthFrom(position,target);
-    const limits=camera.orbitLimits(type,base);
-    assert.ok(limits.minAzimuthAngle<limits.maxAzimuthAngle);
-    assert.ok(limits.minPolarAngle<limits.maxPolarAngle);
-    assert.ok(limits.minDistance<limits.maxDistance);
-    const angle=Math.atan2(position.x-target.x,position.z-target.z);
-    assert.ok(angle>=limits.minAzimuthAngle-1e-5&&angle<=limits.maxAzimuthAngle+1e-5,label+" yaw");
-    const r=Math.hypot(position.x-target.x,position.y-target.y,position.z-target.z);
-    assert.ok(r<=limits.maxDistance+1e-5&&r>=limits.minDistance-1e-5,label+" radius");
-    assert.ok(camera.insideMuseum(position),label+" default position");
-
-    // Every corner of the permitted OrbitControls spherical volume must
-    // remain inside the physical 3D museum. This catches ceiling, outside
-    // wall and floor clipping before any browser or GPU work.
-    for(const theta of [
-      limits.minAzimuthAngle,(limits.minAzimuthAngle+limits.maxAzimuthAngle)/2,limits.maxAzimuthAngle
-    ]){
-      for(const phi of [limits.minPolarAngle,
-        (limits.minPolarAngle+limits.maxPolarAngle)/2,
-        limits.maxPolarAngle]){
-        for(const distance of [limits.minDistance,
-          (limits.minDistance+limits.maxDistance)/2,limits.maxDistance]){
-          const point=p(
-            target.x+distance*Math.sin(phi)*Math.sin(theta),
-            target.y+distance*Math.cos(phi),
-            target.z+distance*Math.sin(phi)*Math.cos(theta)
-          );
-          assert.ok(camera.insideMuseum(point),label+" orbit outside room "+JSON.stringify({theta,phi,distance,point}));
-        }
-      }
-    }
-    checks.push({label,base:base.toFixed(3),minDist:limits.minDistance,maxDist:limits.maxDistance});
-  };
-  verify("entrance",entrance.position,entrance.target,"entrance desktop");
-  verify("entrance",mobileEntrance.position,mobileEntrance.target,"entrance mobile");
-  for(const e of EXHIBITS)for(const mobile of [false,true]){
-    const dir=e.x<0?-1:1;
-    const pos=p(e.x*.46+(mobile?dir*.35:0),2.9,e.z+(mobile?6:5));
-    const target=p(e.x,2,e.z-.28);
-    verify("exhibit",pos,target,e.id+" "+(mobile?"mobile":"desktop"));
+  const localRequire=createRequire(import.meta.url);
+  const {EXHIBITS,getExhibit,nextExhibit}=localRequire(join(folder,"exhibits.cjs"));
+  const {createGalleryRail}=localRequire(join(folder,"galleryRail.cjs"));
+  assert.equal(EXHIBITS.length,6);
+  assert.deepEqual(EXHIBITS.map(e=>e.id),[
+    "octave-spectrum","octave-chassis","aether","medusa","atlas","frog",
+  ]);
+  assert.deepEqual(EXHIBITS.map(e=>e.x),[-25,-15,-5,5,15,25]);
+  assert.equal(new Set(EXHIBITS.map(e=>e.z)).size,1,"All exhibits share a Z plane");
+  assert.ok(EXHIBITS.every(e=>e.z===0));
+  assert.ok(EXHIBITS.every(e=>e.wing==="HORIZONTAL GALLERY"));
+  assert.equal(new Set(EXHIBITS.map(e=>e.id)).size,6);
+  assert.equal(nextExhibit(0,-1),0);
+  assert.equal(nextExhibit(5,1),5);
+  assert.equal(nextExhibit(2,1),3);
+  assert.equal(getExhibit(-1),null);
+  assert.equal(getExhibit(6),null);
+  const xs=EXHIBITS.map(e=>e.x);
+  const rail=createGalleryRail(xs);
+  assert.deepEqual(rail.state(),{
+    x:-25,targetX:-25,selectedIndex:0,moving:false,
+  });
+  rail.moveTo(5);
+  assert.equal(rail.state().x,-25,"A selection starts from the current camera position");
+  assert.equal(rail.state().targetX,25);
+  let last=-25;
+  for(let i=0;i<250;i++){
+    const x=rail.update(.016);
+    assert.ok(x>=last-.0001,"Glide must be monotonic");
+    assert.ok(x>=-25&&x<=25,"Never leave the visible wall");
+    last=x;
   }
-  const bad=p(50,-30,-90);
-  camera.clampIntoMuseum(bad);
-  assert.ok(camera.insideMuseum(bad));
-  assert.equal(bad.x,camera.INTERIOR_BOUNDS.maxX);
-  assert.equal(bad.y,camera.INTERIOR_BOUNDS.minY);
-  assert.equal(bad.z,camera.INTERIOR_BOUNDS.minZ);
-  assert.equal(camera.azimuthFrom(p(0,2,10),p(0,2,0)),0);
-  console.log(JSON.stringify({passed:true,profiles:checks.length,sampledPositions:checks.length*27,
-    wallsProtected:true,ceilingProtected:true,floorProtected:true,checks},null,2));
+  assert.equal(rail.state().x,25);
+  rail.moveTo(0);
+  rail.update(.11);
+  const halfway=rail.state().x;
+  rail.moveTo(3);
+  assert.equal(rail.state().x,halfway,"A new selection must never teleport");
+  assert.equal(rail.state().targetX,5);
+  for(let i=0;i<250;i++)rail.update(.016);
+  assert.equal(rail.state().x,5);
+  assert.equal(rail.state().selectedIndex,3);
+  rail.panBy(1_000);
+  assert.equal(rail.state().x,25,"Clamps excessive touch drag");
+  assert.equal(rail.atEdge(1),true);
+  rail.panBy(-1_000);
+  assert.equal(rail.state().x,-25);
+  assert.equal(rail.atEdge(-1),true);
+  rail.panBy(6.0);
+  assert.equal(rail.settle(),1,"Swipe crosses half-way to the next station");
+  for(let i=0;i<180;i++)rail.update(.016);
+  assert.equal(rail.state().x,-15);
+  rail.panBy(Number.NaN);
+  assert.equal(rail.state().x,-15,"Invalid input does not corrupt the camera");
+  rail.moveTo(5,true);
+  assert.equal(rail.state().x,25);
+  assert.equal(rail.state().moving,false);
+  assert.throws(()=>createGalleryRail([0,0,1]));
+  assert.throws(()=>createGalleryRail([]));
+  const stage=readFileSync("components/menagerie/MuseumStage.ts","utf8");
+  assert.ok(stage.includes('specimen-mount:'),"All six mount origins retained");
+  assert.ok(stage.includes("createGalleryRail"));
+  assert.ok(stage.includes("new THREE.WebGLRenderer"));
+  assert.ok(!stage.includes("new OrbitControls"),"No free camera orbit");
+  assert.ok(stage.includes("Exactly ONE continuous back wall"));
+  assert.ok(readFileSync("components/menagerie/MenagerieShell.tsx","utf8").includes("onMove"),"Horizontal touch handler retained");
+  const route=readFileSync("app/lab/menagerie-preview-76cf184b/page.tsx","utf8");
+  assert.ok(route.includes("index:false")&&route.includes("follow:false"));
+  const sitemap=readFileSync("app/sitemap.ts","utf8");
+  assert.ok(!sitemap.includes("menagerie-preview"));
+  console.log(JSON.stringify({passed:true,exhibits:EXHIBITS.length,
+    oneRow:true,verticalDrift:false,cameraRail:true,extremeDragClamped:true,
+    smoothTravel:true,rapidRetarget:true,sharedSpecimenMounts:true,
+    unlisted:true},null,2));
 }finally{
-  rmSync(dir,{recursive:true,force:true});
+  rmSync(folder,{recursive:true,force:true});
 }
 

@@ -74,3 +74,27 @@
 }
 @media(prefers-reduced-motion:reduce){.page *{animation:none!important;transition:none!important}}
 
+
+
+/* V4: dedicated specimen pages share the white exhibition visual language. */
+.page{background:#f8f9f7;color:#213037;color-scheme:light}
+.header{background:#fff;border-color:#dce4e4;color:#4c6169}
+.back{border-color:#758f98;color:#2a6f80!important}
+.muted{color:#657b84}
+.overline{color:#147b91}
+.intro h1 em{color:#168298}
+.intro p:not(.overline){color:#536c74}
+.label{color:#57717b}
+.label strong{color:#1d3037}
+.stage{background:#fafbf9;border-color:#cedbdc}
+.stamp,.hint{color:#405b63}
+.load{background:#fffffff2;border-color:#b6c9ce;color:#2a434d}
+.controls{background:#fff;border-color:#cedbdc}
+.note span{color:#5c757f}
+.buttons button{border-color:#a9bfc4;color:#344b54}
+.buttons button:hover{background:#eef5f5}
+.buttons .primary{background:#233b45;border-color:#233b45;color:#fff}
+.buttons .primary:hover{background:#395766}
+.footer{color:#6d8188}
+.footer a{color:#2b5966}
+

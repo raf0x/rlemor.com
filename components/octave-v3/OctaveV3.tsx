@@ -285,7 +285,7 @@ export default function OctaveV3(){
         });
         // The screenshot/film timeline uses the same clock as the rig and HUD.
         // A ?frame=12.5 capture must be reproducible regardless of real time.
-        stage.render(frame,clock.time,clock.playing&&clock.mode==="tour",selected?{
+        stage.render(frame,clock.time,clock.mode==="tour",selected?{
           kind:selected.kind,index:selected.index,label:selected.label,
           point:new THREE.Vector3(selected.point.x,selected.point.y,selected.point.z),
         }:null);

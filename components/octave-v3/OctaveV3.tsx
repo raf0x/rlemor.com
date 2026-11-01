@@ -133,6 +133,15 @@ export default function OctaveV3(){
           clock.time=Math.max(0,Math.min(TOUR_DURATION-.01,time));
           clock.mode="tour";clock.playing=false;userActivity();
           setPlaying(false);setManualMode(null);
+          // Publish readouts immediately on input rather than waiting for
+          // a WebGL frame, which can be slow on integrated/software GPUs.
+          const frame=poseAt(tourAt(clock.time));
+          setUI({
+            mode:"tour",phase:frame.readout.phase,
+            energy:frame.readout.energy,extension:frame.readout.extension,
+            teardown:frame.readout.separation,cutaway:frame.readout.cutaway,
+            time:clock.time,cue:cueAt(clock.time).label,selected:null,
+          });
           setStatus("FRAME LOCKED / "+clock.time.toFixed(1)+" S");
         },
         mode(mode){

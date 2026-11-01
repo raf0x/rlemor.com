@@ -47,6 +47,21 @@ LENS=material("07 | Optical black",(.009,.025,.038),.7,.11)
 JOINT=material("08 | Brushed joints",(.10,.15,.19),.89,.26)
 PUPIL=material("09 | Inner pupil",(.012,.027,.040),.43,.10)
 LIGHTGOLD=material("10 | Bronze filament",(.48,.29,.12),.48,.27,(.23,.09,.022),.65)
+CUP_RIM=material("11 | Recessed graphite cup housing",(.018,.032,.040),.48,.42)
+
+# Each cup has its own luminous core and outer corona, all skinned into the
+# corresponding tentacle. The palette is assigned irregularly across every
+# arm, rather than lighting an entire arm at once. Three.js animates these
+# stable named materials without replacing or redrawing the mechanical rig.
+import colorsys
+SPECTRUM_COUNT=16
+SPECTRUM=[]
+for index in range(SPECTRUM_COUNT):
+    rgb=colorsys.hsv_to_rgb(index/SPECTRUM_COUNT,.97,1.0)
+    SPECTRUM.append(material(
+        f"SPECTRUM CUP {index:02d} | luminous aperture",
+        rgb,metal=.04,rough=.28,emissive=rgb,strength=3.5,
+    ))
 
 def smooth_object(o):
     if o.type=="MESH":
@@ -202,7 +217,8 @@ def catmull(points,t):
 
 ARM_STEPS=90
 BONE_COUNT=7
-materials=[OBSIDIAN,GOLD,SOFT_CYAN,TITANIUM,INK,CYAN]
+materials=[OBSIDIAN,GOLD,SOFT_CYAN,TITANIUM,INK,CYAN,CUP_RIM]+SPECTRUM
+SPECTRUM_OFFSET=7
 armature=bpy.data.armatures.new("OCTAVE | Eight articulated skeletal chains")
 rig=bpy.data.objects.new("OCTAVE | Armature / animated",armature)
 bpy.context.collection.objects.link(rig)
@@ -246,6 +262,25 @@ def append_torus(vertices,faces,face_mats,lookup,center,n,tangent,major,minor,ma
                  offset+i*minor_steps+nj))
             face_mats.append(matid)
 
+def append_light_disc(vertices,faces,face_mats,lookup,center,n,tangent,radius,matid,curve_t):
+    # A small emitting surface sits just proud of the recessed metallic
+    # aperture. It remains part of the *same skinned mesh*, so there is no
+    # floating light when an arm curls.
+    n=n.normalized();tangent=tangent.normalized()
+    e1=tangent.cross(n).normalized()
+    e2=n.cross(e1).normalized()
+    steps=12
+    offset=len(vertices)
+    vertices.append(tuple(center+n*.032));lookup.append(curve_t)
+    for i in range(steps):
+        a=2*pi*i/steps
+        radial=e1*cos(a)+e2*sin(a)
+        vertices.append(tuple(center+n*.032+radial*radius))
+        lookup.append(curve_t)
+    for i in range(steps):
+        faces.append((offset,offset+1+i,offset+1+(i+1)%steps))
+        face_mats.append(matid)
+
 # The arm and suction cups are ONE skinned mesh per tentacle,
 # so cups follow its skeletal animation instead of floating behind.
 for arm,path in enumerate(PATHS):
@@ -282,11 +317,21 @@ for arm,path in enumerate(PATHS):
         for row in [-1,1]:
             spot=c+n*(radius*.97)+b*(row*radius*.35)
             cupR=max(.030,min(.062,radius*.34))
+            # Mechanical champagne-metal rim remains recognizable beneath
+            # the spectrum effect. Independently phased light groups are
+            # deliberately scattered over *all* eight arms and both rows.
             append_torus(verts,faces,material_indices,vertex_t,
-                spot,n,tangent,cupR,.010,1,t)
-            # Each cup has a luminous inner aperture, rather than a flat dot.
+                spot,n,tangent,cupR,.010,6,t)
+            group=(arm*7+(j//3)*5+(0 if row<0 else 11))%SPECTRUM_COUNT
+            color_slot=SPECTRUM_OFFSET+group
             append_torus(verts,faces,material_indices,vertex_t,
-                spot+n*.004,n,tangent,cupR*.59,.008,2,t)
+                spot+n*.014,n,tangent,cupR*.65,.013,color_slot,t)
+            append_light_disc(verts,faces,material_indices,vertex_t,
+                spot,n,tangent,cupR*.46,color_slot,t)
+            # Outer ring reads as a tiny halo, without 500 extra lights or
+            # expensive full-screen bloom passes on mobile.
+            append_torus(verts,faces,material_indices,vertex_t,
+                spot+n*.009,n,tangent,cupR*1.22,.012,color_slot,t)
 
     mesh=bpy.data.meshes.new(f"Arm {arm+1:02d} | sculpted tubular surface and cups")
     mesh.from_pydata(verts,[],faces);mesh.update()

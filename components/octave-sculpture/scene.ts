@@ -10,10 +10,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
-import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 export type Shot = "hero" | "profile" | "detail";
 export type Lighting = "cinematic" | "inspection";
@@ -209,13 +205,40 @@ export function createOctaveSculptureStage(
   let action:THREE.AnimationAction|null=null;
   const glow=haloTexture();
   const opticGlows:THREE.Sprite[]=[];
+  const spectrumMaterials=new Map<number,THREE.MeshBasicMaterial>();
+  let lastSpectrumTick=-1;
+  const SPECTRUM_GROUPS=16;
+  // Every sucker has a skinned luminous surface. Only 16 shared material
+  // groups are animated, avoiding hundreds of draw calls or point lights.
+  // The different phases create intermittent traveling flashes, not a
+  // single synchronized on/off blink.
+  function updateSpectrum(t:number){
+    const tick=Math.floor(t*26);
+    if(tick===lastSpectrumTick)return;
+    lastSpectrumTick=tick;
+    for(const [group,mat] of spectrumMaterials){
+      const hue=((group/SPECTRUM_GROUPS+t*.35+
+        .026*Math.sin(t*.8+group*.83))%1+1)%1;
+      const phase=t*(4.15+(group%3)*.42)+group*2.399963;
+      const burst=Math.pow(.5+.5*Math.sin(phase),2.2);
+      // A substantial luminous floor keeps *every* cup colorful, even
+      // between the sharper bursts. Rainbow hue rotates every ~2.9s.
+      const energy=.26+.74*burst;
+      mat.color.setHSL(hue,1,.39+.25*energy);
+      mat.opacity=.57+.43*energy;
+    }
+  }
   let playing=!reduced;
   let speed=1;
   let raf=0, prev=performance.now();
   let motionTime=0;
   // Deterministic still-frame QA allows visual checks without sustained
   // software WebGL rendering. Normal visitors see animated 3D.
-  const stillCapture=new URLSearchParams(window.location.search).get("still")==="1";
+  const params=new URLSearchParams(window.location.search);
+  const stillCapture=params.get("still")==="1";
+  // Compare the same geometry at exact color timestamps in automated QA.
+  const rawSpectrum=Number(params.get("spectrumAt")??0);
+  const spectrumFrame=Number.isFinite(rawSpectrum)?Math.max(0,Math.min(30,rawSpectrum)):0;
   const minFrame=software?62:mobile?28:19;
 
   let cameraTarget:THREE.Vector3|null=null;
@@ -239,14 +262,42 @@ export function createOctaveSculptureStage(
         const g=o.geometry;
         triangles+=g.index?g.index.count/3:g.getAttribute("position").count/3;
         const mats=Array.isArray(o.material)?o.material:[o.material];
+        const brightMaterials:THREE.Material[]=[];
         for(const m of mats){
-          if(m instanceof THREE.MeshStandardMaterial){
-            m.envMapIntensity=m.metalness>.5?.70:.62;
-            m.needsUpdate=true;
+          const match=/^SPECTRUM CUP (\d{2})/.exec(m.name);
+          if(match){
+            const group=Number(match[1]);
+            let glowMat=spectrumMaterials.get(group);
+            if(!glowMat){
+              // Use genuinely unlit emission, NOT a heavily overexposed
+              // metallic PBR material. PBR intensity previously washed
+              // the entire rainbow white under the gallery spotlights.
+              glowMat=new THREE.MeshBasicMaterial({
+                name:m.name,color:0xffffff,
+                toneMapped:false,transparent:true,opacity:.94,
+                blending:THREE.AdditiveBlending,
+                depthTest:true,depthWrite:false,
+                side:THREE.DoubleSide,
+              });
+              spectrumMaterials.set(group,glowMat);
+            }
+            brightMaterials.push(glowMat);
+          }else{
+            if(m instanceof THREE.MeshStandardMaterial){
+              m.envMapIntensity=m.metalness>.5?.70:.62;
+              m.needsUpdate=true;
+            }
+            brightMaterials.push(m);
           }
         }
+        o.material=Array.isArray(o.material)?brightMaterials:brightMaterials[0];
       }
     });
+    if(spectrumMaterials.size!==SPECTRUM_GROUPS){
+      console.warn("OCTAVE palette incomplete",spectrumMaterials.size,
+        "of",SPECTRUM_GROUPS,"expected color groups");
+    }
+    updateSpectrum(stillCapture?spectrumFrame:0);
     const clip=gltf.animations[0];
     if(clip){
       mixer=new THREE.AnimationMixer(specimen);
@@ -287,6 +338,7 @@ export function createOctaveSculptureStage(
       motionTime+=dt*speed;
       if(mixer)mixer.update(dt*speed);
     }
+    updateSpectrum(stillCapture?spectrumFrame:motionTime);
     if(specimen){
       // Head and entire chassis breathe subtly while the GLB armature
       // independently deforms all eight skinned tentacles.

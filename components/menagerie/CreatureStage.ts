@@ -56,8 +56,10 @@ export function createCreatureStage(
  controls.enableDamping=true;controls.dampingFactor=.07;
  controls.enablePan=false;
  controls.rotateSpeed=.65;controls.zoomSpeed=.8;
- controls.minDistance=4.0;controls.maxDistance=17;
- controls.minPolarAngle=.48;controls.maxPolarAngle=1.76;
+ // Full 360-degree azimuth inspection in open space. The visitor cannot
+ // orbit through a wall or descend below the model's floor.
+ controls.minDistance=4.4;controls.maxDistance=14.0;
+ controls.minPolarAngle=.38;controls.maxPolarAngle=1.47;
  controls.update();
  const env=new THREE.PMREMGenerator(renderer);
  const room=new RoomEnvironment();
@@ -75,15 +77,14 @@ export function createCreatureStage(
  rim.rotation.x=Math.PI/2;
  const rim2=add(platform,new THREE.TorusGeometry(2.70,.025,9,140),bronze,0,.22,0);
  rim2.rotation.x=Math.PI/2;
- const floor=add(scene,new THREE.PlaneGeometry(40,40),new THREE.MeshStandardMaterial({
+ const floor=add(scene,new THREE.PlaneGeometry(160,160),new THREE.MeshStandardMaterial({
   color:0xf3f6f4,metalness:.12,roughness:.72
  }),0,-.01,0);
  floor.rotation.x=-Math.PI/2;
- add(scene,new THREE.BoxGeometry(26,12,.3),dark,0,4,-8.5);
- for(const x of [-7.4,7.4]){
-  add(scene,new THREE.BoxGeometry(.1,5.6,.08),cyan,x,4,-8.15);
-  add(scene,new THREE.BoxGeometry(.17,8.5,.4),graphite,x,4,-8.4);
- }
+ // No physical backdrop or side walls. The former back wall obstructed
+ // the creature after visitors orbited around it (reproduced in the
+ // uploaded iPhone recording). Open 360-degree inspection is intentional.
+ // The neutral floor and constant scene background are all that remain.
  const warm=new THREE.SpotLight(0xffa86e,116,27,.7,.7,1.2);
  warm.position.set(-5.1,7,4.9);warm.target.position.set(0,2.4,0);scene.add(warm,warm.target);
  const cool=new THREE.SpotLight(0x69c9fa,118,28,.73,.67,1.2);

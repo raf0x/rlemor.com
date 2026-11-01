@@ -20,10 +20,18 @@ export type MuseumStage={
   resize:(width:number,height:number)=>void;
   dispose:()=>void;
 };
+export type PlaquePosition={
+  index:number;
+  x:number;
+  y:number;
+  opacity:number;
+  visible:boolean;
+};
 type Callbacks={
   onReady:()=>void;
   onFailure:(message:string)=>void;
   onSelect?:(index:number)=>void;
+  onPlaques?:(positions:readonly PlaquePosition[])=>void;
 };
 
 const V=(x:number,y:number,z:number)=>new THREE.Vector3(x,y,z);
@@ -46,28 +54,6 @@ function ring(parent:THREE.Object3D,radius:number,tube:number,material:THREE.Mat
   const obj=part(parent,new THREE.TorusGeometry(radius,tube,8,110),material,at);
   obj.rotation.x=Math.PI/2;return obj;
 }
-function signTexture(e:Exhibit){
-  const canvas=document.createElement("canvas");
-  canvas.width=1024;canvas.height=256;
-  const ctx=canvas.getContext("2d");
-  if(!ctx)throw new Error("Canvas specimen signage unavailable");
-  ctx.clearRect(0,0,1024,256);
-  ctx.fillStyle="#fff";ctx.fillRect(0,0,1024,256);
-  ctx.fillStyle="#244355";ctx.fillRect(0,18,7,219);
-  ctx.fillStyle="#40566a";ctx.font="600 41px Arial, sans-serif";
-  ctx.fillText(e.number,40,82);
-  ctx.fillStyle="#14242d";ctx.font="500 79px Georgia, serif";
-  ctx.fillText(e.name,150,123);
-  ctx.fillStyle="#536775";ctx.font="600 31px Arial, sans-serif";
-  ctx.fillText(e.subtitle.toUpperCase(),155,176);
-  ctx.fillStyle="#768b96";ctx.font="500 23px Arial, sans-serif";
-  ctx.fillText("SYNTHETIC MENAGERIE / LIVE SPECIMEN",155,216);
-  const texture=new THREE.CanvasTexture(canvas);
-  texture.colorSpace=THREE.SRGBColorSpace;
-  texture.anisotropy=4;
-  return texture;
-}
-
 type GalleryPalette={
   white:THREE.MeshStandardMaterial;
   shelf:THREE.MeshStandardMaterial;
@@ -78,7 +64,7 @@ type GalleryPalette={
 };
 function makeStation(
   scene:THREE.Scene,exhibit:Exhibit,index:number,materials:GalleryPalette,
-  hitVolumes:THREE.Mesh[],signage:THREE.Texture[],accents:THREE.MeshBasicMaterial[],
+  hitVolumes:THREE.Mesh[],accents:THREE.MeshBasicMaterial[],
 ){
   const frame=new THREE.Group();
   frame.name="exhibit-bay:"+exhibit.id;
@@ -114,11 +100,9 @@ function makeStation(
   mount.userData.exhibitId=exhibit.id;
   mount.position.set(0,.96,-.82);
   frame.add(mount);
-  // A restrained identification plaque, visible while moving along the row.
-  const texture=signTexture(exhibit);signage.push(texture);
-  part(frame,new THREE.PlaneGeometry(3.68,.92),
-    new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide}),
-    [0,.39,.85]);
+  // Exhibit names are native HTML plaques, anchored to a projected 3D point
+  // rather than downsampled text painted on a distant CanvasTexture.
+  // This completely eliminates blurry labels on iPhone Retina displays.
   // Invisible raycast geometry. Real specimen meshes do NOT need separate
   // event handlers, and every station has an accessible HTML counterpart.
   const hit=part(scene,new THREE.BoxGeometry(6.7,5.0,4.2),
@@ -131,7 +115,7 @@ function makeStation(
 }
 
 function createWhiteHall(scene:THREE.Scene,
-  hitVolumes:THREE.Mesh[],signage:THREE.Texture[],accents:THREE.MeshBasicMaterial[],
+  hitVolumes:THREE.Mesh[],accents:THREE.MeshBasicMaterial[],
 ){
   const white=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.91,metalness:0});
   const shelf=new THREE.MeshStandardMaterial({color:0xf9fafa,roughness:.29,metalness:.12});
@@ -164,7 +148,7 @@ function createWhiteHall(scene:THREE.Scene,
       new THREE.MeshBasicMaterial({color:0xdde3e4}),[x,.001,7.2]);
   }
   const palette={white,shelf,graphite,trim,chrome,bronze};
-  EXHIBITS.forEach((e,i)=>makeStation(scene,e,i,palette,hitVolumes,signage,accents));
+  EXHIBITS.forEach((e,i)=>makeStation(scene,e,i,palette,hitVolumes,accents));
   const hemi=new THREE.HemisphereLight(0xffffff,0xe4edf5,2.7);
   scene.add(hemi);
   const ambient=new THREE.AmbientLight(0xffffff,.42);
@@ -239,9 +223,8 @@ export function createMuseumStage(
     room.dispose();
   }
   const hitVolumes:THREE.Mesh[]=[];
-  const signage:THREE.Texture[]=[];
   const accentMaterials:THREE.MeshBasicMaterial[]=[];
-  const lights=createWhiteHall(scene,hitVolumes,signage,accentMaterials);
+  const lights=createWhiteHall(scene,hitVolumes,accentMaterials);
   const spectrum=createExhibitSpectrum();
   const mixers:THREE.AnimationMixer[]=[];
   const installed=new Set<string>();
@@ -309,7 +292,26 @@ export function createMuseumStage(
   }
   const picker=new THREE.Raycaster();
   const pointer=new THREE.Vector2();
+  const plaqueVector=new THREE.Vector3();
   let lastAccentTick=-1;
+  function positionPlaques(){
+    if(!callbacks.onPlaques)return;
+    // Project the front edge of every physical shelf into CSS pixels.
+    // Unlike canvas-texture signs, these labels never get blurry or small
+    // when the visitor browses between displays.
+    const width=Math.max(1,canvas.clientWidth);
+    const height=Math.max(1,canvas.clientHeight);
+    const result:PlaquePosition[]=EXHIBITS.map((e,index)=>{
+      plaqueVector.set(e.x,.53,1.0).project(camera);
+      const x=(plaqueVector.x*.5+.5)*width;
+      const y=(-plaqueVector.y*.5+.5)*height;
+      const visible=plaqueVector.z>-1&&plaqueVector.z<1&&
+        x>-100&&x<width+100&&y>32&&y<height-40;
+      const opacity=Math.max(.72,Math.min(1,1-Math.abs(x-width*.5)/Math.max(1,width)*.25));
+      return {index,x,y,visible,opacity};
+    });
+    callbacks.onPlaques(result);
+  }
 
   function focus(index:number|null,immediate=false){
     const desired=index===null?0:index;
@@ -386,6 +388,7 @@ export function createMuseumStage(
       canvas.dataset.cameraZ=String(camera.position.z);
     }
     renderer.render(scene,camera);
+    positionPlaques();
     if(!still)raf=requestAnimationFrame(draw);
   }
   const onLost=(event:Event)=>{
@@ -403,6 +406,7 @@ export function createMuseumStage(
     renderer.setSize(width,height,false);
     alignCamera();
     if(still)renderer.render(scene,camera);
+    positionPlaques();
   }
   function dispose(){
     if(dead)return;
@@ -422,7 +426,6 @@ export function createMuseumStage(
     geometry.forEach(x=>x.dispose());
     material.forEach(x=>x.dispose());
     spectrum.dispose();
-    signage.forEach(x=>x.dispose());
     envMap?.dispose();pmrem?.dispose();
     renderer.dispose();renderer.forceContextLoss();
   }

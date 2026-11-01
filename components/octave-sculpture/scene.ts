@@ -68,92 +68,70 @@ function haloTexture(){
   return map;
 }
 function createChamber(scene:THREE.Scene){
-  const environment=new THREE.Group();scene.add(environment);
-  const matte=new THREE.MeshStandardMaterial({color:0x101820,metalness:.48,roughness:.50});
-  const charcoal=new THREE.MeshStandardMaterial({color:0x10191f,metalness:.68,roughness:.31});
-  const bronze=new THREE.MeshStandardMaterial({color:0x72502b,metalness:.84,roughness:.3});
-  const glass=new THREE.MeshStandardMaterial({color:0x1f3441,metalness:.52,roughness:.21});
-  const blue=new THREE.MeshBasicMaterial({color:0x40d5ff,toneMapped:false});
-  const subtleLine=new THREE.MeshBasicMaterial({color:0x335769,transparent:true,opacity:.35});
-  // Camera-facing back gallery with dimensional recesses. No flat image.
-  mesh(environment,new THREE.BoxGeometry(30,12,.23),matte,[0,4.2,-7.2]);
-  mesh(environment,new THREE.PlaneGeometry(34,25),new THREE.MeshStandardMaterial({
-    color:0x0b141b,metalness:.42,roughness:.24
-  }),[0,-.13,0]).rotation.x=-Math.PI/2;
-  for(let i=-3;i<=3;i++){
-    const x=i*3.5;
-    mesh(environment,new THREE.BoxGeometry(.26,10.6,.75),charcoal,[x,5.4,-6.9]);
-    mesh(environment,new THREE.BoxGeometry(.085,8.8,.045),i%2===0?bronze:glass,[x-.16,4.95,-6.45]);
-  }
-  for(const side of [-1,1]){
-    const x=side*7.7;
-    mesh(environment,new THREE.BoxGeometry(.4,10,3.6),charcoal,[x,5.0,-4.4]);
-    mesh(environment,new THREE.BoxGeometry(.08,5.0,.04),blue,[x-side*.12,5.4,-2.56]);
-    mesh(environment,new THREE.BoxGeometry(2.1,.11,.27),matte,[side*6.6,7.5,-5.3]);
-    mesh(environment,new THREE.BoxGeometry(.90,.035,.09),blue,[side*6.6,7.4,-5.15]);
-  }
-  for(const h of [6.35,8.2]){
-    mesh(environment,new THREE.BoxGeometry(20,.31,.85),charcoal,[0,h,-6.40]);
-    mesh(environment,new THREE.BoxGeometry(14.4,.025,.09),bronze,[0,h-.20,-5.99]);
-  }
-  for(const side of [-1,1]){
-    for(const y of [7.35,8.16]){
-      line(environment,
-        new THREE.Vector3(side*4.8,y,-5.65),
-        new THREE.Vector3(side*6.0,y,-5.65),blue,.042);
-    }
-  }
-  // Center alcove behind the exhibit adds depth and warm vs cool separation.
-  mesh(environment,new THREE.BoxGeometry(7.65,6.8,.05),glass,[0,3.9,-7.0]);
-  for(const side of [-1,1]){
-    mesh(environment,new THREE.BoxGeometry(.085,5.8,.08),bronze,[side*3.7,3.75,-6.78]);
-    mesh(environment,new THREE.BoxGeometry(.055,3.6,.06),subtleLine,[side*3.0,3.6,-6.70]);
-  }
-  // Premium dark-metal museum plinth and three concentric light guides.
-  const base=mesh(environment,new THREE.CylinderGeometry(3.52,3.68,.34,120),charcoal,[0,.29,0]);
+  const environment=new THREE.Group();
+  scene.add(environment);
+  // The original Obsidian exhibit kept a detailed black-metal plinth.
+  // Remove its architectural backdrop and vertical walls entirely: visitors
+  // must be able to orbit 360° without a wall appearing in front of Octave.
+  const graphite=new THREE.MeshStandardMaterial({
+    color:0x101a23,metalness:.72,roughness:.32,
+  });
+  const brushed=new THREE.MeshStandardMaterial({
+    color:0x273a45,metalness:.83,roughness:.21,
+  });
+  const gold=new THREE.MeshStandardMaterial({
+    color:0x8c5c2f,metalness:.81,roughness:.25,
+  });
+  const blue=new THREE.MeshBasicMaterial({color:0x37d8ff,toneMapped:false});
+  const dim=new THREE.MeshBasicMaterial({color:0x335769,transparent:true,opacity:.48});
+  const floor=mesh(environment,new THREE.PlaneGeometry(170,170),
+    new THREE.MeshStandardMaterial({color:0x090f16,roughness:.77,metalness:.08}));
+  floor.rotation.x=-Math.PI/2;
+  floor.position.y=-.11;
+  const base=mesh(environment,
+    new THREE.CylinderGeometry(3.52,3.68,.34,120),graphite,[0,.29,0]);
   base.receiveShadow=true;
-  mesh(environment,new THREE.CylinderGeometry(3.42,3.43,.07,120),
-       new THREE.MeshStandardMaterial({color:0x253542,metalness:.85,roughness:.19}),[0,.49,0]);
+  mesh(environment,new THREE.CylinderGeometry(3.42,3.43,.07,120),brushed,[0,.49,0]);
   mesh(environment,new THREE.CylinderGeometry(3.06,3.2,.01,120),
-       new THREE.MeshStandardMaterial({color:0x17262e,metalness:.67,roughness:.22}),[0,.532,0]);
+    graphite,[0,.532,0]);
   const rings:THREE.Mesh[]=[];
-  for(const [r,t,h,mat] of [
+  for(const [radius,tube,height,material] of [
     [3.40,.031,.537,blue],[3.15,.014,.548,blue],
-    [2.92,.009,.551,subtleLine],[3.59,.021,.37,bronze],
+    [2.92,.009,.551,dim],[3.59,.021,.37,gold],
   ] as const){
-    const rim=mesh(environment,new THREE.TorusGeometry(r,t,9,180),mat,[0,h,0]);
-    rim.rotation.x=Math.PI/2;
-    rings.push(rim);
+    const o=mesh(environment,new THREE.TorusGeometry(radius,tube,9,180),
+      material,[0,height,0]);
+    o.rotation.x=Math.PI/2;
+    rings.push(o);
   }
-  // Engraved radial ticks, a machine's docking mechanism.
   for(let i=0;i<72;i++){
-    const theta=i*TAU/72;
-    const radius=i%6===0?3.01:3.12;
-    const a=new THREE.Vector3(Math.cos(theta)*radius,.552,Math.sin(theta)*radius);
-    const b=new THREE.Vector3(Math.cos(theta)*(radius+(i%6===0?.105:.042)),.552,Math.sin(theta)*(radius+(i%6===0?.105:.042)));
-    line(environment,a,b,i%6===0?blue:bronze,i%6===0?.012:.006);
+    const a=i*TAU/72;
+    const inner=i%6===0?3.01:3.12;
+    line(environment,
+      new THREE.Vector3(Math.cos(a)*inner,.552,Math.sin(a)*inner),
+      new THREE.Vector3(Math.cos(a)*(inner+(i%6===0?.105:.042)),
+        .552,Math.sin(a)*(inner+(i%6===0?.105:.042))),
+      i%6===0?blue:gold,i%6===0?.012:.006);
   }
-  // Soft actual pools of light around the sculpture.
-  const circularShadow=mesh(environment,new THREE.CircleGeometry(2.52,100),
-      new THREE.MeshBasicMaterial({color:0x061118,transparent:true,opacity:.32,depthWrite:false}),
-      [0,.553,0]);
-  circularShadow.rotation.x=-Math.PI/2;
   const warm=new THREE.SpotLight(0xff9c56,175,30,.67,.66,1.15);
-  warm.position.set(-5.8,8.1,4.6);warm.target.position.set(0,2.6,0);
+  warm.position.set(-5.8,8.1,4.6);
+  warm.target.position.set(0,2.6,0);
   scene.add(warm,warm.target);
   const cool=new THREE.SpotLight(0x6fd9ff,145,31,.70,.7,1.2);
-  cool.position.set(5.2,6.7,5.1);cool.target.position.set(0,2.65,0);
+  cool.position.set(5.2,6.7,5.1);
+  cool.target.position.set(0,2.65,0);
   scene.add(cool,cool.target);
   const top=new THREE.SpotLight(0xffffff,75,23,.58,.64,1.2);
-  top.position.set(0,8.7,2.8);top.target.position.set(0,2.6,0);
+  top.position.set(0,8.7,2.8);
+  top.target.position.set(0,2.6,0);
   scene.add(top,top.target);
   const fill=new THREE.DirectionalLight(0x76a4d4,1.4);
-  fill.position.set(-3.6,4.5,-3.5);scene.add(fill);
+  fill.position.set(-3.6,4.5,-3.5);
+  scene.add(fill);
   const ambient=new THREE.HemisphereLight(0xaad4ff,0x111821,1.15);
   scene.add(ambient);
   return {environment,rings,warm,cool,top,ambient,fill};
 }
-
 export function createOctaveSculptureStage(
   canvas:HTMLCanvasElement,cb:Callbacks,
 ):SculptureStage {
@@ -185,8 +163,8 @@ export function createOctaveSculptureStage(
   controls.rotateSpeed=.62;
   controls.zoomSpeed=.8;
   controls.minDistance=mobile?7.4:6.4;
-  controls.maxDistance=25;
-  controls.maxPolarAngle=Math.PI*.66;
+  controls.maxDistance=20;
+  controls.maxPolarAngle=1.49;
   controls.minPolarAngle=.32;
   controls.touches.ONE=THREE.TOUCH.ROTATE;
   controls.touches.TWO=THREE.TOUCH.DOLLY_ROTATE;

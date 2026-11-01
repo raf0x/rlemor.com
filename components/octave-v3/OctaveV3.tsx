@@ -94,7 +94,7 @@ export default function OctaveV3(){
         userActivity();
         if(clock.mode==="tour"){
           const frame=tourAt(clock.time);
-          for(const prop of ["energy","extension","teardown","cutaway"] as const){
+          for(const prop of ["energy","extension","teardown","cutaway","isolationWeight"] as const){
             manual[prop]=frame[prop];destination[prop]=frame[prop];
           }
           manual.isolateArm=frame.isolateArm;
@@ -271,13 +271,13 @@ export default function OctaveV3(){
         if(now-lastDraw<minFrame){raf=requestAnimationFrame(draw);return;}
         lastDraw=now;
         if(clock.playing)clock.time=(clock.time+dt*clock.speed)%TOUR_DURATION;
-        else if(clock.mode==="manual")clock.time+=dt;
+        else if(clock.mode==="manual"&&!reduced)clock.time+=dt;
         if(!clock.playing&&clock.mode==="manual"&&now-clock.lastUser>33000&&!reduced){
           startTour();
         }
         if(clock.mode==="manual"){
           const alpha=1-Math.exp(-dt*2.5);
-          for(const prop of ["energy","extension","teardown","cutaway"] as const){
+          for(const prop of ["energy","extension","teardown","cutaway","isolationWeight"] as const){
             manual[prop]+=((destination[prop] as number)-(manual[prop] as number))*alpha;
           }
           manual.isolateArm=destination.isolateArm;

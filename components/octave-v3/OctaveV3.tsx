@@ -63,6 +63,7 @@ export default function OctaveV3(){
   useEffect(()=>{
     const canvas=canvasRef.current,holder=stageRef.current;
     if(!canvas||!holder)return;
+    const canvasNode = canvas;
     let mounted=true,cleanup:(()=>void)|null=null;
     void import("./scene").then(({createOctaveStage})=>{
       if(!mounted)return;
@@ -206,8 +207,8 @@ export default function OctaveV3(){
         dragging={id:event.pointerId,fromX:event.clientX,fromY:event.clientY,
           selected,origin:[...dst] as [number,number,number]};
         stage.controls.enabled=false;
-        canvas.setPointerCapture(event.pointerId);
-        canvas.style.cursor="grabbing";
+        canvasNode.setPointerCapture(event.pointerId);
+        canvasNode.style.cursor="grabbing";
         selectLabel(selected);
         event.preventDefault();
       }
@@ -219,15 +220,15 @@ export default function OctaveV3(){
         target.fill(0);
         const id=dragging.id;
         dragging=null;stage.controls.enabled=true;
-        if(canvas.hasPointerCapture(id))canvas.releasePointerCapture(id);
-        canvas.style.cursor="grab";
+        if(canvasNode.hasPointerCapture(id))canvasNode.releasePointerCapture(id);
+        canvasNode.style.cursor="grab";
         setStatus("MAGNETIC RETURN / "+part.label);
       }
       function onMove(event:PointerEvent){
         if(!dragging){
           if(event.pointerType==="mouse"&&performance.now()-lastPick>95){
             lastPick=performance.now();
-            canvas.style.cursor=stage.pick(event.clientX,event.clientY,false)?"pointer":"grab";
+            canvasNode.style.cursor=stage.pick(event.clientX,event.clientY,false)?"pointer":"grab";
           }
           return;
         }
@@ -242,18 +243,18 @@ export default function OctaveV3(){
       }
       // Dynamic import is for the heavyweight scene. THREE is available
       // in this client module solely for the picking world's vector type.
-      canvas.addEventListener("pointerdown",onDown,true);
-      canvas.addEventListener("pointermove",onMove,true);
-      canvas.addEventListener("pointerup",release);
-      canvas.addEventListener("pointercancel",release);
-      canvas.addEventListener("pointerleave",()=>{if(!dragging)canvas.style.cursor="grab";});
+      canvasNode.addEventListener("pointerdown",onDown,true);
+      canvasNode.addEventListener("pointermove",onMove,true);
+      canvasNode.addEventListener("pointerup",release);
+      canvasNode.addEventListener("pointercancel",release);
+      canvasNode.addEventListener("pointerleave",()=>{if(!dragging)canvasNode.style.cursor="grab";});
       const onWheel=()=>stopTour();
-      canvas.addEventListener("wheel",onWheel,{passive:true});
+      canvasNode.addEventListener("wheel",onWheel,{passive:true});
       const onContextLost=(event:Event)=>{
         event.preventDefault();setUnsupported(true);setStatus("GRAPHICS CONTEXT LOST");
         cancelAnimationFrame(raf);
       };
-      canvas.addEventListener("webglcontextlost",onContextLost);
+      canvasNode.addEventListener("webglcontextlost",onContextLost);
       function draw(now:number){
         const dt=Math.max(.001,Math.min(.7,(now-lastDraw)/1000));
         // A frame cap avoids wasting resources on software WebGL.
@@ -302,12 +303,12 @@ export default function OctaveV3(){
       setReady(true);setStatus(reduced?"REDUCED-MOTION SYSTEM READY":"SIMULATOR ONLINE");
       cleanup=()=>{
         cancelAnimationFrame(raf);ro.disconnect();
-        canvas.removeEventListener("pointerdown",onDown,true);
-        canvas.removeEventListener("pointermove",onMove,true);
-        canvas.removeEventListener("pointerup",release);
-        canvas.removeEventListener("pointercancel",release);
-        canvas.removeEventListener("wheel",onWheel);
-        canvas.removeEventListener("webglcontextlost",onContextLost);
+        canvasNode.removeEventListener("pointerdown",onDown,true);
+        canvasNode.removeEventListener("pointermove",onMove,true);
+        canvasNode.removeEventListener("pointerup",release);
+        canvasNode.removeEventListener("pointercancel",release);
+        canvasNode.removeEventListener("wheel",onWheel);
+        canvasNode.removeEventListener("webglcontextlost",onContextLost);
         controller.current=null;stage.dispose();
       };
     }).catch((error)=>{

@@ -19,6 +19,8 @@ export interface Stage {
   pick: (x: number, y: number, isTouch: boolean) => Picked | null;
   getDragDelta: (start: Picked, startX: number, startY: number, x: number, y: number) => Vec3;
   setCamera: (preset: CameraPreset) => void;
+  /** Optional expression channel used by First Contact; V3 remains unchanged. */
+  setExpression?: (x: number, y: number, dilation: number) => void;
   getYaw: () => number;
   rendererName: string;
   dispose: () => void;
@@ -386,6 +388,20 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
     camera.position.set(...positions[preset]);
     controls.target.set(0,0,0);controls.update();
   }
+  function setExpression(x:number, y:number, dilation:number){
+    // The optical pupil looks toward the visitor without moving the whole
+    // assembly. V3 never invokes this optional method.
+    const dx=THREE.MathUtils.clamp(x,-1,1)*.112;
+    const dy=THREE.MathUtils.clamp(y,-1,1)*.112;
+    for(const index of [5,6,7]){
+      eyeMeshes[index].position.x=dx;
+      eyeMeshes[index].position.y=dy;
+    }
+    const size=THREE.MathUtils.clamp(dilation,.4,1.3);
+    eyeMeshes[5].scale.setScalar(size);
+    eyeMeshes[6].scale.setScalar(size);
+    eyeMeshes[7].scale.setScalar(size);
+  }
   function dispose(){
     controls.dispose();
     const geometries=new Set<THREE.BufferGeometry>();
@@ -403,5 +419,6 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
   return {
     render:applyFrame,resize,pick,getDragDelta,setCamera,controls,rendererName,dispose,
     getYaw:()=>Math.atan2(camera.position.x,camera.position.z)*180/Math.PI,
+    setExpression,
   };
 }

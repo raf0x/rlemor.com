@@ -201,7 +201,8 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
   const axisY=new THREE.Vector3(0,1,0);
   const axisZ=new THREE.Vector3(0,0,1);
   const start=new THREE.Vector3(),end=new THREE.Vector3(),mid=new THREE.Vector3(),dir=new THREE.Vector3();
-  const matrix=new THREE.Matrix4(),size=new THREE.Vector3(),v=new THREE.Vector3(),color=new THREE.Color(),tint=new THREE.Color();
+  const matrix=new THREE.Matrix4(),size=new THREE.Vector3(),v=new THREE.Vector3(),color=new THREE.Color(),tint=new THREE.Color(),housingTint=new THREE.Color();
+  const brightWhite=new THREE.Color(0xffffff),fadedBlue=new THREE.Color(0x52667b);
   const pickPositions = Array.from({length:count},()=>new THREE.Vector3());
   const put=(inst:THREE.InstancedMesh,i:number,pos:THREE.Vector3,q:THREE.Quaternion,scale:THREE.Vector3)=>{
     matrix.compose(pos,q,scale);
@@ -297,11 +298,11 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
           const faded=frame.isolateArm!==null&&frame.isolateArm!==arm;
           const highlight=selected?.kind==="arm"&&selected.index===arm;
           tint.copy(color);
-          if(faded)tint.lerp(new THREE.Color(0x52667b),.78*frame.isolationWeight);
+          if(faded)tint.lerp(fadedBlue,.78*frame.isolationWeight);
           if(highlight)tint.lerp(selectedColor,.38);
           sleeve.setColorAt(idx,tint);
           led.setColorAt(idx,highlight?selectedColor:tint);
-          housing.setColorAt(idx,new THREE.Color(0xffffff).lerp(tint,highlight?.74:.50));
+          housing.setColorAt(idx,housingTint.copy(brightWhite).lerp(tint,highlight?.74:.50));
         }
       }
       for(const inst of [housing,sleeve,led])

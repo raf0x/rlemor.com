@@ -213,8 +213,8 @@ export default function MenagerieShell(){
           </div>
           <div className={styles.controlActions}>
             <button className={styles.quietButton} type="button" onClick={()=>choose(null)}
-              disabled={active===null} aria-label="Return to museum entrance">
-              <span aria-hidden="true">↺</span> ENTRANCE
+              aria-label={active===null?"Reset view":"Return to museum entrance"}>
+              <span aria-hidden="true">↺</span> {active===null?"RESET VIEW":"ENTRANCE"}
             </button>
             <button className={styles.quietButton} type="button" onClick={changeLight}
               aria-pressed={lighting==="study"}>

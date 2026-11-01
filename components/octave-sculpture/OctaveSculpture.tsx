@@ -97,7 +97,7 @@ export default function OctaveSculpture() {
         <div>
           <p className={styles.eyebrow}>SPECIMEN NO. 01 <span className={styles.eyebrowLine}/> AN ORIGINAL MECHANICAL ORGANISM</p>
           <h1>Meet <em>Octave.</em></h1>
-          <p className={styles.subhead}>Black-chrome anatomy. Electric-blue optics. Eight independently articulated tentacles. A sculptural character you can move around, not a flat image.</p>
+          <p className={styles.subhead}>Black-chrome anatomy. Electric-blue optics. Eight animated tentacles, now alive with vivid rainbow light pulsing through every suction cup.</p>
         </div>
         <p className={styles.footprint}>001 / 004 <span>THE FIRST EXHIBIT</span><span>IN AN UNBUILT MUSEUM</span></p>
       </div>
@@ -165,7 +165,7 @@ export default function OctaveSculpture() {
         <div className={styles.afterMain}>
           <p className={styles.eyebrow}>THE OBJECT, NOT AN ILLUSTRATION</p>
           <h2>Made to be examined.</h2>
-          <p>This first specimen is a genuine three-dimensional asset with metallic surfaces, dimensional optical assemblies, sculpted suction cups, and an animated skeletal rig. The museum comes later. First, the creature has to hold up from every angle.</p>
+          <p>A genuine three-dimensional sculpture with metallic surfaces, layered optics, and a skeletal rig. Each suction cup has its own modeled light aperture; brilliant colors shift and ripple independently around the arms.</p>
         </div>
         <div className={styles.buildNotes}>
           <div><span>CONSTRUCTION</span><strong>Original Blender geometry</strong></div>

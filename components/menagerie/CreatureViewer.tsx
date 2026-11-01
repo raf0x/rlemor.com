@@ -21,7 +21,7 @@ export default function CreatureViewer({exhibit}:{exhibit:Exhibit}){
  const [loaded,setLoaded]=useState(false);
  const [error,setError]=useState("");
  const [playing,setPlaying]=useState(true);
- const [lighting,setLighting]=useState<"cinematic"|"study">("cinematic");
+ const [lighting,setLighting]=useState<"cinematic"|"study">("study");
  useEffect(()=>{
   const node=canvas.current,area=holder.current;
   if(!node||!area)return;
@@ -56,11 +56,11 @@ export default function CreatureViewer({exhibit}:{exhibit:Exhibit}){
  const behavior=actions[id];
  function reset(){
   stage.current?.reset();
-  setLighting("cinematic");
+  setLighting("study");
   setPlaying(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
  }
  return (
-  <main className={styles.page}>
+  <main className={styles.page} data-lighting={lighting}>
    <header className={styles.header}>
     <Link href="/lab/menagerie-preview-76cf184b" className={styles.back}>← MUSEUM COLLECTION</Link>
     <span>THE SYNTHETIC MENAGERIE <span className={styles.muted}> / EXHIBIT {exhibit.number}</span></span>

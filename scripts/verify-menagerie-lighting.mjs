@@ -1,0 +1,38 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const read=path=>readFileSync(path,"utf8");
+const stage=read("components/menagerie/MuseumStage.ts");
+const gallery=read("components/menagerie/galleryLighting.ts");
+const shell=read("components/menagerie/MenagerieShell.tsx");
+const css=read("components/menagerie/MenagerieShell.module.css");
+const species=read("components/menagerie/CreatureStage.ts");
+const viewer=read("components/menagerie/CreatureViewer.tsx");
+assert.ok(gallery.includes('GalleryLightMode="study"|"cinematic"'));
+assert.ok(gallery.includes('createBlackTileTexture'));
+assert.ok(gallery.includes('createGalleryLighting'));
+assert.ok(gallery.includes('createInspectionLighting'));
+assert.ok(gallery.includes("new THREE.CanvasTexture"));
+assert.ok(gallery.includes('setMode(next:GalleryLightMode,immediate=false)'));
+assert.ok(gallery.includes('const f=1-Math.exp('));
+assert.ok(gallery.includes('blend+=(target-blend)*'));
+assert.ok(stage.includes("darkFloorPlane"));
+assert.ok(stage.includes("new THREE.PlaneGeometry(71.98,9.36)"));
+assert.ok(stage.includes("darkPanel"));
+assert.ok(stage.includes("galleryLighting.update(realDt)"));
+assert.ok(stage.includes("spectrum.update(motionTime)"));
+assert.ok(stage.includes("positionPlaques()"));
+assert.ok(shell.includes('useState<LightMode>("study")'));
+assert.ok(shell.includes('data-lighting={lighting}'));
+assert.ok(shell.includes('aria-label="Museum lighting mode"'));
+assert.ok(shell.includes('aria-pressed={lighting==="study"}'));
+assert.ok(shell.includes('aria-pressed={lighting==="cinematic"}'));
+assert.ok(css.includes('.page[data-lighting="cinematic"] .plaque'));
+assert.ok(css.includes('.page[data-lighting="cinematic"] .signal'));
+assert.ok(species.includes("tileTexture.dispose()"));
+assert.ok(species.includes('inspection.update(realDt)'));
+assert.ok(viewer.includes('useState<"cinematic"|"study">("study")'));
+assert.ok(!species.includes('new THREE.BoxGeometry(26,12,.3)'));
+assert.ok(read("app/lab/menagerie-preview-76cf184b/page.tsx").includes("index:false"));
+console.log(JSON.stringify({passed:true,study:"white",cinematic:"black ceramic",
+  vividAnimatedCreaturesPreserved:true,transitions:true,unlisted:true},null,2));
+

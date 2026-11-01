@@ -98,3 +98,34 @@
 .footer{color:#6d8188}
 .footer a{color:#2b5966}
 
+
+
+/* The same Study / Cinematic distinction applies inside each animal exhibit.
+   No walls are added, keeping 360-degree camera orbit unobstructed. */
+.stage,.controls,.stamp,.hint,.note,.buttons button{
+  transition:background-color .85s ease,border-color .85s ease,color .85s ease;
+}
+.page[data-lighting="cinematic"] .stage{
+  background:#040910;border-color:#314351;
+}
+.page[data-lighting="cinematic"] .controls{
+  background:#0e1722;border-color:#314351;
+}
+.page[data-lighting="cinematic"] .stamp,
+.page[data-lighting="cinematic"] .hint{color:#c4d7e3;}
+.page[data-lighting="cinematic"] .note strong{color:#f4f7f8;}
+.page[data-lighting="cinematic"] .note span{color:#bdd2dc;}
+.page[data-lighting="cinematic"] .buttons button{
+  background:#111e2b;color:#e7f0f4;border-color:#64808e;
+}
+.page[data-lighting="cinematic"] .buttons .primary{
+  background:#c5e6ed;border-color:#c5e6ed;color:#0c2934;
+}
+.page[data-lighting="cinematic"] .buttons button:hover{
+  background:#243a49;
+}
+.page[data-lighting="cinematic"] .buttons .primary:hover{background:#f1f9fa;}
+@media(prefers-reduced-motion:reduce){
+  .stage,.controls,.stamp,.hint,.note,.buttons button{transition:none!important;}
+}
+

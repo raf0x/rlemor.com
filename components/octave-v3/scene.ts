@@ -3,7 +3,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
-  ARM_COUNT, LINKS_PER_ARM, PANEL_COUNT, TAU,
+  ARM_COUNT, LINKS_PER_ARM, PANEL_COUNT, TAU, TOUR_DURATION,
   type CameraPreset, type MachineFrame, type Vec3,
 } from "./kinematics";
 
@@ -235,8 +235,9 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
   function applyFrame(frame:MachineFrame,time:number,autoCamera:boolean,selected:Picked|null){
     // Geometry is derived solely from frame. Every panel and arm has a
     // connected parent and a well-defined docking point.
-    root.rotation.y = Math.sin(frame.time*.11)*.11;
-    root.rotation.z = Math.sin(frame.time*.22)*.028;
+    const loopAngle=TAU*(frame.time/TOUR_DURATION);
+    root.rotation.y = Math.sin(loopAngle)*.11;
+    root.rotation.z = Math.sin(loopAngle*2)*.028;
     eye.position.set(...frame.opticalPosition);
     crown.position.y=frame.crownHeight;
     pearl.opacity=1-frame.cutaway*.79;
@@ -244,8 +245,8 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
     nucleus.visible=frame.cutaway>.04||frame.teardown>.15;
     for(let i=0;i<PANEL_COUNT;i++)panels[i].position.set(...frame.panels[i].offset);
     spectralMat.opacity=.82*frame.energy+.12;
-    irisRing.color.setHSL(((time*.105)+.75)%1,.90,.62);
-    energyCore.color.setHSL(((time*.105)+.52)%1,.95,.62);
+    irisRing.color.setHSL(((time*(3/TOUR_DURATION))+.75)%1,.90,.62);
+    energyCore.color.setHSL(((time*(3/TOUR_DURATION))+.52)%1,.95,.62);
     const poseKey=[
       frame.time.toFixed(3),frame.teardown.toFixed(3),
       frame.extension.toFixed(3),frame.cutaway.toFixed(3),frame.isolateArm,
@@ -291,12 +292,12 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
       for(let arm=0;arm<ARM_COUNT;arm++){
         for(let j=0;j<LINKS_PER_ARM;j++){
           const idx=arm*LINKS_PER_ARM+j;
-          const hue=((time*.22+arm/ARM_COUNT+(j/LINKS_PER_ARM)*.16)%1+1)%1;
+          const hue=((time*(7/TOUR_DURATION)+arm/ARM_COUNT+(j/LINKS_PER_ARM)*.16)%1+1)%1;
           color.setHSL(hue,.99,.62);
           const faded=frame.isolateArm!==null&&frame.isolateArm!==arm;
           const highlight=selected?.kind==="arm"&&selected.index===arm;
           tint.copy(color);
-          if(faded)tint.lerp(new THREE.Color(0x52667b),.78);
+          if(faded)tint.lerp(new THREE.Color(0x52667b),.78*frame.isolationWeight);
           if(highlight)tint.lerp(selectedColor,.38);
           sleeve.setColorAt(idx,tint);
           led.setColorAt(idx,highlight?selectedColor:tint);
@@ -310,7 +311,7 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
       // Frame-accurate camera direction: 3/4 for mechanical separation,
       // a slightly elevated view into the chassis during cutaway, then
       // a gentle return to the original editorial hero composition.
-      const yaw=.26+Math.sin(frame.time*.17)*.17+frame.teardown*.31;
+      const yaw=.26+Math.sin(loopAngle)*.17+frame.teardown*.31;
       const elev=1.45+frame.teardown*.52+frame.cutaway*.31;
       const distance=baseDistance*(1+frame.teardown*.06);
       camera.position.set(Math.sin(yaw)*distance,elev,Math.cos(yaw)*distance);

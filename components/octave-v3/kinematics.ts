@@ -142,12 +142,26 @@ function armJoint(
 ): Vec3 {
   const angle=TAU*(arm/ARM_COUNT)+Math.PI/8;
   const handed=arm%2===0?1:-1;
-  const curled=Math.max(0,(t-.61)/.39);
-  const coil=curled*curled;
-  const quietSwing=Math.sin(input.time*.85+arm*.71+t*5.5)*.075*t*clamp01(input.energy);
-  const radius=.96+(3.35+extension*.55)*t-.48*coil;
-  const tangent=handed*(1-Math.cos(coil*2.6))*.89+quietSwing;
-  const depth=Math.sin(angle*2.2)*.34*t+handed*.29*coil+quietSwing*.82;
+  // This continuous curvature model replaces the old right-angled hook.
+  // Until t=.58 the arm grows nearly radially; its distal 42% sweeps
+  // around a genuine rounded 3D coil and turns back toward its chassis.
+  // The first derivative of radius matches at the transition point,
+  // preventing an artificial elbow in the silhouette.
+  const curlStart=.58;
+  const curled=clamp01((t-curlStart)/(1-curlStart));
+  const theta=4.8*smooth(curled);
+  const growth=3.35+extension*.55;
+  const radius=t<=curlStart
+    ? .96+growth*t
+    : .96+growth*curlStart
+      +growth*(1-curlStart)*curled
+      -(growth*(1-curlStart)+.21)*curled*curled
+      +.72*Math.sin(theta);
+  const quietSwing=Math.sin(input.time*.83+arm*.71+t*5.1)*.052*t*clamp01(input.energy);
+  const tangent=handed*.82*(1-Math.cos(theta))+quietSwing;
+  const depth=Math.sin(angle*2.2)*.34*t
+    +handed*(.19*Math.sin(theta)+.22*curled)
+    +quietSwing*.8;
   const separation=.76*tear*(input.isolateArm===arm?1.32:1);
   const manual=input.manualArmOffsets?.[arm]??([0,0,0] as Vec3);
   const weight=smooth((t-.08)/.72);

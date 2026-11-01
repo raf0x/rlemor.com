@@ -149,18 +149,18 @@ function armJoint(
   // preventing an artificial elbow in the silhouette.
   const curlStart=.58;
   const curled=clamp01((t-curlStart)/(1-curlStart));
-  const theta=4.8*smooth(curled);
+  const theta=3.12*smooth(curled);
   const growth=3.35+extension*.55;
   const radius=t<=curlStart
     ? .96+growth*t
     : .96+growth*curlStart
       +growth*(1-curlStart)*curled
-      -(growth*(1-curlStart)+.21)*curled*curled
-      +.72*Math.sin(theta);
+      -(growth*(1-curlStart)+.14)*curled*curled
+      +.45*Math.sin(theta);
   const quietSwing=Math.sin(input.time*.83+arm*.71+t*5.1)*.052*t*clamp01(input.energy);
-  const tangent=handed*.82*(1-Math.cos(theta))+quietSwing;
+  const tangent=handed*.70*(1-Math.cos(theta))+quietSwing;
   const depth=Math.sin(angle*2.2)*.34*t
-    +handed*(.19*Math.sin(theta)+.22*curled)
+    +handed*(.12*Math.sin(theta)+.15*curled)
     +quietSwing*.8;
   const separation=.76*tear*(input.isolateArm===arm?1.32:1);
   const manual=input.manualArmOffsets?.[arm]??([0,0,0] as Vec3);

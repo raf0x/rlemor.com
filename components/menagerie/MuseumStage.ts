@@ -3,6 +3,9 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
+import { createChassisMiniature } from "./chassisMiniature";
 import { EXHIBITS, type Exhibit } from "./exhibits";
 import { azimuthFrom, clampIntoMuseum, orbitLimits } from "./cameraConstraints";
 
@@ -66,7 +69,7 @@ function labelTexture(exhibit: Exhibit) {
   cx.fillStyle="#9bb2c0";cx.font="600 28px sans-serif";
   cx.fillText(exhibit.subtitle.toUpperCase(),169,203);
   cx.fillStyle="#70949e";cx.font="500 21px sans-serif";
-  cx.fillText("INSTALLATION RESERVED",170,250);
+  cx.fillText("LIVING SPECIMEN",170,250);
   const map=new THREE.CanvasTexture(c);
   map.colorSpace=THREE.SRGBColorSpace;
   map.anisotropy=4;map.needsUpdate=true;
@@ -338,6 +341,145 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
   const rings:THREE.MeshBasicMaterial[]=[];
   const labels:THREE.Texture[]=[];
   const hall=createHall(scene,hitVolumes,rings,labels);
+
+  // Install real animated, independently modeled GLBs. The gallery retains
+  // one Three.js renderer; no nested WebGL canvases or opaque screenshots.
+  const mixers:THREE.AnimationMixer[]=[];
+  const specimenRoots:THREE.Object3D[]=[];
+  const installed=new Set<string>();
+  const spectrum=new Map<number,THREE.MeshBasicMaterial>();
+  const creatureGlow=new Map<string,THREE.MeshBasicMaterial>();
+  const glowHues=new Map<string,number>();
+  const creatureLightColors:Record<string,number>={
+    "ENERGY | Electric blue":0x21bcff,
+    "LIGHT | Silver cyan":0x60d6f2,
+    "ENERGY | Amber microcell":0xffac57,
+    "LUMINOUS | Violet":0xc66cfa,
+    "LUMINOUS | Jade":0x34eaa1,
+  };
+  let lastSpectrumTick=-1;
+  // One shared glowing palette, no individual dynamic lights per suction cup.
+  function animateExhibitColors(t:number){
+    const tick=Math.floor(t*26);
+    if(tick===lastSpectrumTick)return;
+    lastSpectrumTick=tick;
+    for(const [group,mat] of spectrum){
+      const hue=((group/16+t*.35+.026*Math.sin(t*.8+group*.83))%1+1)%1;
+      const phase=t*(4.15+(group%3)*.42)+group*2.399963;
+      const burst=Math.pow(.5+.5*Math.sin(phase),2.2);
+      const energy=.26+.74*burst;
+      mat.color.setHSL(hue,1,.39+.25*energy);
+      mat.opacity=.57+.43*energy;
+    }
+    let index=0;
+    for(const [name,mat] of creatureGlow){
+      const hue=glowHues.get(name)??.55;
+      mat.color.setHSL((hue+.026*Math.sin(t*.85+index*1.9)+1)%1,.97,
+        .52+.08*Math.sin(t*2.1+index*1.5));
+      index++;
+    }
+  }
+  function convertExhibitMaterials(model:THREE.Object3D,id:string){
+    model.traverse(object=>{
+      if(!(object instanceof THREE.Mesh))return;
+      const sources=Array.isArray(object.material)?object.material:[object.material];
+      const mapped=sources.map(material=>{
+        const match=id==="octave-spectrum"?
+          /^SPECTRUM CUP (\d{2})/.exec(material.name):null;
+        if(match){
+          const group=Number(match[1]);
+          let color=spectrum.get(group);
+          if(!color){
+            color=new THREE.MeshBasicMaterial({name:material.name,color:0xffffff,
+              toneMapped:false,transparent:true,opacity:.96,
+              blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
+            spectrum.set(group,color);
+          }
+          return color;
+        }
+        let hex=creatureLightColors[material.name];
+        if(id==="frog"&&material.name==="ENERGY | Electric blue")hex=0x38eca3;
+        if(hex!==undefined){
+          const key=id+"|"+material.name;
+          let color=creatureGlow.get(key);
+          if(!color){
+            color=new THREE.MeshBasicMaterial({name:material.name,color:hex,
+              toneMapped:false,side:THREE.DoubleSide});
+            creatureGlow.set(key,color);
+            glowHues.set(key,color.color.getHSL({h:0,s:0,l:0}).h);
+          }
+          return color;
+        }
+        if(material instanceof THREE.MeshStandardMaterial){
+          material.envMapIntensity=material.metalness>.5?.5:.36;
+          material.needsUpdate=true;
+        }
+        return material;
+      });
+      object.material=Array.isArray(object.material)?mapped:mapped[0];
+    });
+  }
+  const loader=new GLTFLoader();
+  loader.setMeshoptDecoder(MeshoptDecoder);
+  const assets=[
+    ["octave-spectrum","/lab/octave-sculpture/octave-obsidian.glb"],
+    ["aether","/lab/menagerie/aether.glb"],
+    ["medusa","/lab/menagerie/medusa.glb"],
+    ["atlas","/lab/menagerie/atlas.glb"],
+    ["frog","/lab/menagerie/frog.glb"],
+  ] as const;
+  const immersiveMounts=EXHIBITS.map(e=>
+    scene.getObjectByName("specimen-mount:"+e.id));
+  for(const [id,path] of assets){
+    const index=EXHIBITS.findIndex(e=>e.id===id);
+    const mount=immersiveMounts[index];
+    if(!mount)continue;
+    loader.load(path,gltf=>{
+      if(dead)return;
+      const sculpture=gltf.scene;
+      const bb=new THREE.Box3().setFromObject(sculpture);
+      const size=bb.getSize(new THREE.Vector3());
+      const scale=Math.min(3.2/Math.max(.1,size.x),
+        3.6/Math.max(.1,size.y),3.0/Math.max(.1,size.z),2.0);
+      sculpture.scale.setScalar(scale);
+      sculpture.position.set(-bb.min.x*scale-size.x*scale*.5,
+        -bb.min.y*scale,
+        -bb.min.z*scale-size.z*scale*.5);
+      sculpture.name="Installed exhibit: "+id;
+      convertExhibitMaterials(sculpture,id);
+      mount.add(sculpture);
+      specimenRoots.push(sculpture);
+      installed.add(id);
+      canvas.dataset.loadedExhibits=Array.from(installed).sort().join(",");
+      const mixer=new THREE.AnimationMixer(sculpture);
+      for(const clip of gltf.animations){
+        const action=mixer.clipAction(clip);
+        action.loop=THREE.LoopRepeat;
+        action.play();
+      }
+      if(gltf.animations.length)mixers.push(mixer);
+    },undefined,error=>{
+      console.error("Could not load Menagerie exhibit",id,error);
+    });
+  }
+  // The legacy Octave is a procedural model with a separate authentic
+  // interactive lab. Present a light porcelain miniature in the hall and
+  // open its full original controls via the dedicated museum exhibit route.
+  const chassis=createChassisMiniature();
+  const chassisMount=scene.getObjectByName("specimen-mount:octave-chassis");
+  if(chassisMount){
+    const box=new THREE.Box3().setFromObject(chassis.group);
+    const sz=box.getSize(new THREE.Vector3());
+    const factor=Math.min(3.1/sz.x,3.4/sz.y,3.1/sz.z,1.5);
+    chassis.group.scale.setScalar(factor);
+    chassis.group.position.set(
+      -(box.min.x+sz.x*.5)*factor,
+      -box.min.y*factor,
+      -(box.min.z+sz.z*.5)*factor,
+    );
+    chassisMount.add(chassis.group);
+    specimenRoots.push(chassis.group);
+  }
   const raycaster=new THREE.Raycaster();
   const pointer=new THREE.Vector2();
   const cameraGoal=entrancePos.clone();
@@ -451,7 +593,11 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
     const realDt=Math.max(0,(now-last)/1000);
     const dt=Math.min(.09,realDt);
     last=now;
-    if(!reduced)elapsed+=dt;
+    if(!reduced){
+      elapsed+=dt;
+      for(const mixer of mixers)mixer.update(dt);
+      chassis.update(elapsed);
+    }
     if(traveling){
       // Guided camera travel uses wall-clock time, not the capped lighting
       // frame delta. Otherwise software WebGL and busy phones can make a
@@ -467,6 +613,7 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
         restoreViewBounds();
       }
     }
+    if(!reduced)animateExhibitColors(elapsed);
     if(!reduced){
       for(let i=0;i<rings.length;i++){
         const hue=.51+Math.sin(elapsed*.35+i*.65)*.018;
@@ -525,6 +672,9 @@ export function createMuseumStage(canvas:HTMLCanvasElement,callbacks:Callbacks):
       }
     });
     geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());
+    // Clone-owned GLBs, including their skinned geometry, are already part
+    // of the scene traversal above. No duplicate WebGL contexts to close.
+    mixers.forEach(m=>m.stopAllAction());
     labels.forEach(l=>l.dispose());
     environmentMap?.dispose();environmentSource?.dispose();
     renderer.dispose();renderer.forceContextLoss();

@@ -262,7 +262,7 @@ export default function OctaveV3(){
         if(now-lastDraw<minFrame){raf=requestAnimationFrame(draw);return;}
         lastDraw=now;
         if(clock.playing)clock.time=(clock.time+dt*clock.speed)%TOUR_DURATION;
-        else if(clock.mode==="manual")clock.time+=dt*.44;
+        else if(clock.mode==="manual")clock.time+=dt;
         if(!clock.playing&&clock.mode==="manual"&&now-clock.lastUser>33000&&!reduced){
           startTour();
         }
@@ -283,7 +283,9 @@ export default function OctaveV3(){
           manualPanelOffsets:offsets.panels,
           manualEyeOffset:offsets.eye,
         });
-        stage.render(frame,now*.001,clock.playing&&clock.mode==="tour",selected?{
+        // The screenshot/film timeline uses the same clock as the rig and HUD.
+        // A ?frame=12.5 capture must be reproducible regardless of real time.
+        stage.render(frame,clock.time,clock.playing&&clock.mode==="tour",selected?{
           kind:selected.kind,index:selected.index,label:selected.label,
           point:new THREE.Vector3(selected.point.x,selected.point.y,selected.point.z),
         }:null);

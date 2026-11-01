@@ -120,6 +120,13 @@ export function createCreatureStage(
  const targetFrameMs=software?52:mobile?30:17;
  const showLightDebug=new URLSearchParams(window.location.search).has("lightDebug");
  let disposed=false;
+ const onContextLost=(event:Event)=>{
+  event.preventDefault();
+  if(disposed)return;
+  cancelAnimationFrame(raf);
+  failure("The 3D renderer was interrupted. Refresh to view this specimen again.");
+ };
+ canvas.addEventListener("webglcontextlost",onContextLost);
  const spectrum=createExhibitSpectrum();
 
  const loader=new GLTFLoader();
@@ -214,7 +221,9 @@ export function createCreatureStage(
   playing=!reduced;actionTime=0;
  }
  function dispose(){
-  disposed=true;cancelAnimationFrame(raf);controls.dispose();
+  disposed=true;cancelAnimationFrame(raf);
+  canvas.removeEventListener("webglcontextlost",onContextLost);
+  controls.dispose();
   mixer?.stopAllAction();
   scene.traverse(obj=>{
     if(obj instanceof THREE.Mesh){

@@ -307,10 +307,13 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
         if(inst.instanceColor)inst.instanceColor.needsUpdate=true;
     }
     if(autoCamera){
-      // Deterministic director view, derived from the same time as the rig.
-      const yaw=.11+Math.sin(time*.17)*.31;
-      const elev=.65+Math.sin(time*.13)*.65;
-      camera.position.set(Math.sin(yaw)*baseDistance,elev,Math.cos(yaw)*baseDistance);
+      // Frame-accurate camera direction: 3/4 for mechanical separation,
+      // a slightly elevated view into the chassis during cutaway, then
+      // a gentle return to the original editorial hero composition.
+      const yaw=.26+Math.sin(frame.time*.17)*.17+frame.teardown*.31;
+      const elev=1.45+frame.teardown*.52+frame.cutaway*.31;
+      const distance=baseDistance*(1+frame.teardown*.06);
+      camera.position.set(Math.sin(yaw)*distance,elev,Math.cos(yaw)*distance);
       controls.target.set(0,0,0);
     }
     controls.update();

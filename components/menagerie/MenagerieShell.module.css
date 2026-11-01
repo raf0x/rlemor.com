@@ -312,3 +312,17 @@
   }
 }
 
+
+.enterExhibit{
+  flex:0 0 auto;
+  border:1px solid #9ce5e7;
+  background:#d2f0ee;
+  color:#092630!important;
+  display:inline-flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:13px 16px;
+  font:700 10px/1.35 var(--mono);letter-spacing:.05em;
+  min-width:168px;text-decoration:none!important;
+}
+.enterExhibit:hover{background:#fff;color:#081c2b!important}
+.enterExhibit span{font-size:16px}
+@media(max-width:850px){.enterExhibit{align-self:stretch}}

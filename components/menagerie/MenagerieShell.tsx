@@ -151,14 +151,14 @@ export default function MenagerieShell(){
           <p className={styles.eyebrow}><span className={styles.smallSquare} aria-hidden="true"/> THE FIRST GALLERY <span className={styles.separator}>/</span> AN UNLISTED PREVIEW</p>
           <h1 id="museum-title">A place for <em>impossible life.</em></h1>
           <p className={styles.description}>
-            A museum imagined for extraordinary mechanical creatures.
-            The architecture is here. The inhabitants will follow.
+            Six original mechanical organisms, each with its own motion and personality.
+            Explore the hall, then step inside an exhibit to interact.
           </p>
         </div>
         <div className={styles.introSide}>
           <span>THE COLLECTION</span>
-          <strong>06 <small>RESERVED EXHIBITS</small></strong>
-          <p>First, we build the space they deserve.</p>
+          <strong>06 <small>LIVING EXHIBITS</small></strong>
+          <p>Two Octaves. Four original new creatures.</p>
         </div>
       </section>
 
@@ -211,6 +211,11 @@ export default function MenagerieShell(){
               <span>{subheading}</span>
             </div>
           </div>
+          {picked&&
+            <Link className={styles.enterExhibit}
+              href={"/lab/menagerie-preview-76cf184b/exhibit/"+picked.id}>
+              INTERACT WITH {picked.name.toUpperCase()} <span aria-hidden="true">↗</span>
+            </Link>}
           <div className={styles.controlActions}>
             <button className={styles.quietButton} type="button" onClick={()=>choose(null)}
               aria-label={active===null?"Reset view":"Return to museum entrance"}>
@@ -237,10 +242,10 @@ export default function MenagerieShell(){
       <section className={styles.collection} aria-labelledby="collection-heading">
         <div className={styles.collectionIntro}>
           <div>
-            <p className={styles.eyebrow}>THE COLLECTION INDEX / SIX FUTURE INSTALLATIONS</p>
+            <p className={styles.eyebrow}>THE COLLECTION INDEX / SIX INTERACTIVE INSTALLATIONS</p>
             <h2 id="collection-heading">A space for each <em>species.</em></h2>
           </div>
-          <p>Explore the architecture of every station. The sculptures and their custom interactions will be installed after the hall is approved.</p>
+          <p>Every station now holds an animated creature. Choose one to visit, then open its individual interactive experience.</p>
         </div>
         <div className={styles.index}>
           {EXHIBITS.map((exhibit,i)=>(
@@ -261,7 +266,7 @@ export default function MenagerieShell(){
           ))}
         </div>
         <div className={styles.collectionFoot}>
-          <span><span className={styles.smallSquare} aria-hidden="true"/> 06 STATIONS RESERVED. NO CREATURES INSTALLED YET.</span>
+          <span><span className={styles.smallSquare} aria-hidden="true"/> 06 CREATURES INSTALLED. ALL EXHIBITS CAN BE VISITED.</span>
           <span>USE ← → OR THE NUMBER KEYS TO MOVE BETWEEN EXHIBITS.</span>
         </div>
       </section>

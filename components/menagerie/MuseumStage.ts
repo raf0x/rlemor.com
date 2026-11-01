@@ -8,6 +8,8 @@ import { createChassisMiniature } from "./chassisMiniature";
 import { createGalleryRail } from "./galleryRail";
 import { createExhibitSpectrum } from "./exhibitSpectrum";
 import { EXHIBITS, type Exhibit } from "./exhibits";
+import { createBlackTileTexture, createGalleryLighting, createLightPoolTexture,
+  createTileMaterial } from "./galleryLighting";
 
 export type LightMode="cinematic"|"study";
 export type MuseumStage={
@@ -65,6 +67,7 @@ type GalleryPalette={
 function makeStation(
   scene:THREE.Scene,exhibit:Exhibit,index:number,materials:GalleryPalette,
   hitVolumes:THREE.Mesh[],accents:THREE.MeshBasicMaterial[],
+  tilePanel:THREE.MeshPhysicalMaterial,
 ){
   const frame=new THREE.Group();
   frame.name="exhibit-bay:"+exhibit.id;
@@ -74,6 +77,8 @@ function makeStation(
   // The wall itself carries every display. No arches, side walls or ceiling.
   part(frame,new THREE.BoxGeometry(7.78,6.85,.105),trim,[0,4.0,-3.76]);
   part(frame,new THREE.BoxGeometry(7.68,6.75,.108),white,[0,4.0,-3.67]);
+  // Architectural black tile face, visible only in Cinematic Light.
+  part(frame,new THREE.PlaneGeometry(7.65,6.70),tilePanel,[0,4.0,-3.602]);
   for(const side of [-1,1]){
     part(frame,new THREE.BoxGeometry(.055,6.5,.032),chrome,
       [side*3.78,4.0,-3.59]);
@@ -126,13 +131,29 @@ function createWhiteHall(scene:THREE.Scene,
   const floorMaterial=new THREE.MeshStandardMaterial({
     color:0xf4f6f5,metalness:.13,roughness:.68,
   });
+  // Small repeatable procedural ceramic tiles. They cost three textures
+  // and eight extra static planes, not thousands of individual meshes.
+  const floorTexture=createBlackTileTexture(62,23);
+  const wallTexture=createBlackTileTexture(51,7);
+  const panelTexture=createBlackTileTexture(6,5);
+  const poolTexture=createLightPoolTexture();
+  const darkFloor=createTileMaterial(floorTexture);
+  const darkWall=createTileMaterial(wallTexture);
+  const darkPanel=createTileMaterial(panelTexture);
+  const tileSurfaces=[darkFloor,darkWall,darkPanel];
+  const pools:THREE.MeshBasicMaterial[]=[];
   // Exactly ONE continuous back wall and ONE horizontal floor.
   const gallery=new THREE.Group();gallery.name="white-horizontal-gallery";
   scene.add(gallery);
   const floor=part(gallery,new THREE.BoxGeometry(105,.20,37),floorMaterial,[0,-.12,2.0]);
   floor.receiveShadow=true;
+  const darkFloorPlane=part(gallery,new THREE.PlaneGeometry(105,37),darkFloor,
+    [0,-.013,2.0]);
+  darkFloorPlane.rotation.x=-Math.PI/2;
   const wall=part(gallery,new THREE.BoxGeometry(72,9.4,.27),white,[0,4.56,-4.20]);
   wall.receiveShadow=true;
+  part(gallery,new THREE.PlaneGeometry(71.98,9.36),darkWall,
+    [0,4.56,-4.053]);
   part(gallery,new THREE.BoxGeometry(71.7,.07,.14),trim,[0,.10,-4.0]);
   // Linear bronze and graphite accents connect the bays into one exhibition.
   part(gallery,new THREE.BoxGeometry(65,.042,.11),chrome,[0,7.61,-3.94]);
@@ -147,8 +168,21 @@ function createWhiteHall(scene:THREE.Scene,
     part(gallery,new THREE.BoxGeometry(.018,.009,26),
       new THREE.MeshBasicMaterial({color:0xdde3e4}),[x,.001,7.2]);
   }
-  const palette={white,shelf,graphite,trim,chrome,bronze};
-  EXHIBITS.forEach((e,i)=>makeStation(scene,e,i,palette,hitVolumes,accents));
+  const palette={white,shelf,graphite,trim,chrome,bronze,floor:floorMaterial};
+  EXHIBITS.forEach((e,i)=>{
+    makeStation(scene,e,i,palette,hitVolumes,accents,darkPanel);
+    // Deliberately restrained colored reflections near each sculpture's
+    // footing. The moving studio lights provide actual specular highlights.
+    const pool=new THREE.MeshBasicMaterial({
+      map:poolTexture,color:new THREE.Color().setHSL(e.accentHue,1,.48),
+      toneMapped:false,transparent:true,opacity:0,depthWrite:false,
+      blending:THREE.AdditiveBlending,side:THREE.DoubleSide,
+    });
+    pools.push(pool);
+    const glow=part(gallery,new THREE.PlaneGeometry(7.0,4.5),pool,
+      [e.x,.018,2.45]);
+    glow.rotation.x=-Math.PI/2;
+  });
   const hemi=new THREE.HemisphereLight(0xffffff,0xe4edf5,2.7);
   scene.add(hemi);
   const ambient=new THREE.AmbientLight(0xffffff,.42);
@@ -165,7 +199,9 @@ function createWhiteHall(scene:THREE.Scene,
   highlight.position.set(EXHIBITS[0].x+2.6,5.7,-1.1);
   highlight.target.position.set(EXHIBITS[0].x,2.3,-.9);
   scene.add(highlight,highlight.target);
-  return {hemi,ambient,key,rear,studio,highlight};
+  return {hemi,ambient,key,rear,studio,highlight,
+    palette,tileSurfaces,pools,
+    ownedTextures:[floorTexture,wallTexture,panelTexture,poolTexture]};
 }
 
 /**
@@ -224,7 +260,13 @@ export function createMuseumStage(
   }
   const hitVolumes:THREE.Mesh[]=[];
   const accentMaterials:THREE.MeshBasicMaterial[]=[];
-  const lights=createWhiteHall(scene,hitVolumes,accentMaterials);
+  const hall=createWhiteHall(scene,hitVolumes,accentMaterials);
+  const lights={hemi:hall.hemi,ambient:hall.ambient,key:hall.key,rear:hall.rear,
+    studio:hall.studio,highlight:hall.highlight};
+  const galleryLighting=createGalleryLighting({
+    scene,renderer,palette:hall.palette,lights,
+    tileSurfaces:hall.tileSurfaces,pools:hall.pools,
+  });
   const spectrum=createExhibitSpectrum();
   const mixers:THREE.AnimationMixer[]=[];
   const installed=new Set<string>();
@@ -260,6 +302,7 @@ export function createMuseumStage(
       mount.add(creature);
       installed.add(id);
       canvas.dataset.loadedExhibits=[...installed].sort().join(",");
+      if(still){renderer.render(scene,camera);positionPlaques();}
       if(gltf.animations.length){
         const mixer=new THREE.AnimationMixer(creature);
         for(const clip of gltf.animations)mixer.clipAction(clip).play();
@@ -330,14 +373,14 @@ export function createMuseumStage(
     if(reduced)alignCamera();
   }
   function lighting(mode:LightMode){
-    const inspect=mode==="study";
-    lights.hemi.intensity=inspect?3.7:2.7;
-    lights.ambient.intensity=inspect?.72:.42;
-    lights.key.intensity=inspect?3.1:2.3;
-    lights.rear.intensity=inspect?1.45:1.25;
-    lights.studio.intensity=inspect?190:145;
-    lights.highlight.intensity=inspect?100:75;
-    renderer.toneMappingExposure=inspect?1.04:.95;
+    galleryLighting.setMode(mode,reduced||still);
+    if(debug.has("lightDebug")){
+      canvas.dataset.lightTarget=mode;
+      canvas.dataset.lightBlend=galleryLighting.blend().toFixed(3);
+    }
+    // Deterministic still-frame test mode must render after user toggles.
+    // Regular visitors continue through the normal animated render loop.
+    if(still){renderer.render(scene,camera);positionPlaques();}
   }
   function pick(clientX:number,clientY:number):number|null{
     const rect=canvas.getBoundingClientRect();
@@ -364,6 +407,10 @@ export function createMuseumStage(
     lights.studio.target.position.x=currentX;
     lights.highlight.position.x=currentX+2.6;
     lights.highlight.target.position.x=currentX;
+    galleryLighting.update(realDt);
+    if(debug.has("lightDebug")){
+      canvas.dataset.lightBlend=galleryLighting.blend().toFixed(3);
+    }
     if(!reduced){
       motionTime+=Math.min(dt,.06);
       mixers.forEach(mixer=>mixer.update(Math.min(dt,.06)));
@@ -426,6 +473,7 @@ export function createMuseumStage(
     geometry.forEach(x=>x.dispose());
     material.forEach(x=>x.dispose());
     spectrum.dispose();
+    hall.ownedTextures.forEach(texture=>texture.dispose());
     envMap?.dispose();pmrem?.dispose();
     renderer.dispose();renderer.forceContextLoss();
   }

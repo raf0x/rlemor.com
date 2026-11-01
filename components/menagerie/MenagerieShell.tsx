@@ -21,7 +21,7 @@ export default function MenagerieShell(){
   const [unsupported,setUnsupported]=useState(false);
   const [failure,setFailure]=useState("");
   const [active,setActive]=useState<number|null>(0);
-  const [lighting,setLighting]=useState<LightMode>("cinematic");
+  const [lighting,setLighting]=useState<LightMode>("study");
   const [motionReduced,setMotionReduced]=useState(false);
 
   useEffect(()=>{
@@ -189,8 +189,8 @@ export default function MenagerieShell(){
       behavior:motionReduced?"auto":"smooth",block:"center",
     });
   }
-  function changeLight(){
-    controlsRef.current?.lighting(lighting==="cinematic"?"study":"cinematic");
+  function changeLight(next:LightMode){
+    controlsRef.current?.lighting(next);
   }
   const picked=active===null?null:getExhibit(active);
   const title=picked?picked.name:"The gallery";
@@ -198,7 +198,8 @@ export default function MenagerieShell(){
   const stationText=picked?picked.number+" / "+String(EXHIBITS.length).padStart(2,"0"):"00 / 06";
 
   return(
-    <main className={styles.page} data-active={picked?.id??"entrance"}>
+    <main className={styles.page}
+      data-active={picked?.id??"entrance"} data-lighting={lighting}>
       <header className={styles.topbar}>
         <div className={styles.identity}>
           <span className={styles.monogram} aria-hidden="true">M<span>·</span></span>
@@ -301,10 +302,12 @@ export default function MenagerieShell(){
               aria-label={active===0?"Reset view":"Return to first exhibit"}>
               <span aria-hidden="true">↺</span> {active===0?"RESET VIEW":"FIRST EXHIBIT"}
             </button>
-            <button className={styles.quietButton} type="button" onClick={changeLight}
-              aria-pressed={lighting==="study"}>
-              <span aria-hidden="true">◐</span> {lighting==="cinematic"?"STUDY LIGHT":"CINEMATIC LIGHT"}
-            </button>
+            <div className={styles.lightSwitcher} role="group" aria-label="Museum lighting mode">
+              <button type="button" aria-pressed={lighting==="study"}
+                onClick={()=>changeLight("study")}>STUDY LIGHT</button>
+              <button type="button" aria-pressed={lighting==="cinematic"}
+                onClick={()=>changeLight("cinematic")}>CINEMATIC LIGHT</button>
+            </div>
             <div className={styles.travel} role="group" aria-label="Navigate exhibits">
               <button type="button" disabled={active===0}
                 aria-label="Previous exhibit" onClick={()=>controlsRef.current?.next(-1)}>

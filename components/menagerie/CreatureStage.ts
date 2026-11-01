@@ -6,6 +6,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { createExhibitSpectrum } from "./exhibitSpectrum";
+import { createBlackTileTexture,
+  createInspectionLighting } from "./galleryLighting";
 
 export type CreatureName="aether"|"medusa"|"atlas"|"frog";
 export type CreatureStage={
@@ -77,10 +79,23 @@ export function createCreatureStage(
  rim.rotation.x=Math.PI/2;
  const rim2=add(platform,new THREE.TorusGeometry(2.70,.025,9,140),bronze,0,.22,0);
  rim2.rotation.x=Math.PI/2;
- const floor=add(scene,new THREE.PlaneGeometry(160,160),new THREE.MeshStandardMaterial({
-  color:0xf3f6f4,metalness:.12,roughness:.72
- }),0,-.01,0);
+ const floorMaterial=new THREE.MeshStandardMaterial({
+  color:0xf3f6f4,metalness:.12,roughness:.72,
+ });
+ const floor=add(scene,new THREE.PlaneGeometry(160,160),floorMaterial,0,-.01,0);
  floor.rotation.x=-Math.PI/2;
+ const tileTexture=createBlackTileTexture(76,76);
+ // The original lacquered physical material reflected the large studio
+ // spotlights until the entire floor became GRAY. Use a carefully graded
+ // dark ceramic texture on real floor geometry instead, so the specimens
+ // receive the bright spots but the room stays genuinely black. Tiny grout
+ // and glaze strokes are already baked into the procedural tile map.
+ const darkTile=new THREE.MeshBasicMaterial({
+  map:tileTexture,color:0xe0e8f2,toneMapped:false,
+  transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide,
+ });
+ const tilePlane=add(scene,new THREE.PlaneGeometry(160,160),darkTile,0,-.005,0);
+ tilePlane.rotation.x=-Math.PI/2;
  // No physical backdrop or side walls. The former back wall obstructed
  // the creature after visitors orbited around it (reproduced in the
  // uploaded iPhone recording). Open 360-degree inspection is intentional.
@@ -92,6 +107,10 @@ export function createCreatureStage(
  const top=new THREE.SpotLight(0xd4ecff,58,20,.8,.7);
  top.position.set(0,8,2);top.target.position.set(0,2.7,0);scene.add(top,top.target);
  const hemi=new THREE.HemisphereLight(0xffffff,0xe0ecf2,2.0);scene.add(hemi);
+ const inspection=createInspectionLighting({
+  scene,renderer,floor:floorMaterial,pedestal:graphite,underplate:dark,
+  tiled:darkTile,warm,cool,top,hemi,
+ });
  let statue:THREE.Group|null=null;
  let mixer:THREE.AnimationMixer|null=null;
  let actions:THREE.AnimationAction[]=[];
@@ -99,6 +118,7 @@ export function createCreatureStage(
  let actionTime=0,elapsed=0;
  let raf=0,last=performance.now();
  const targetFrameMs=software?52:mobile?30:17;
+ const showLightDebug=new URLSearchParams(window.location.search).has("lightDebug");
  let disposed=false;
  const spectrum=createExhibitSpectrum();
 
@@ -141,7 +161,10 @@ export function createCreatureStage(
  function draw(now:number){
   if(disposed)return;
   if(now-last<targetFrameMs){raf=requestAnimationFrame(draw);return;}
-  const dt=Math.min(.055,Math.max(0,(now-last)/1000));last=now;
+  const realDt=Math.max(0,(now-last)/1000);
+  const dt=Math.min(.055,realDt);last=now;
+  inspection.update(realDt);
+  if(showLightDebug)canvas.dataset.lightBlend=inspection.blend().toFixed(3);
   if(playing){
     elapsed+=dt;mixer?.update(dt);
     spectrum.update(elapsed);
@@ -177,18 +200,17 @@ export function createCreatureStage(
   renderer.setSize(width,height,false);
  }
  function light(value:"cinematic"|"study"){
-  const inspect=value==="study";
-  warm.intensity=inspect?165:155;
-  cool.intensity=inspect?172:160;
-  top.intensity=inspect?175:77;
-  hemi.intensity=inspect?2.7:1.2;
-  (scene.background as THREE.Color).setHex(inspect?0xffffff:0xf9faf8);
+  inspection.setMode(value,reduced);
+  if(showLightDebug){
+    canvas.dataset.lightTarget=value;
+    canvas.dataset.lightBlend=inspection.blend().toFixed(3);
+  }
  }
  function reset(){
   controls.reset();
   camera.position.copy(originalPosition);
   controls.target.copy(originalTarget);controls.update();
-  light("cinematic");
+  light("study");
   playing=!reduced;actionTime=0;
  }
  function dispose(){
@@ -201,6 +223,7 @@ export function createCreatureStage(
     }
   });
   spectrum.dispose();
+  tileTexture.dispose();
   envTex.dispose();env.dispose();renderer.dispose();renderer.forceContextLoss();
  }
  return {resize,play(v){playing=v},light,action,reset,dispose};

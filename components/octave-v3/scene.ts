@@ -97,7 +97,6 @@ export function createOctaveStage(canvas: HTMLCanvasElement): Stage {
   const dark = new THREE.MeshStandardMaterial({
     color:0x070e1e, metalness:.48, roughness:.21,
   });
-  const dimIris = new THREE.MeshBasicMaterial({color:0x40536c,toneMapped:false});
   const irisRing = new THREE.MeshBasicMaterial({color:0x7c68ff,toneMapped:false});
   const energyCore = new THREE.MeshBasicMaterial({color:0x4adcf4,toneMapped:false});
   const glowLilac = new THREE.MeshBasicMaterial({color:0xc9a2ff,toneMapped:false});

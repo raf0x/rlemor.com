@@ -64,8 +64,9 @@ export default function OctaveV3(){
     const canvas=canvasRef.current,holder=stageRef.current;
     if(!canvas||!holder)return;
     const canvasNode = canvas;
-    let cleanup:(()=>void)|null=null;
-    {
+    let mounted=true,cleanup:(()=>void)|null=null;
+    void Promise.resolve().then(()=>{
+      if(!mounted)return;
       let stage:Stage;
       try{stage=createOctaveStage(canvas);}catch(err){
         console.error("OCTAVE V3 failed to initialize WebGL",err);
@@ -312,8 +313,11 @@ export default function OctaveV3(){
         canvasNode.removeEventListener("webglcontextlost",onContextLost);
         controller.current=null;stage.dispose();
       };
-    }
-    return()=>{cleanup?.();};
+    }).catch(error=>{
+      console.error("OCTAVE V3 stage initialization failed",error);
+      if(mounted){setUnsupported(true);setStatus("STAGE INITIALIZATION FAILED");}
+    });
+    return()=>{mounted=false;cleanup?.();};
   },[]);
 
   function actionMode(mode:MachineMode){controller.current?.mode(mode);}

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   ARM_COUNT, LINKS_PER_ARM, PANEL_COUNT, TOTAL_LINKS, TOUR_CUES, TOUR_DURATION,
   cueAt, modeInput, poseAt, tourAt, type CameraPreset,
-  type MachineFrame, type MachineMode, type MechanismInput, type Vec3,
+  type MachineMode, type MechanismInput, type Vec3,
 } from "./kinematics";
 import type { Stage } from "./scene";
 import * as THREE from "three";
@@ -173,7 +173,7 @@ export default function OctaveV3(){
         Object.assign(manual,modeInput("operate",0));
         Object.assign(destination,modeInput("operate",0));
       }
-      let ro=new ResizeObserver(()=>{
+      const ro=new ResizeObserver(()=>{
         const {width,height}=holder.getBoundingClientRect();
         if(width>0&&height>0)stage.resize(width,height);
       });
@@ -254,11 +254,10 @@ export default function OctaveV3(){
         cancelAnimationFrame(raf);
       };
       canvas.addEventListener("webglcontextlost",onContextLost);
-      let lastInput:MachineFrame|null=null;
       function draw(now:number){
         const dt=Math.max(.001,Math.min(.7,(now-lastDraw)/1000));
         // A frame cap avoids wasting resources on software WebGL.
-        const minFrame=/SOFTWARE/i.test(rendererInfo)||/swiftshader|llvmpipe/i.test(stage.rendererName)?42:18;
+        const minFrame=/swiftshader|llvmpipe|software/i.test(stage.rendererName)?42:18;
         if(now-lastDraw<minFrame){raf=requestAnimationFrame(draw);return;}
         lastDraw=now;
         if(clock.playing)clock.time=(clock.time+dt*clock.speed)%TOUR_DURATION;
@@ -283,7 +282,6 @@ export default function OctaveV3(){
           manualPanelOffsets:offsets.panels,
           manualEyeOffset:offsets.eye,
         });
-        lastInput=frame;
         stage.render(frame,now*.001,clock.playing&&clock.mode==="tour",selected?{
           kind:selected.kind,index:selected.index,label:selected.label,
           point:new THREE.Vector3(selected.point.x,selected.point.y,selected.point.z),

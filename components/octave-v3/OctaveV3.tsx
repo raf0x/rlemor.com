@@ -87,6 +87,7 @@ export default function OctaveV3(){
       const velocity={arm:newOffsets(ARM_COUNT),panels:newOffsets(PANEL_COUNT),eye:[0,0,0] as [number,number,number]};
       const goals={arm:newOffsets(ARM_COUNT),panels:newOffsets(PANEL_COUNT),eye:[0,0,0] as [number,number,number]};
       let currentArm=2,selected:Selected|null=null;
+      let dockingLabel:string|null=null;
       let lastDraw=performance.now(),lastUi=0,lastPick=0,raf=0;
       let dragging:{id:number;fromX:number;fromY:number;selected:Selected;origin:[number,number,number]}|null=null;
       const userActivity=()=>{clock.lastUser=performance.now();};
@@ -171,7 +172,8 @@ export default function OctaveV3(){
           goals.arm.forEach(x=>x.fill(0));goals.panels.forEach(x=>x.fill(0));
           goals.eye.fill(0);stage.setCamera("hero");
           currentArm=2;setSelectedArm(2);
-          selected=null;setManualMode("operate");setStatus("ALL SUBSYSTEMS DOCKED");
+          selected=null;dockingLabel=null;
+          setManualMode("operate");setStatus("ALL SUBSYSTEMS DOCKED");
           setView("hero");
         },
         speed(v){clock.speed=v;setPlaySpeed(v);userActivity();},
@@ -206,6 +208,7 @@ export default function OctaveV3(){
         }
         const pick=stage.pick(event.clientX,event.clientY,event.pointerType==="touch");
         stopTour();
+        dockingLabel=null;
         if(!pick){selected=null;return;}
         selected={
           kind:pick.kind,index:pick.index,label:pick.label,
@@ -227,11 +230,22 @@ export default function OctaveV3(){
         const target=part.kind==="arm"?goals.arm[part.index]:
           part.kind==="panel"?goals.panels[part.index]:goals.eye;
         target.fill(0);
+        if(reduced){
+          const position=part.kind==="arm"?offsets.arm[part.index]:
+            part.kind==="panel"?offsets.panels[part.index]:offsets.eye;
+          const speed=part.kind==="arm"?velocity.arm[part.index]:
+            part.kind==="panel"?velocity.panels[part.index]:velocity.eye;
+          position.fill(0);speed.fill(0);
+          selected=null;
+          setStatus("DOCKED / "+part.label);
+        }else{
+          dockingLabel=part.label;
+          setStatus("MAGNETIC RETURN / "+part.label);
+        }
         const id=dragging.id;
         dragging=null;stage.controls.enabled=true;
         if(canvasNode.hasPointerCapture(id))canvasNode.releasePointerCapture(id);
         canvasNode.style.cursor="grab";
-        setStatus("MAGNETIC RETURN / "+part.label);
       }
       function onMove(event:PointerEvent){
         if(!dragging){
@@ -276,7 +290,7 @@ export default function OctaveV3(){
           startTour();
         }
         if(clock.mode==="manual"){
-          const alpha=1-Math.exp(-dt*2.5);
+          const alpha=reduced?1:1-Math.exp(-dt*2.5);
           for(const prop of ["energy","extension","teardown","cutaway","isolationWeight"] as const){
             manual[prop]+=((destination[prop] as number)-(manual[prop] as number))*alpha;
           }
@@ -285,6 +299,17 @@ export default function OctaveV3(){
         for(let i=0;i<ARM_COUNT;i++)analyticSpring(offsets.arm[i],velocity.arm[i],goals.arm[i],dt);
         for(let i=0;i<PANEL_COUNT;i++)analyticSpring(offsets.panels[i],velocity.panels[i],goals.panels[i],dt);
         analyticSpring(offsets.eye,velocity.eye,goals.eye,dt);
+        if(dockingLabel&&!dragging){
+          const values=[...offsets.arm,...offsets.panels,offsets.eye];
+          const speeds=[...velocity.arm,...velocity.panels,velocity.eye];
+          const settled=values.every((v,i)=>
+            Math.hypot(...v)<.004&&Math.hypot(...speeds[i])<.012);
+          if(settled){
+            setStatus("DOCKED / "+dockingLabel);
+            dockingLabel=null;
+            selected=null;
+          }
+        }
         const input=inputForFrame();
         const frame=poseAt({
           ...input,

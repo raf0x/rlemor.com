@@ -7,7 +7,7 @@ import {
   cueAt, modeInput, poseAt, tourAt, type CameraPreset,
   type MachineMode, type MechanismInput, type Vec3,
 } from "./kinematics";
-import type { Stage } from "./scene";
+import { createOctaveStage, type Stage } from "./scene";
 import * as THREE from "three";
 import styles from "./OctaveV3.module.css";
 
@@ -64,9 +64,8 @@ export default function OctaveV3(){
     const canvas=canvasRef.current,holder=stageRef.current;
     if(!canvas||!holder)return;
     const canvasNode = canvas;
-    let mounted=true,cleanup:(()=>void)|null=null;
-    void import("./scene").then(({createOctaveStage})=>{
-      if(!mounted)return;
+    let cleanup:(()=>void)|null=null;
+    {
       let stage:Stage;
       try{stage=createOctaveStage(canvas);}catch(err){
         console.error("OCTAVE V3 failed to initialize WebGL",err);
@@ -313,11 +312,8 @@ export default function OctaveV3(){
         canvasNode.removeEventListener("webglcontextlost",onContextLost);
         controller.current=null;stage.dispose();
       };
-    }).catch((error)=>{
-      console.error("Failed to load OCTAVE V3 stage",error);
-      if(mounted){setUnsupported(true);setStatus("STAGE INITIALIZATION FAILED");}
-    });
-    return()=>{mounted=false;cleanup?.();};
+    }
+    return()=>{cleanup?.();};
   },[]);
 
   function actionMode(mode:MachineMode){controller.current?.mode(mode);}

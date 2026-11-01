@@ -18,12 +18,15 @@ export function createChassisMiniature():{
   const graphite=new THREE.MeshStandardMaterial({
     color:0x233540,metalness:.85,roughness:.25
   });
-  const orange=new THREE.MeshStandardMaterial({
-    color:0xff653b,emissive:0xf44317,emissiveIntensity:3.5,
-    metalness:.23,roughness:.20
-  });
   const bronze=new THREE.MeshStandardMaterial({
     color:0xb99561,metalness:.87,roughness:.22
+  });
+  // A deliberately vivid rainbow of genuine suction details and optics.
+  // Keep the original mechanically articulated locator geometry intact.
+  const colors=Array.from({length:16},(_,i)=>{
+    const mat=new THREE.MeshBasicMaterial({toneMapped:false,color:0xffffff});
+    mat.color.setHSL(i/16,1,.53);
+    return mat;
   });
   const joints:THREE.Group[]=[];
   const add=(geo:THREE.BufferGeometry,material:THREE.Material,pos:[number,number,number],parent:THREE.Object3D=group)=>{
@@ -35,8 +38,8 @@ export function createChassisMiniature():{
   add(new THREE.SphereGeometry(.68,36,26),white,[0,1.74,0]).scale.set(1,1.28,.95);
   add(new THREE.SphereGeometry(.34,26,18),graphite,[0,1.12,0]);
   add(new THREE.TorusGeometry(.25,.053,12,46),bronze,[0,1.66,.62]);
-  add(new THREE.SphereGeometry(.235,26,18),orange,[0,1.66,.72]);
-  add(new THREE.SphereGeometry(.105,16,12),white,[0,1.69,.92]);
+  add(new THREE.SphereGeometry(.235,26,18),colors[2],[0,1.66,.72]);
+  add(new THREE.SphereGeometry(.105,16,12),graphite,[0,1.69,.92]);
   for(let arm=0;arm<8;arm++){
     const theta=(arm+.35)*Math.PI/4;
     const root=new THREE.Group();
@@ -59,7 +62,7 @@ export function createChassisMiniature():{
     root.add(tube);
     for(let j=1;j<=11;j++){
       const pos=curve.getPoint(j/12);
-      const eye=add(new THREE.SphereGeometry(.046,10,8),j%3===0?orange:bronze,
+      const eye=add(new THREE.SphereGeometry(.046,10,8),colors[(arm*7+j*3)%colors.length],
         [pos.x,pos.y-.055,pos.z],root);
       eye.scale.set(1,.6,1);
     }
@@ -68,6 +71,11 @@ export function createChassisMiniature():{
     group,
     update:(t:number)=>{
       group.rotation.y=Math.sin(t*.25)*.075;
+      colors.forEach((mat,i)=>{
+        const hue=(i/16+t*.32+.013*Math.sin(t+i))%1;
+        const pulse=.75+.25*Math.sin(t*4+i*1.4);
+        mat.color.setHSL(hue,1,.46+.13*pulse);
+      });
       for(let i=0;i<joints.length;i++){
         const arm=joints[i];
         arm.rotation.z=.047*Math.sin(t*1.04+i*.69);

@@ -19,7 +19,7 @@ export default function MenagerieShell(){
   const [ready,setReady]=useState(false);
   const [unsupported,setUnsupported]=useState(false);
   const [failure,setFailure]=useState("");
-  const [active,setActive]=useState<number|null>(null);
+  const [active,setActive]=useState<number|null>(0);
   const [lighting,setLighting]=useState<LightMode>("cinematic");
   const [motionReduced,setMotionReduced]=useState(false);
 
@@ -30,13 +30,17 @@ export default function MenagerieShell(){
     let mounted=true;
     let stage:MuseumStage|null=null;
     let observer:ResizeObserver|null=null;
-    let finger:{id:number;x:number;y:number}|null=null;
-    let current:number|null=null;
+    let finger:{
+      id:number;startX:number;startY:number;lastX:number;dragging:boolean;
+    }|null=null;
+    let current:number|null=0;
+    let wheelTimer:number|null=null;
 
     const focus=(index:number|null)=>{
-      current=index;
-      setActive(index);
-      stage?.focus(index);
+      const desired=index??0;
+      current=desired;
+      setActive(desired);
+      stage?.focus(desired);
     };
     controlsRef.current={
       focus,
@@ -44,19 +48,61 @@ export default function MenagerieShell(){
       lighting:(mode)=>{stage?.lighting(mode);setLighting(mode);},
     };
 
+    // Horizontal touch/mouse movement controls the single camera rail.
+    // Browser-native vertical scrolling is preserved (touch-action: pan-y).
     const onDown=(event:PointerEvent)=>{
       if(event.pointerType==="mouse"&&event.button!==0)return;
-      finger={id:event.pointerId,x:event.clientX,y:event.clientY};
+      finger={id:event.pointerId,startX:event.clientX,
+        startY:event.clientY,lastX:event.clientX,dragging:false};
+    };
+    const onMove=(event:PointerEvent)=>{
+      if(!finger||event.pointerId!==finger.id)return;
+      const distanceX=event.clientX-finger.startX;
+      const distanceY=event.clientY-finger.startY;
+      if(!finger.dragging){
+        if(Math.abs(distanceY)>Math.abs(distanceX)*1.25)return;
+        if(Math.abs(distanceX)<8)return;
+        finger.dragging=true;
+        cn.setPointerCapture?.(event.pointerId);
+      }
+      const dx=event.clientX-finger.lastX;
+      finger.lastX=event.clientX;
+      // A ~140px gesture on a phone changes stations; desktop is gentler.
+      const unitsPerPixel=10/Math.max(180,Math.min(340,cn.clientWidth*.45));
+      stage?.pan(-dx*unitsPerPixel);
+      if(event.cancelable)event.preventDefault();
     };
     const onUp=(event:PointerEvent)=>{
       if(!finger||event.pointerId!==finger.id)return;
-      const moved=Math.hypot(event.clientX-finger.x,event.clientY-finger.y);
+      const wasDragging=finger.dragging;
       finger=null;
-      if(moved>9)return;
-      const hit=stage?.pick(event.clientX,event.clientY);
-      if(hit!==null&&hit!==undefined)focus(hit);
+      if(wasDragging){
+        stage?.settle();
+        if(cn.hasPointerCapture?.(event.pointerId)){
+          cn.releasePointerCapture(event.pointerId);
+        }
+      }else{
+        const hit=stage?.pick(event.clientX,event.clientY);
+        if(hit!==null&&hit!==undefined)focus(hit);
+      }
     };
-    const onCancel=()=>{finger=null;};
+    const onCancel=()=>{
+      if(finger?.dragging)stage?.settle();
+      finger=null;
+    };
+    const onWheel=(event:WheelEvent)=>{
+      const delta=Math.abs(event.deltaX)>Math.abs(event.deltaY)
+        ?event.deltaX:event.deltaY;
+      if(!delta||!stage)return;
+      const index=stage.getCurrentIndex();
+      if((index===0&&delta<0)||(index===EXHIBITS.length-1&&delta>0)){
+        return; // Let the HTML page continue scrolling at gallery edges.
+      }
+      if(event.cancelable)event.preventDefault();
+      stage.pan(Math.max(-180,Math.min(180,delta))*.056);
+      if(wheelTimer!==null)window.clearTimeout(wheelTimer);
+      wheelTimer=window.setTimeout(()=>{stage?.settle();wheelTimer=null;},150);
+    };
     const onKey=(event:KeyboardEvent)=>{
       if(event.metaKey||event.ctrlKey||event.altKey)return;
       const target=event.target as HTMLElement|null;
@@ -72,8 +118,10 @@ export default function MenagerieShell(){
       }
     };
     cn.addEventListener("pointerdown",onDown);
+    cn.addEventListener("pointermove",onMove);
     cn.addEventListener("pointerup",onUp);
     cn.addEventListener("pointercancel",onCancel);
+    cn.addEventListener("wheel",onWheel,{passive:false});
     window.addEventListener("keydown",onKey);
 
     // Static HTML is useful without a GPU. Initialize once after React mounts.
@@ -84,6 +132,7 @@ export default function MenagerieShell(){
         stage=createMuseumStage(cn,{
           onReady(){if(mounted)setReady(true);},
           onFailure(reason){if(mounted){setUnsupported(true);setFailure(reason);}},
+          onSelect(index){if(mounted){current=index;setActive(index);}},
         });
         const bounds=holder.getBoundingClientRect();
         stage.resize(bounds.width,bounds.height);
@@ -105,8 +154,11 @@ export default function MenagerieShell(){
       mounted=false;
       observer?.disconnect();
       cn.removeEventListener("pointerdown",onDown);
+      cn.removeEventListener("pointermove",onMove);
       cn.removeEventListener("pointerup",onUp);
       cn.removeEventListener("pointercancel",onCancel);
+      cn.removeEventListener("wheel",onWheel);
+      if(wheelTimer!==null)window.clearTimeout(wheelTimer);
       window.removeEventListener("keydown",onKey);
       controlsRef.current=null;
       stage?.dispose();
@@ -141,30 +193,30 @@ export default function MenagerieShell(){
           </div>
         </div>
         <div className={styles.topRight}>
-          <span className={styles.internal}>ARCHITECTURE STUDY / 00</span>
+          <span className={styles.internal}>WHITE GALLERY / V4</span>
           <Link className={styles.exit} href="/">EXIT TO RLEMOR.COM <span aria-hidden="true">↗</span></Link>
         </div>
       </header>
 
       <section className={styles.intro} aria-labelledby="museum-title">
         <div>
-          <p className={styles.eyebrow}><span className={styles.smallSquare} aria-hidden="true"/> THE FIRST GALLERY <span className={styles.separator}>/</span> AN UNLISTED PREVIEW</p>
+          <p className={styles.eyebrow}><span className={styles.smallSquare} aria-hidden="true"/> THE WHITE GALLERY <span className={styles.separator}>/</span> AN UNLISTED PREVIEW</p>
           <h1 id="museum-title">A place for <em>impossible life.</em></h1>
           <p className={styles.description}>
             Six original mechanical organisms, each with its own motion and personality.
-            Explore the hall, then step inside an exhibit to interact.
+            Swipe or scroll horizontally to move between them, then enter an exhibit to interact.
           </p>
         </div>
         <div className={styles.introSide}>
           <span>THE COLLECTION</span>
           <strong>06 <small>LIVING EXHIBITS</small></strong>
-          <p>Two Octaves. Four original new creatures.</p>
+          <p>Two Octaves. Four original moving sculptures.</p>
         </div>
       </section>
 
       <section className={styles.viewer} aria-label="Interactive museum gallery and navigation">
         <div className={styles.viewerTop}>
-          <span>FIG. 00 / THE ARRIVAL HALL</span>
+          <span>HORIZONTAL EXHIBITION / SIX SPECIMENS</span>
           <span className={styles.signal}><span aria-hidden="true"/> {ready?"GALLERY ONLINE":unsupported?"3D UNAVAILABLE":"PREPARING GALLERY"}</span>
         </div>
         <div className={styles.stage} ref={stageHolder}>
@@ -173,13 +225,13 @@ export default function MenagerieShell(){
             className={styles.canvas}
             role="img"
             tabIndex={0}
-            aria-label="Interactive 3D museum hall with six empty exhibit plinths. Swipe or drag to look around, pinch or scroll to zoom. Tap a display to visit it. Use the station buttons below as an accessible alternative."
+            aria-label="Interactive 3D museum. All six animated creatures appear in one horizontal row on a white wall. Swipe left or right or scroll to move between exhibits; tap a creature or use the buttons below to select it."
           />
           <div className={styles.stageTopLeft} aria-hidden="true">
             <span>THE SYNTHETIC MENAGERIE</span>
-            <span>{picked?picked.wing:"CENTRAL ATRIUM"}</span>
+            <span>{picked?picked.wing:"HORIZONTAL GALLERY"}</span>
           </div>
-          <span className={styles.coordinates} aria-hidden="true">3D / EXHIBITION ARCHITECTURE</span>
+          <span className={styles.coordinates} aria-hidden="true">ONE CONTINUOUS GALLERY / 3D</span>
 
           {!ready&&!unsupported&&
             <div className={styles.loading} role="status">
@@ -199,8 +251,8 @@ export default function MenagerieShell(){
           </noscript>
 
           <div className={styles.sceneFooter} aria-hidden="true">
-            <span>DRAG TO LOOK <i>/</i> SCROLL TO ZOOM <i>/</i> TAP A PLINTH</span>
-            <span>{motionReduced?"STILL ARCHITECTURE":"LIVE ARCHITECTURE"}</span>
+            <span>SWIPE LEFT OR RIGHT <i>/</i> SCROLL TO MOVE <i>/</i> TAP A SPECIMEN</span>
+            <span>{motionReduced?"STILL / ACCESSIBLE":"LIVE COLOR / MOTION"}</span>
           </div>
         </div>
         <div className={styles.controls}>
@@ -218,20 +270,22 @@ export default function MenagerieShell(){
             </Link>}
           <div className={styles.controlActions}>
             <button className={styles.quietButton} type="button" onClick={()=>choose(null)}
-              aria-label={active===null?"Reset view":"Return to museum entrance"}>
-              <span aria-hidden="true">↺</span> {active===null?"RESET VIEW":"ENTRANCE"}
+              aria-label={active===0?"Reset view":"Return to first exhibit"}>
+              <span aria-hidden="true">↺</span> {active===0?"RESET VIEW":"FIRST EXHIBIT"}
             </button>
             <button className={styles.quietButton} type="button" onClick={changeLight}
               aria-pressed={lighting==="study"}>
               <span aria-hidden="true">◐</span> {lighting==="cinematic"?"STUDY LIGHT":"CINEMATIC LIGHT"}
             </button>
             <div className={styles.travel} role="group" aria-label="Navigate exhibits">
-              <button type="button" aria-label="Previous exhibit" onClick={()=>controlsRef.current?.next(-1)}>
+              <button type="button" disabled={active===0}
+                aria-label="Previous exhibit" onClick={()=>controlsRef.current?.next(-1)}>
                 <span aria-hidden="true">←</span>
               </button>
-              <button type="button" className={styles.next} onClick={()=>
-                active===null?choose(0):controlsRef.current?.next(1)}>
-                {active===null?"ENTER THE GALLERY":"NEXT EXHIBIT"}
+              <button type="button" className={styles.next}
+                disabled={active===EXHIBITS.length-1} onClick={()=>
+                controlsRef.current?.next(1)}>
+                NEXT EXHIBIT
                 <span aria-hidden="true">→</span>
               </button>
             </div>
@@ -272,7 +326,7 @@ export default function MenagerieShell(){
       </section>
 
       <footer className={styles.footer}>
-        <span>THE SYNTHETIC MENAGERIE <i>/</i> ARCHITECTURE STUDY 00</span>
+        <span>THE SYNTHETIC MENAGERIE <i>/</i> WHITE GALLERY V4</span>
         <span>AN UNLISTED PREVIEW. PRODUCTION REMAINS UNCHANGED.</span>
         <Link href="/">RAFAEL LEMOR ↗</Link>
       </footer>

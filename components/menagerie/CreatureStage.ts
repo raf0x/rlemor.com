@@ -5,6 +5,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { createExhibitSpectrum } from "./exhibitSpectrum";
 
 export type CreatureName="aether"|"medusa"|"atlas"|"frog";
 export type CreatureStage={
@@ -34,10 +35,9 @@ export function createCreatureStage(
  renderer.setPixelRatio(software?.8:Math.min(window.devicePixelRatio||1,mobile?1.25:1.6));
  renderer.outputColorSpace=THREE.SRGBColorSpace;
  renderer.toneMapping=THREE.ACESFilmicToneMapping;
- renderer.toneMappingExposure=.91;
+ renderer.toneMappingExposure=.98;
  const scene=new THREE.Scene();
- scene.background=new THREE.Color(0x0a121a);
- scene.fog=new THREE.FogExp2(0x0b1620,.024);
+ scene.background=new THREE.Color(0xf9faf8);
  const camera=new THREE.PerspectiveCamera(mobile?44:38,1,.1,80);
  // The manta is a broad, horizontal wing. It was almost edge-on in the
  // original generic 3D viewer, so the creature read as a small silver line.
@@ -64,9 +64,9 @@ export function createCreatureStage(
  const envTex=env.fromScene(room,.04);
  scene.environment=envTex.texture;room.dispose();
 
- const graphite=new THREE.MeshStandardMaterial({color:0x162430,metalness:.75,roughness:.29});
- const dark=new THREE.MeshStandardMaterial({color:0x0c1824,metalness:.60,roughness:.34});
- const bronze=new THREE.MeshStandardMaterial({color:0xa16b3a,metalness:.83,roughness:.24});
+ const graphite=new THREE.MeshStandardMaterial({color:0xdbe4e4,metalness:.21,roughness:.42});
+ const dark=new THREE.MeshStandardMaterial({color:0xf8fafa,metalness:.13,roughness:.36});
+ const bronze=new THREE.MeshStandardMaterial({color:0xb49475,metalness:.78,roughness:.34});
  const cyan=new THREE.MeshBasicMaterial({color:0x63dff7,toneMapped:false});
  const platform=new THREE.Group();scene.add(platform);
  add(platform,new THREE.CylinderGeometry(2.65,2.75,.29,100),graphite,0,.24,0);
@@ -76,7 +76,7 @@ export function createCreatureStage(
  const rim2=add(platform,new THREE.TorusGeometry(2.70,.025,9,140),bronze,0,.22,0);
  rim2.rotation.x=Math.PI/2;
  const floor=add(scene,new THREE.PlaneGeometry(40,40),new THREE.MeshStandardMaterial({
-  color:0x0a1119,metalness:.28,roughness:.4
+  color:0xf3f6f4,metalness:.12,roughness:.72
  }),0,-.01,0);
  floor.rotation.x=-Math.PI/2;
  add(scene,new THREE.BoxGeometry(26,12,.3),dark,0,4,-8.5);
@@ -90,7 +90,7 @@ export function createCreatureStage(
  cool.position.set(5.0,6.3,5.5);cool.target.position.set(0,2.2,0);scene.add(cool,cool.target);
  const top=new THREE.SpotLight(0xd4ecff,58,20,.8,.7);
  top.position.set(0,8,2);top.target.position.set(0,2.7,0);scene.add(top,top.target);
- const hemi=new THREE.HemisphereLight(0xc6dfff,0x17232b,.93);scene.add(hemi);
+ const hemi=new THREE.HemisphereLight(0xffffff,0xe0ecf2,2.0);scene.add(hemi);
  let statue:THREE.Group|null=null;
  let mixer:THREE.AnimationMixer|null=null;
  let actions:THREE.AnimationAction[]=[];
@@ -99,6 +99,7 @@ export function createCreatureStage(
  let raf=0,last=performance.now();
  const targetFrameMs=software?52:mobile?30:17;
  let disposed=false;
+ const spectrum=createExhibitSpectrum();
 
  const loader=new GLTFLoader();
  loader.setMeshoptDecoder(MeshoptDecoder);
@@ -121,42 +122,9 @@ export function createCreatureStage(
   statue.userData.restY=statue.position.y;
   statue.userData.restScale=fit;
   scene.add(statue);
-  statue.traverse(object=>{
-    if(object instanceof THREE.Mesh){
-      const materials=Array.isArray(object.material)?object.material:[object.material];
-      const replacement=materials.map(material=>{
-        if(material.name.startsWith("ENERGY | Electric blue")){
-          return new THREE.MeshBasicMaterial({name:material.name,color:id==="frog"?0x21fa9b:0x19b7f8,
-            toneMapped:false,side:THREE.DoubleSide});
-        }
-        if(material.name.startsWith("LIGHT | Silver cyan")){
-          return new THREE.MeshBasicMaterial({name:material.name,color:0x68d6f2,toneMapped:false,
-            side:THREE.DoubleSide});
-        }
-        if(material.name.startsWith("ENERGY | Amber")){
-          return new THREE.MeshBasicMaterial({name:material.name,color:0xff993c,toneMapped:false});
-        }
-        if(material.name.startsWith("LUMINOUS | Violet")){
-          return new THREE.MeshBasicMaterial({name:material.name,color:0xa044ed,toneMapped:false});
-        }
-        if(material.name.startsWith("LUMINOUS | Jade")){
-          return new THREE.MeshBasicMaterial({name:material.name,color:0x20df8d,toneMapped:false});
-        }
-        if(material.name.startsWith("GLASS | Deep smoke")){
-          return new THREE.MeshPhysicalMaterial({name:material.name,color:0x183947,
-            metalness:.12,roughness:.18,clearcoat:.9,
-            transparent:true,opacity:id==="medusa"?.38:.65,depthWrite:false,
-            side:THREE.DoubleSide});
-        }
-        if(material instanceof THREE.MeshStandardMaterial){
-          material.envMapIntensity=material.metalness>.5?.39:.28;
-          material.needsUpdate=true;
-        }
-        return material;
-      });
-      object.material=Array.isArray(object.material)?replacement:replacement[0];
-    }
-  });
+  // Vivid independently changing material channels on actual eye, wing,
+  // filament and joint geometry. The underlying animation remains intact.
+  spectrum.attach(statue,id);
   mixer=new THREE.AnimationMixer(statue);
   actions=gltf.animations.map(clip=>{
     const a=mixer!.clipAction(clip);
@@ -173,7 +141,10 @@ export function createCreatureStage(
   if(disposed)return;
   if(now-last<targetFrameMs){raf=requestAnimationFrame(draw);return;}
   const dt=Math.min(.055,Math.max(0,(now-last)/1000));last=now;
-  if(playing){elapsed+=dt;mixer?.update(dt);}
+  if(playing){
+    elapsed+=dt;mixer?.update(dt);
+    spectrum.update(elapsed);
+  }
   if(actionTime>0&&statue){
     actionTime=Math.max(0,actionTime-dt);
     const weight=Math.pow(Math.sin((3.8-actionTime)/3.8*Math.PI),2);
@@ -210,7 +181,7 @@ export function createCreatureStage(
   cool.intensity=inspect?172:160;
   top.intensity=inspect?175:77;
   hemi.intensity=inspect?2.7:1.2;
-  (scene.background as THREE.Color).setHex(inspect?0x16232e:0x0a121a);
+  (scene.background as THREE.Color).setHex(inspect?0xffffff:0xf9faf8);
  }
  function reset(){
   controls.reset();
@@ -228,6 +199,7 @@ export function createCreatureStage(
       for(const m of Array.isArray(obj.material)?obj.material:[obj.material])m.dispose();
     }
   });
+  spectrum.dispose();
   envTex.dispose();env.dispose();renderer.dispose();renderer.forceContextLoss();
  }
  return {resize,play(v){playing=v},light,action,reset,dispose};

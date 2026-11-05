@@ -82,7 +82,7 @@ export default function WorkPage() {
               </p>
               <p>
                 That meant CRM records, allocations and fulfillment, reporting,
-                partner training, escalations, and closeout. Clear communication
+                partner training and workshops, escalations, and closeout. Clear communication
                 and attention to each partner’s needs mattered at every stage.
               </p>
               <figure className={styles.matchdayFigure}>
@@ -95,8 +95,7 @@ export default function WorkPage() {
                   sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 760px) calc(100vw - 64px), (max-width: 1000px) calc(66vw - 66px), (max-width: 1244px) calc(66vw - 88.44px), 733px"
                 />
                 <figcaption>
-                  FIFA World Cup 2026. A matchday view I photographed while working
-                  in tournament ticketing operations.
+                  FIFA World Cup 2026 - 3rd place match between France vs. England.
                 </figcaption>
               </figure>
               <div className={styles.fifaPhotoPair}>
@@ -146,11 +145,6 @@ export default function WorkPage() {
                   </dd>
                 </div>
               </dl>
-              <p className={styles.relationship}>
-                Personally managed at <strong className={styles.fifa}>FIFA</strong>:{" "}
-                <strong>Coca-Cola</strong> and <strong>Bank of America</strong>{" "}
-                commercial-partner accounts.
-              </p>
             </article>
 
             <article
@@ -171,8 +165,8 @@ export default function WorkPage() {
             <div className={styles.context}>
               <h3>Team &amp; venue implementations</h3>
               <p>
-                At <strong>CHEQ</strong>, a mobile-commerce platform,
-                implementation contexts included <strong>Inter Miami</strong>,
+                At <strong>CHEQ</strong>, I worked on venue and event operations
+                platform implementations for <strong>Inter Miami CF</strong>,
                 the <strong>Miami Marlins</strong>, and{" "}
                 <strong>Hard Rock Stadium</strong>.{" "}
                 <a href="#cheq">
@@ -220,8 +214,17 @@ export default function WorkPage() {
               <h3 id="cheq-heading">Connecting software with its customers.</h3>
               <p className={styles.storyLead}>
                 My customer success work at <strong>CHEQ</strong> centered on
-                implementations for a mobile-commerce platform, including the{" "}
-                <a href="#sports-events">team and venue contexts above</a>.
+                helping sports teams and major venues implement its venue and
+                event operations platform, including <strong>Inter Miami CF</strong>,
+                the <strong>Miami Marlins</strong>, and{" "}
+                <strong>Hard Rock Stadium</strong>.{" "}
+                <a
+                  href="https://www.cantaloupe.com/products/software/cheq/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Explore the CHEQ platform <span aria-hidden="true">↗</span>
+                </a>
               </p>
             </article>
           </div>
@@ -247,7 +250,8 @@ export default function WorkPage() {
                 At <strong>Inktel</strong>, I led supervisors and service
                 delivery for the <strong>Williams-Sonoma</strong> account,
                 scaling the team to{" "}
-                <strong>400+ agents in four months</strong>.
+                <strong>400+ agents in four months</strong>, providing customer
+                service for Williams-Sonoma, Pottery Barn, and Pottery Barn Kids.
               </p>
             </article>
             <article

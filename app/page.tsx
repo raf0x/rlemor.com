@@ -5,6 +5,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import HomepageMotion from "@/components/HomepageMotion";
 import LighthouseLivePreview from "@/components/LighthouseLivePreview";
+import MyPepMotionArtwork from "@/components/MyPepMotionArtwork";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -252,15 +253,9 @@ export default function Home() {
                   href="/projects/mypepprotocol"
                   aria-label="Explore MyPepProtocol case study"
                 >
-                  <Image
-                    src="/projects/mypepprotocol/MyPepProtocol%20Dark%20Mode%20Dashboard.png"
-                    alt="MyPepProtocol dashboard presented in an editorial laptop mockup, showing health trends, daily focus, and active protocols."
-                    width={1682}
-                    height={935}
-                    sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 54vw, 630px"
-                  />
+                  <MyPepMotionArtwork variant="home" />
                 </Link>
-                <figcaption>MyPepProtocol dashboard, presented in an editorial laptop mockup.</figcaption>
+                <figcaption>Animated MyPepProtocol promotional concept, with illustrative data.</figcaption>
               </figure>
             </article>
             <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>

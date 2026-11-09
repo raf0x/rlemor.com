@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ScreenshotViewer from "@/components/ScreenshotViewer";
+import MyPepMotionArtwork from "@/components/MyPepMotionArtwork";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./case-study.module.css";
@@ -81,16 +82,8 @@ export default function MyPepProtocolCaseStudy() {
           </header>
 
           <div className={styles.overviewFigure}>
-  <ScreenshotViewer
-    title="MyPepProtocol"
-    src="/projects/mypepprotocol/mypepprotocol_dashboard_workspace.png"
-    alt="MyPepProtocol shown in a warm workspace laptop view, highlighting health trends, active protocols, and the daily check-in experience."
-    width={1400}
-    height={1050}
-    sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 784px) calc(100vw - 64px), 720px"
-    caption="MyPepProtocol in context, highlighting the Today view and daily check-in experience."
-  />
-</div>
+            <MyPepMotionArtwork />
+          </div>
 
           <section className={styles.section}>
             <p className={styles.sectionLabel}>Product rules</p>

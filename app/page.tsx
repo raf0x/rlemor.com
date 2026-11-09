@@ -4,6 +4,7 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import HomepageMotion from "@/components/HomepageMotion";
+import LighthouseLivePreview from "@/components/LighthouseLivePreview";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -190,15 +191,13 @@ export default function Home() {
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item data-gsap-lighthouse>
             <div className={styles.lighthouseStage} data-gsap-lighthouse-stage>
-              <Link className={`${styles.lighthouseImageLink} motion-cinematic-scene`} data-mobile-motion-item href="/projects#lighthouse" aria-label="Explore Lighthouse project">
-                <Image
-                className={styles.projectImage}
-                src="/projects/lighthouse/concept-artwork.webp"
-                alt="Illustrative Lighthouse concept artwork featuring account health, renewal risk, and a coastal lighthouse."
-                width={1672}
-                height={941}
-                sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 900px) calc(100vw - 64px), (max-width: 1244px) 56vw, 682px"
-              />
+              <Link
+                className={`${styles.lighthouseImageLink} motion-cinematic-scene`}
+                data-mobile-motion-item
+                href="/projects/lighthouse"
+                aria-label="Explore the Lighthouse case study and live dashboard"
+              >
+                <LighthouseLivePreview />
               </Link>
               <div className={styles.lighthouseCurtain} data-gsap-lighthouse-curtain aria-hidden="true">
                 <span>01 / SELECTED WORK</span>
@@ -210,7 +209,7 @@ export default function Home() {
               </div>
             </div>
             <div data-mobile-motion-item>
-              <h3><Link className={styles.lighthouseTitleLink} href="/projects#lighthouse">Lighthouse <span aria-hidden="true">→</span></Link></h3>
+              <h3><Link className={styles.lighthouseTitleLink} href="/projects/lighthouse">Lighthouse <span aria-hidden="true">→</span></Link></h3>
               <p>
                 Lighthouse is an AI-assisted customer health and account
                 intelligence platform that brings customer{" "}

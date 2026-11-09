@@ -202,3 +202,35 @@
   .signalPaths{display:none}
   .sparkOne,.sparkTwo,.sparkThree,.sparkFour{display:none}
 }
+
+
+/* Feather each moving cutout so its edges disappear into the original scene. */
+.object{filter:none}
+.phoneMask{
+  -webkit-mask-image:radial-gradient(ellipse 18% 52% at 44.5% 52%,#000 0 70%,transparent 100%);
+  mask-image:radial-gradient(ellipse 18% 52% at 44.5% 52%,#000 0 70%,transparent 100%);
+}
+.syringeMask{
+  -webkit-mask-image:radial-gradient(ellipse 17% 26% at 63% 22%,#000 0 65%,transparent 100%);
+  mask-image:radial-gradient(ellipse 17% 26% at 63% 22%,#000 0 65%,transparent 100%);
+}
+.vialMask{
+  -webkit-mask-image:radial-gradient(ellipse 12.8% 26% at 83% 30%,#000 0 61%,transparent 100%);
+  mask-image:radial-gradient(ellipse 12.8% 26% at 83% 30%,#000 0 61%,transparent 100%);
+}
+.scheduleMask{
+  -webkit-mask-image:radial-gradient(ellipse 15% 21% at 65% 73%,#000 0 70%,transparent 100%);
+  mask-image:radial-gradient(ellipse 15% 21% at 65% 73%,#000 0 70%,transparent 100%);
+}
+.timelineMask{
+  -webkit-mask-image:radial-gradient(ellipse 17% 27% at 85% 73%,#000 0 70%,transparent 100%);
+  mask-image:radial-gradient(ellipse 17% 27% at 85% 73%,#000 0 70%,transparent 100%);
+}
+.scene[data-motion="off"] .object,
+.scene[data-motion="off"] .underlay,
+.scene[data-motion="off"] .signalPaths,
+.scene[data-motion="off"] .bokehOne,
+.scene[data-motion="off"] .bokehTwo,
+.scene[data-motion="off"] .bokehThree{
+  display:none;
+}

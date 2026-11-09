@@ -1,187 +1,236 @@
-.outer {
-  width: 100%;
-  min-width: 0;
-  color: #2b3342;
+.outer{
+  width:100%;
+  min-width:0;
+}
+.scene{
+  --parallax-x:0px;
+  --parallax-y:0px;
+  --tilt-x:0deg;
+  --tilt-y:0deg;
+  position:relative;
+  width:100%;
+  aspect-ratio:1672 / 941;
+  isolation:isolate;
+  overflow:hidden;
+  background:#02081c;
+  border:1px solid rgba(87,97,168,.45);
+  contain:paint;
+}
+.base{
+  object-fit:fill;
+}
+.camera{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  transform:perspective(1200px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-origin:center;
+  transition:transform 450ms cubic-bezier(.2,.8,.2,1);
+}
+.underlay,.object{
+  position:absolute;
+  inset:0;
+  display:block;
+  backface-visibility:hidden;
+}
+.underlay{
+  background:rgba(2,8,25,.24);
+  backdrop-filter:blur(12px) brightness(.68);
+  -webkit-backdrop-filter:blur(12px) brightness(.68);
+}
+.object{
+  background-image:url("/projects/mypepprotocol/concept-artwork.png");
+  background-size:100% 100%;
+  background-position:center;
+  background-repeat:no-repeat;
+  filter:drop-shadow(0 10px 12px rgba(1,3,25,.35));
+  will-change:transform;
+}
+.phoneMask{
+  clip-path:polygon(32.8% 8.3%,44% 8.6%,50.3% 10%,54.4% 14%,56.5% 21%,57.1% 37%,58% 91%,56.9% 94.6%,36.7% 94.6%,33.5% 89%,31.4% 34%,31.1% 17%);
+}
+.syringeMask{
+  clip-path:polygon(53.1% 26.8%,58.1% 18.2%,64% 11.6%,69.6% 6.4%,71.9% 7%,73.5% 9.6%,71.6% 13.9%,68.4% 23%,61.2% 33.5%,57% 37.7%,53.2% 34.6%);
+}
+.vialMask{
+  clip-path:polygon(78.4% 14.3%,85.4% 14.5%,88.5% 17.4%,89.6% 33.8%,87.7% 43.7%,79% 43.2%,76.4% 38%,76.4% 21%);
+}
+.scheduleMask{
+  clip-path:polygon(55.7% 61.5%,72.7% 59%,75.4% 63.7%,75.6% 85%,61% 87%,57% 83%);
+}
+.timelineMask{
+  clip-path:polygon(74.4% 52%,96.8% 56.3%,98% 91.8%,95% 94.7%,74.2% 88.5%,72.8% 83.7%);
+}
+.phone{transform-origin:44% 52%}
+.syringe{transform-origin:63% 22%}
+.vial{transform-origin:83% 27%}
+.schedule{transform-origin:65% 72%}
+.timeline{transform-origin:84% 71%}
+
+.scene[data-motion="on"] .phone{
+  animation:phoneLevitating 6.3s ease-in-out infinite alternate;
+}
+.scene[data-motion="on"] .syringe{
+  animation:syringeOrbit 5.4s ease-in-out infinite alternate;
+}
+.scene[data-motion="on"] .vial{
+  animation:vialFloat 4.7s ease-in-out infinite alternate;
+}
+.scene[data-motion="on"] .schedule{
+  animation:cardFloating 5.9s ease-in-out infinite alternate;
+}
+.scene[data-motion="on"] .timeline{
+  animation:timelineFloating 6.7s ease-in-out infinite alternate;
+}
+@keyframes phoneLevitating{
+  0%{transform:translate(-5px,5px) rotate(-.8deg) scale(1.005)}
+  55%{transform:translate(4px,-7px) rotate(.6deg) scale(1.013)}
+  100%{transform:translate(8px,3px) rotate(1deg) scale(1.007)}
+}
+@keyframes syringeOrbit{
+  0%{transform:translate(-7px,8px) rotate(-3.5deg)}
+  100%{transform:translate(9px,-14px) rotate(4deg)}
+}
+@keyframes vialFloat{
+  0%{transform:translate(-8px,7px) rotate(-3deg)}
+  100%{transform:translate(10px,-12px) rotate(3deg)}
+}
+@keyframes cardFloating{
+  0%{transform:translate(-5px,10px) rotate(-2deg)}
+  100%{transform:translate(7px,-8px) rotate(2.1deg)}
+}
+@keyframes timelineFloating{
+  0%{transform:translate(5px,8px) rotate(1.3deg)}
+  100%{transform:translate(-7px,-8px) rotate(-1.4deg)}
 }
 
-.artwork {
-  --pointer-x: 50%;
-  --pointer-y: 50%;
-  --rotate-x: 0deg;
-  --rotate-y: 0deg;
-  width: 100%;
-  aspect-ratio: 1672 / 941;
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  background: #030b20;
-  border: 1px solid rgba(95, 99, 167, .36);
-  perspective: 900px;
+.bokehOne,.bokehTwo,.bokehThree{
+  position:absolute;display:block;
+  width:25%;height:42%;
+  border-radius:50%;
+  filter:blur(34px);
+  opacity:.25;
+  mix-blend-mode:screen;
+}
+.bokehOne{left:34%;top:25%;background:radial-gradient(circle,#8d36ff,transparent 70%)}
+.bokehTwo{left:75%;top:11%;background:radial-gradient(circle,#00cfff,transparent 70%)}
+.bokehThree{left:52%;top:62%;background:radial-gradient(circle,#8032ff,transparent 70%)}
+.scene[data-motion="on"] .bokehOne{animation:ambientOne 9s ease-in-out infinite alternate}
+.scene[data-motion="on"] .bokehTwo{animation:ambientTwo 8s ease-in-out infinite alternate}
+.scene[data-motion="on"] .bokehThree{animation:ambientOne 11s ease-in-out infinite alternate-reverse}
+@keyframes ambientOne{
+  to{opacity:.48;transform:translate(14px,-17px) scale(1.2)}
+}
+@keyframes ambientTwo{
+  to{opacity:.48;transform:translate(-20px,12px) scale(.93)}
 }
 
-.plane {
-  position: absolute;
-  inset: 0;
-  transform: perspective(900px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) scale(1.012);
-  transform-origin: center;
-  will-change: transform;
-  transition: transform 650ms cubic-bezier(.16, 1, .3, 1);
+.signalPaths{
+  position:absolute;
+  inset:0;
+  width:100%;height:100%;
+  overflow:hidden;
+  opacity:.78;
+  mix-blend-mode:screen;
+}
+.signalPaths path{
+  fill:none;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-dasharray:16 40 8 90;
+}
+.signalPurple{stroke:url("#mypep-path-purple")}
+.signalGreen{stroke:url("#mypep-path-green")}
+.signalCyan{stroke:url("#mypep-path-cyan")}
+.scene[data-motion="on"] .signalPaths path{animation:flow 7.5s linear infinite}
+.scene[data-motion="on"] .signalGreen{animation-duration:6.2s}
+.scene[data-motion="on"] .signalCyan{animation-duration:9.3s}
+.dataParticle{opacity:0;filter:drop-shadow(0 0 8px currentColor)}
+.scene[data-motion="on"] .dataParticle{opacity:1}
+@keyframes flow{to{stroke-dashoffset:-310}}
+
+.sparkOne,.sparkTwo,.sparkThree,.sparkFour{
+  position:absolute;
+  width:7px;height:7px;
+  border-radius:50%;
+  background:#9f72ff;
+  box-shadow:0 0 8px 3px rgba(162,91,255,.6);
+  opacity:0;
+}
+.sparkOne{left:61%;top:16%;background:#b5a4ff}
+.sparkTwo{left:70%;top:32%;background:#9b66ff}
+.sparkThree{left:88%;top:15%;background:#16edfa;box-shadow:0 0 9px 3px rgba(13,214,252,.6)}
+.sparkFour{left:82%;top:42%;background:#1bf5d7;box-shadow:0 0 9px 3px rgba(13,214,252,.6)}
+.scene[data-motion="on"] .sparkOne{animation:sparkDrift 3.2s ease-in-out infinite}
+.scene[data-motion="on"] .sparkTwo{animation:sparkDrift 4.6s ease-in-out 1.5s infinite}
+.scene[data-motion="on"] .sparkThree{animation:sparkDrift 4.1s ease-in-out .6s infinite}
+.scene[data-motion="on"] .sparkFour{animation:sparkDrift 3.8s ease-in-out 2s infinite}
+@keyframes sparkDrift{
+  0%{opacity:0;transform:translate(0,12px) scale(.3)}
+  35%{opacity:.9}
+  80%{opacity:.55}
+  100%{opacity:0;transform:translate(16px,-38px) scale(1.15)}
 }
 
-.image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.outer[data-variant="home"]{
+  height:100%;
+  display:flex;
+  align-items:center;
+  background:#030b20;
+}
+.outer[data-variant="home"] .scene{
+  width:100%;
+  flex:0 0 auto;
 }
 
-.lightSweep, .phoneGlow, .vialGlow, .traceGlow, .focusGlow, .pointerLight, .shimmer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.caption{
+  margin:10px 0 0;
+  font-size:13px;
+  line-height:1.5;
+  color:#5a6065;
+}
+@media(max-width:640px){
+  .caption{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .object,.bokehOne,.bokehTwo,.bokehThree,.signalPaths path,.sparkOne,.sparkTwo,.sparkThree,.sparkFour{
+    animation:none!important;
+    transform:none!important;
+    will-change:auto;
+  }
+  .camera{transform:none!important;transition:none}
+  .signalPaths{display:none}
+  .sparkOne,.sparkTwo,.sparkThree,.sparkFour{display:none}
 }
 
-.lightSweep {
-  opacity: 0;
-  background: linear-gradient(110deg, transparent 27%, rgba(134, 118, 255, .0) 43%, rgba(142, 130, 255, .22) 50%, rgba(64, 226, 255, .12) 54%, transparent 66%);
-  mix-blend-mode: screen;
-  transform: translateX(-115%);
-}
 
-.phoneGlow {
-  opacity: .3;
-  background: radial-gradient(ellipse 22% 48% at 44% 57%, rgba(113, 57, 255, .35) 0, transparent 75%);
-  mix-blend-mode: screen;
+/* Feather each moving cutout so its edges disappear into the original scene. */
+.object{filter:none}
+.phoneMask{
+  -webkit-mask-image:radial-gradient(ellipse 18% 52% at 44.5% 52%,#000 0 70%,transparent 100%);
+  mask-image:radial-gradient(ellipse 18% 52% at 44.5% 52%,#000 0 70%,transparent 100%);
 }
-
-.vialGlow {
-  opacity: .42;
-  background: radial-gradient(ellipse 19% 32% at 83% 32%, rgba(4, 229, 247, .45) 0, transparent 72%);
-  mix-blend-mode: screen;
+.syringeMask{
+  -webkit-mask-image:radial-gradient(ellipse 17% 26% at 63% 22%,#000 0 65%,transparent 100%);
+  mask-image:radial-gradient(ellipse 17% 26% at 63% 22%,#000 0 65%,transparent 100%);
 }
-
-.traceGlow {
-  opacity: .30;
-  background: radial-gradient(ellipse 39% 13% at 77% 55%, rgba(143, 74, 255, .4), transparent 85%);
-  mix-blend-mode: screen;
+.vialMask{
+  -webkit-mask-image:radial-gradient(ellipse 12.8% 26% at 83% 30%,#000 0 61%,transparent 100%);
+  mask-image:radial-gradient(ellipse 12.8% 26% at 83% 30%,#000 0 61%,transparent 100%);
 }
-
-.focusGlow {
-  opacity: 0;
-  background: radial-gradient(ellipse 18% 25% at var(--focus-x) var(--focus-y), rgba(163, 154, 255, .44), rgba(103, 79, 245, .13) 54%, transparent 80%);
-  mix-blend-mode: screen;
-  transition: opacity 400ms ease, background-position 400ms ease;
+.scheduleMask{
+  -webkit-mask-image:radial-gradient(ellipse 15% 21% at 65% 73%,#000 0 70%,transparent 100%);
+  mask-image:radial-gradient(ellipse 15% 21% at 65% 73%,#000 0 70%,transparent 100%);
 }
-
-.artwork[data-active="doses"] .focusGlow,
-.artwork[data-active="labs"] .focusGlow,
-.artwork[data-active="timeline"] .focusGlow { opacity: 1; }
-
-.pointerLight {
-  opacity: 0;
-  background: radial-gradient(circle 150px at var(--pointer-x) var(--pointer-y), rgba(155, 110, 255, .12), transparent 85%);
-  mix-blend-mode: screen;
-  transition: opacity .3s ease;
+.timelineMask{
+  -webkit-mask-image:radial-gradient(ellipse 17% 27% at 85% 73%,#000 0 70%,transparent 100%);
+  mask-image:radial-gradient(ellipse 17% 27% at 85% 73%,#000 0 70%,transparent 100%);
 }
-
-.artwork[data-hovered="true"] .pointerLight { opacity: 1; }
-
-.shimmer {
-  opacity: 0;
-  background: linear-gradient(115deg, transparent 25%, rgba(226, 217, 255, .09) 49%, transparent 70%);
-  transform: translateX(-120%);
-  mix-blend-mode: screen;
-}
-
-.artwork[data-motion="on"] .lightSweep { animation: sweep 9s ease-in-out infinite; }
-.artwork[data-motion="on"] .phoneGlow { animation: glow 5.2s ease-in-out infinite alternate; }
-.artwork[data-motion="on"] .vialGlow { animation: glow 4.2s ease-in-out infinite alternate-reverse; }
-.artwork[data-motion="on"] .traceGlow { animation: glow 3.6s ease-in-out infinite alternate; }
-.artwork[data-motion="on"] .shimmer { animation: sweep 12s ease-in-out 2s infinite; }
-
-@keyframes sweep {
-  0%, 15% { opacity: 0; transform: translateX(-115%); }
-  25% { opacity: .75; }
-  51% { opacity: .45; transform: translateX(125%); }
-  55%, 100% { opacity: 0; transform: translateX(125%); }
-}
-
-@keyframes glow {
-  from { opacity: .18; }
-  to { opacity: .65; }
-}
-
-.toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px 18px;
-  margin-top: 12px;
-}
-
-.selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.focusButton {
-  min-height: 37px;
-  padding: 7px 12px;
-  border-radius: 5px;
-  border: 1px solid #c7c8d9;
-  background: transparent;
-  color: #4b4860;
-  font-size: 12px;
-  line-height: 1;
-  font-weight: 650;
-  cursor: pointer;
-  transition: color .2s, background .2s, border-color .2s;
-}
-
-.focusButton:hover { border-color: #6f4fb8; }
-.focusButton[aria-pressed="true"] {
-  background: #34205f;
-  border-color: #34205f;
-  color: #fff;
-}
-
-.caption {
-  color: #5a6065;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.outer[data-variant="home"] .artwork {
-  height: 100%;
-  aspect-ratio: auto;
-}
-.outer[data-variant="home"] {
-  height: 100%;
-}
-
-@media (max-width: 640px) {
-  .selector { gap: 5px; }
-  .focusButton { min-height: 40px; padding: 8px 9px; font-size: 11px; }
-  .caption { font-size: 11px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .plane { will-change: auto; transform: none; transition: none; }
-  .lightSweep, .shimmer, .phoneGlow, .vialGlow, .traceGlow { animation: none !important; }
-  .pointerLight { display: none; }
-}
-
-/* Give the artwork itself a slow cinematic drift, separate from pointer tilt. */
-.artwork[data-motion="on"] .image {
-  animation: imageDrift 14s ease-in-out infinite alternate;
-  transform-origin: center;
-}
-@keyframes imageDrift {
-  from { transform: scale(1); }
-  to { transform: scale(1.022); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .image { animation: none !important; }
+.scene[data-motion="off"] .object,
+.scene[data-motion="off"] .underlay,
+.scene[data-motion="off"] .signalPaths,
+.scene[data-motion="off"] .bokehOne,
+.scene[data-motion="off"] .bokehTwo,
+.scene[data-motion="off"] .bokehThree{
+  display:none;
 }

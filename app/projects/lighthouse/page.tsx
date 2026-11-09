@@ -170,7 +170,8 @@ export default function LighthouseCaseStudy() {
             <div className={styles.sectionBody}>
               <h2 id="status">A working demonstration, not a finished platform.</h2>
               <p>
-                Lighthouse has working Accounts and Portfolio views,
+                Lighthouse has working Accounts and Portfolio views, a
+                continuously animated Live Intelligence simulation,
                 responsive light and dark themes, and optional AI-assisted
                 analysis. The next meaningful test is not adding more
                 features. It is learning whether these views help real

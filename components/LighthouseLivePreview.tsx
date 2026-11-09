@@ -69,10 +69,12 @@ export default function LighthouseLivePreview({ variant = "compact" }: Props) {
           LIVE PREVIEW
         </div>
       </div>
-      <p className={styles.caption}>
-        Animated preview of the working Lighthouse demo. Fictional accounts and
-        simulated activity.
-      </p>
+      {variant === "feature" && (
+        <p className={styles.caption}>
+          Live view of the working Lighthouse dashboard. Fictional accounts and
+          simulated activity.
+        </p>
+      )}
     </div>
   );
 }

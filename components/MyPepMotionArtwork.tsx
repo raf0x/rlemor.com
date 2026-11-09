@@ -45,8 +45,8 @@ export default function MyPepMotionArtwork({ variant = "feature" }: Props) {
     const node = ref.current;
     if (!node) return;
     const bounds = node.getBoundingClientRect();
-    const x = event.clientX / 1 - bounds.left;
-    const y = event.clientY / 1 - bounds.top;
+    const x = event.clientX - bounds.left;
+    const y = event.clientY - bounds.top;
     const dx = x / bounds.width - 0.5;
     const dy = y / bounds.height - 0.5;
     node.style.setProperty("--parallax-x", `${(dx * 8).toFixed(2)}px`);

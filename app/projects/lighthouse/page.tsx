@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import ScreenshotViewer from "@/components/ScreenshotViewer";
+import LighthouseLivePreview from "@/components/LighthouseLivePreview";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./case-study.module.css";
@@ -67,15 +67,15 @@ export default function LighthouseCaseStudy() {
           </header>
 
           <div className={styles.heroMedia}>
-            <ScreenshotViewer
-              title="Lighthouse actual account dashboard"
-              src="/projects/lighthouse/overview-desktop.webp"
-              alt="Actual Lighthouse account dashboard interface with illustrative customer health and portfolio information."
-              width={2880}
-              height={2000}
-              sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1200px) 80vw, 900px"
-              caption="Actual Lighthouse interface with fictional account data. Enlarge to inspect the product."
-            />
+            <LighthouseLivePreview variant="feature" />
+            <a
+              className={styles.liveAction}
+              href="https://lighthouse-alpha-two.vercel.app/live"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Explore the interactive Lighthouse dashboard <span aria-hidden="true">↗</span>
+            </a>
           </div>
 
           <section className={styles.section} aria-labelledby="problem">
@@ -170,7 +170,8 @@ export default function LighthouseCaseStudy() {
             <div className={styles.sectionBody}>
               <h2 id="status">A working demonstration, not a finished platform.</h2>
               <p>
-                Lighthouse has working Accounts and Portfolio views,
+                Lighthouse has working Accounts and Portfolio views, a
+                continuously animated Live Intelligence simulation,
                 responsive light and dark themes, and optional AI-assisted
                 analysis. The next meaningful test is not adding more
                 features. It is learning whether these views help real
@@ -180,7 +181,7 @@ export default function LighthouseCaseStudy() {
               <div className={styles.actions}>
                 <a
                   className={styles.primaryAction}
-                  href="https://lighthouse-alpha-two.vercel.app/"
+                  href="https://lighthouse-alpha-two.vercel.app/live"
                   target="_blank"
                   rel="noreferrer"
                 >

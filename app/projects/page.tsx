@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ScreenshotViewer from "@/components/ScreenshotViewer";
+import LighthouseLivePreview from "@/components/LighthouseLivePreview";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./projects.module.css";
@@ -87,18 +88,10 @@ export default function ProjectsPage() {
             </div>
 
             <div className={styles.projectMedia}>
-              <ScreenshotViewer
-                title="Lighthouse"
-                src="/projects/lighthouse/concept-artwork.webp"
-                alt="Promotional Lighthouse concept illustration of an account-health dashboard with renewal risk, AI executive briefs, and a coastal lighthouse."
-                width={1672}
-                height={941}
-                mediaType="artwork"
-                caption="Concept illustration with fictional dashboard data, not a screenshot of the actual application."
-              />
+              <LighthouseLivePreview variant="feature" />
               <p className={styles.disclosure}>
-                The full case study includes a real Lighthouse interface
-                capture, the product decisions, and the demo&apos;s limitations.
+                Explore the live simulation in the full demo, or read the case
+                study for the product decisions and limitations.
               </p>
             </div>
 
@@ -108,7 +101,7 @@ export default function ProjectsPage() {
               </Link>
               <a
                 className={styles.textLink}
-                href="https://lighthouse-alpha-two.vercel.app/"
+                href="https://lighthouse-alpha-two.vercel.app/live"
                 target="_blank"
                 rel="noreferrer"
               >

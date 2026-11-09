@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ScreenshotViewer from "@/components/ScreenshotViewer";
 import LighthouseLivePreview from "@/components/LighthouseLivePreview";
+import MyPepMotionArtwork from "@/components/MyPepMotionArtwork";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./projects.module.css";
@@ -145,15 +146,7 @@ export default function ProjectsPage() {
             </div>
 
             <div className={styles.projectMedia}>
-              <ScreenshotViewer
-                title="MyPepProtocol"
-                src="/projects/mypepprotocol/concept-artwork.png"
-                alt="MyPepProtocol promotional concept with a rendered phone, syringe, vial, and mock protocol, lab, and schedule widgets."
-                width={1672}
-                height={941}
-                mediaType="artwork"
-                caption="Concept artwork for MyPepProtocol. See the case study for authentic product screens and decisions."
-              />
+              <MyPepMotionArtwork />
             </div>
 
             <p className={styles.statement}>

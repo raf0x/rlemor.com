@@ -172,3 +172,16 @@
   .lightSweep, .shimmer, .phoneGlow, .vialGlow, .traceGlow { animation: none !important; }
   .pointerLight { display: none; }
 }
+
+/* Give the artwork itself a slow cinematic drift, separate from pointer tilt. */
+.artwork[data-motion="on"] .image {
+  animation: imageDrift 14s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+@keyframes imageDrift {
+  from { transform: scale(1); }
+  to { transform: scale(1.022); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .image { animation: none !important; }
+}

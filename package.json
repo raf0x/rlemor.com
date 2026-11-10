@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:integrity": "node --test tests/site-integrity.test.mjs"
   },
   "dependencies": {
     "gsap": "3.14.2",

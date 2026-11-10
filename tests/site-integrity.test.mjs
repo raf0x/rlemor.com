@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { join, relative, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 
-const root = resolve(import.meta.dirname, "..");
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const app = join(root, "app");
 const publicDir = join(root, "public");
 

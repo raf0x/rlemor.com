@@ -28,7 +28,7 @@ export default function SiteHeader() {
               <Link
                 key={href}
                 href={href}
-                aria-current={pathname === href ? "page" : undefined}
+                aria-current={pathname === href ? "page" : pathname.startsWith(`${href}/`) ? "location" : undefined}
                 className={
                   pathname.startsWith(href) ? styles.active : undefined
                 }

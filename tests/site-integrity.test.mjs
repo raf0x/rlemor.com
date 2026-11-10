@@ -11,7 +11,7 @@ function sourceFiles(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const path = join(dir, entry.name);
     if (entry.isDirectory()) return sourceFiles(path);
-    return /\\.tsx$/.test(entry.name) ? [path] : [];
+    return /\.tsx$/.test(entry.name) ? [path] : [];
   });
 }
 
@@ -21,21 +21,21 @@ test("literal public image paths exist", () => {
   const missing = [];
   for (const file of files) {
     const source = readFileSync(file, "utf8");
-    for (const match of source.matchAll(/\\bsrc="(\\/[^"]+)"/g)) {
+    for (const match of source.matchAll(/\bsrc="(\/[^"]+)"/g)) {
       const path = match[1].split(/[?#]/)[0];
       if (!existsSync(join(publicDir, path))) {
         missing.push(`${relative(root, file)}: ${path}`);
       }
     }
   }
-  assert.deepEqual(missing, [], "Missing public images:\\n" + missing.join("\\n"));
+  assert.deepEqual(missing, [], "Missing public images:\n" + missing.join("\n"));
 });
 
 test("literal internal links resolve to a page", () => {
   const missing = [];
   for (const file of files) {
     const source = readFileSync(file, "utf8");
-    for (const match of source.matchAll(/\\bhref="(\\/[^"]+)"/g)) {
+    for (const match of source.matchAll(/\bhref="(\/[^"]+)"/g)) {
       const path = match[1].split(/[?#]/)[0];
       const page = path === "/" ? join(app, "page.tsx") : join(app, path, "page.tsx");
       if (!existsSync(page)) {
@@ -43,19 +43,19 @@ test("literal internal links resolve to a page", () => {
       }
     }
   }
-  assert.deepEqual(missing, [], "Missing internal pages:\\n" + missing.join("\\n"));
+  assert.deepEqual(missing, [], "Missing internal pages:\n" + missing.join("\n"));
 });
 
 test("nested case studies expose their current parent section", () => {
   const header = readFileSync(join(root, "components", "SiteHeader.tsx"), "utf8");
-  assert.match(header, /pathname\\.startsWith\\(`\\$\\{href\\}\\/`\\)/);
-  assert.match(header, /aria-current=\\{/);
+  assert.match(header, /pathname\.startsWith\(`\$\{href\}\/`\)/);
+  assert.match(header, /aria-current=\{/);
   assert.match(header, /"location"/);
 });
 
 test("legacy case study URL has a permanent redirect", () => {
   const config = readFileSync(join(root, "next.config.ts"), "utf8");
-  assert.match(config, /source:\\s*"\\/work\\/mypepprotocol"/);
-  assert.match(config, /destination:\\s*"\\/projects\\/mypepprotocol"/);
-  assert.match(config, /permanent:\\s*true/);
+  assert.match(config, /source:\s*"\/work\/mypepprotocol"/);
+  assert.match(config, /destination:\s*"\/projects\/mypepprotocol"/);
+  assert.match(config, /permanent:\s*true/);
 });

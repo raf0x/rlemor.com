@@ -29,14 +29,14 @@ export default function Home() {
               <span className={styles.gsapHeroLine} data-gsap-hero-line>
                 <span className={styles.desktopHeroHeadline}>
                   <span className={styles.desktopHeroHeadlineLine}>
-                    <span className={styles.desktopHeroAccent}>World Cup operations</span> and
+                    <span className={styles.desktopHeroAccent}>Global sports operations</span> and
                   </span>
                   <span className={styles.desktopHeroHeadlineLine}>
                     Enterprise Customer Success.
                   </span>
                 </span>
                 <span className={styles.mobileHeroHeadline}>
-                  My work spans <span>World Cup operations</span>
+                  My work spans <span>Global sports operations</span>
                   <br className={styles.heroLineBreak} /> and Enterprise Customer Success.
                 </span>
               </span>

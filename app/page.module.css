@@ -1396,7 +1396,10 @@
   .mobileHeroProof { display: block; }
   .mobileHeroFact {
     display: block;
-    max-width: 37ch;
+  }
+  .mobileHeroFact strong {
+    font-weight: 700;
+    color: var(--color-foreground);
   }
   .mobileHeroFact + .mobileHeroFact { margin-top: 12px; }
   .mobileHeroBrand {

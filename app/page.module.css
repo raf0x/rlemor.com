@@ -58,6 +58,14 @@
   font-size: 0.85em;
   line-height: 1.5;
 }
+.heroLogoUnit {
+  white-space: nowrap;
+}
+.heroLogoComma {
+  display: inline-block;
+  margin-left: 0.16em;
+  color: var(--color-foreground);
+}
 .heroLogoPeriod {
   position: relative;
   top: 2px;

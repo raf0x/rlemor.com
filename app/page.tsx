@@ -27,39 +27,93 @@ export default function Home() {
             <h1 id="intro-heading">
               <span className={styles.gsapHeroLine} data-gsap-hero-line>I’m Rafael.</span>
               <span className={styles.gsapHeroLine} data-gsap-hero-line>
-                I turn <span>human relationships</span>
-                <br className={styles.heroLineBreak} /> into a competitive advantage.
+                <span className={styles.desktopHeroHeadline}>
+                  <span className={styles.desktopHeroHeadlineLine}>
+                    <span className={styles.desktopHeroAccent}>World Cup operations</span> and
+                  </span>
+                  <span className={styles.desktopHeroHeadlineLine}>
+                    Enterprise Customer Success.
+                  </span>
+                </span>
+                <span className={styles.mobileHeroHeadline}>
+                  My work spans <span>World Cup operations</span>
+                  <br className={styles.heroLineBreak} /> and Enterprise Customer Success.
+                </span>
               </span>
             </h1>
             <p className={styles.heroCopy} data-gsap-copy>
-              <span className={styles.heroCopyFirstLine}>
-                Managed{" "}
-                <Image
-                  className={styles.fifaHeroLogo}
-                  src="/images/fifa-wordmark.svg"
-                  alt="FIFA"
-                  width={270}
-                  height={89}
-                />{" "}
-                commercial partners and a $4M SaaS portfolio at{" "}
-                <Image
-                  className={styles.shibumiHeroLogo}
-                  src="/brands/shibumi-employer.png"
-                  alt="Shibumi"
-                  width={370}
-                  height={81}
-                /><span className={styles.heroLogoPeriod}>.</span>
+              <span className={styles.desktopHeroProof}>
+                <span className={styles.heroCopyFirstLine}>
+                  At{" "}
+                  <span className={styles.heroLogoUnit}>
+                    <Image
+                      className={styles.fifaHeroLogo}
+                      src="/images/fifa-wordmark.svg"
+                      alt="FIFA"
+                      width={270}
+                      height={89}
+                    />
+                    <span className={styles.heroLogoComma}>,</span>
+                  </span>{" "}I worked on ticketing and CRM for 30+ commercial partners across four
+                  tournaments.
+                </span>
+                <span className={styles.heroCopySecondLine}>
+                  At{" "}
+                  <span className={styles.heroLogoUnit}>
+                    <Image
+                      className={styles.shibumiHeroLogo}
+                      src="/brands/shibumi-employer.png"
+                      alt="Shibumi"
+                      width={370}
+                      height={81}
+                    />
+                    <span className={styles.heroLogoComma}>,</span>
+                  </span>{" "}I managed 25 enterprise accounts ($4M ARR), with 117% net dollar
+                  retention and zero churn.
+                </span>
+                <span className={styles.heroBuilderLine}>
+                  I also build useful products with AI and modern tools.
+                </span>
               </span>
-              <span className={styles.heroCopySecondLine}>
-                CX leader using AI for better decisions and practical tools.
+              <span className={styles.mobileHeroProof}>
+                <span className={styles.mobileHeroFact}>
+                  <span className={styles.mobileHeroBrand}>
+                    <Image
+                      className={styles.fifaHeroLogo}
+                      src="/images/fifa-wordmark.svg"
+                      alt="FIFA"
+                      width={270}
+                      height={89}
+                    />
+                  </span>
+                  Ticketing and CRM for <strong>30+ commercial partners</strong> across four tournaments.
+                </span>
+                <span className={styles.mobileHeroFact}>
+                  <span className={styles.mobileHeroBrand}>
+                    <Image
+                      className={styles.shibumiHeroLogo}
+                      src="/brands/shibumi-employer.png"
+                      alt="Shibumi"
+                      width={370}
+                      height={81}
+                    />
+                  </span>
+                  25 enterprise accounts (<strong>$4M ARR</strong>), with <strong>117% net dollar retention</strong> and zero churn.
+                </span>
               </span>
             </p>
             <div className={styles.actions} data-gsap-actions>
               <Link className={styles.button} data-motion-magnet href="/work">
-                Explore work <span aria-hidden="true">↗</span>
+                Explore work <span className={styles.desktopCtaArrow} aria-hidden="true">↗</span>
+                <svg className={styles.mobileCtaArrow} viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <path d="M4.5 15.5 15.5 4.5M6.5 4.5h9v9" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </Link>
               <Link href="/contact">Get in touch</Link>
             </div>
+            <p className={styles.mobileHeroBuilder}>
+              I also build useful products with AI and modern tools.
+            </p>
           </div>
           <figure className={`${styles.portrait} motion-cinematic-scene`} data-gsap-portrait>
             <Image
@@ -184,11 +238,11 @@ export default function Home() {
           aria-labelledby="projects-heading"
         >
           <p className={`${styles.eyebrow} ${styles.motionItem}`} data-motion-item>Independent projects</p>
-          <h2 id="projects-heading" className={styles.motionItem} data-motion-item>What I’ve built with AI.</h2>
+          <h2 id="projects-heading" className={styles.motionItem} data-motion-item>Products shaped by real problems.</h2>
           <p className={`${styles.projectsIntro} ${styles.motionItem}`} data-motion-item>
-            I started building because I kept finding problems I wanted to
-            solve, at work and beyond it. AI-assisted tools now help me turn
-            those questions into working products.
+            Working with customers taught me to notice friction and make tradeoffs.
+            These independent products apply that same approach, using AI and
+            modern development tools to turn specific problems into working solutions.
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item data-gsap-lighthouse>
             <div className={styles.lighthouseStage} data-gsap-lighthouse-stage>

@@ -40,8 +40,8 @@ export default function Home() {
                   alt="FIFA"
                   width={270}
                   height={89}
-                />, I worked on commercial-partner ticketing and CRM across four
-                tournaments, covering 30+ partners.
+                />, I worked on ticketing and CRM for 30+ commercial partners across four
+                tournaments.
               </span>
               <span className={styles.heroCopySecondLine}>
                 At{" "}
@@ -51,11 +51,11 @@ export default function Home() {
                   alt="Shibumi"
                   width={370}
                   height={81}
-                />, I managed 25 enterprise accounts representing $4M in ARR,
-                with 117% net dollar retention and zero churn.
+                />, I managed 25 enterprise accounts ($4M ARR), with 117% net dollar
+                retention and zero churn.
               </span>
               <span className={styles.heroBuilderLine}>
-                I also build practical products using AI and modern development tools.
+                I also build useful products with AI and modern tools.
               </span>
             </p>
             <div className={styles.actions} data-gsap-actions>

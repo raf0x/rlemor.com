@@ -34,24 +34,30 @@ export default function Home() {
             <p className={styles.heroCopy} data-gsap-copy>
               <span className={styles.heroCopyFirstLine}>
                 At{" "}
-                <Image
-                  className={styles.fifaHeroLogo}
-                  src="/images/fifa-wordmark.svg"
-                  alt="FIFA"
-                  width={270}
-                  height={89}
-                />, I worked on ticketing and CRM for 30+ commercial partners across four
+                <span className={styles.heroLogoUnit}>
+                  <Image
+                    className={styles.fifaHeroLogo}
+                    src="/images/fifa-wordmark.svg"
+                    alt="FIFA"
+                    width={270}
+                    height={89}
+                  />
+                  <span className={styles.heroLogoComma}>,</span>
+                </span>{" "}I worked on ticketing and CRM for 30+ commercial partners across four
                 tournaments.
               </span>
               <span className={styles.heroCopySecondLine}>
                 At{" "}
-                <Image
-                  className={styles.shibumiHeroLogo}
-                  src="/brands/shibumi-employer.png"
-                  alt="Shibumi"
-                  width={370}
-                  height={81}
-                />, I managed 25 enterprise accounts ($4M ARR), with 117% net dollar
+                <span className={styles.heroLogoUnit}>
+                  <Image
+                    className={styles.shibumiHeroLogo}
+                    src="/brands/shibumi-employer.png"
+                    alt="Shibumi"
+                    width={370}
+                    height={81}
+                  />
+                  <span className={styles.heroLogoComma}>,</span>
+                </span>{" "}I managed 25 enterprise accounts ($4M ARR), with 117% net dollar
                 retention and zero churn.
               </span>
               <span className={styles.heroBuilderLine}>

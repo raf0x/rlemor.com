@@ -32,44 +32,78 @@ export default function Home() {
               </span>
             </h1>
             <p className={styles.heroCopy} data-gsap-copy>
-              <span className={styles.heroCopyFirstLine}>
-                At{" "}
-                <span className={styles.heroLogoUnit}>
-                  <Image
-                    className={styles.fifaHeroLogo}
-                    src="/images/fifa-wordmark.svg"
-                    alt="FIFA"
-                    width={270}
-                    height={89}
-                  />
-                  <span className={styles.heroLogoComma}>,</span>
-                </span>{" "}I worked on ticketing and CRM for 30+ commercial partners across four
-                tournaments.
+              <span className={styles.desktopHeroProof}>
+                <span className={styles.heroCopyFirstLine}>
+                  At{" "}
+                  <span className={styles.heroLogoUnit}>
+                    <Image
+                      className={styles.fifaHeroLogo}
+                      src="/images/fifa-wordmark.svg"
+                      alt="FIFA"
+                      width={270}
+                      height={89}
+                    />
+                    <span className={styles.heroLogoComma}>,</span>
+                  </span>{" "}I worked on ticketing and CRM for 30+ commercial partners across four
+                  tournaments.
+                </span>
+                <span className={styles.heroCopySecondLine}>
+                  At{" "}
+                  <span className={styles.heroLogoUnit}>
+                    <Image
+                      className={styles.shibumiHeroLogo}
+                      src="/brands/shibumi-employer.png"
+                      alt="Shibumi"
+                      width={370}
+                      height={81}
+                    />
+                    <span className={styles.heroLogoComma}>,</span>
+                  </span>{" "}I managed 25 enterprise accounts ($4M ARR), with 117% net dollar
+                  retention and zero churn.
+                </span>
+                <span className={styles.heroBuilderLine}>
+                  I also build useful products with AI and modern tools.
+                </span>
               </span>
-              <span className={styles.heroCopySecondLine}>
-                At{" "}
-                <span className={styles.heroLogoUnit}>
-                  <Image
-                    className={styles.shibumiHeroLogo}
-                    src="/brands/shibumi-employer.png"
-                    alt="Shibumi"
-                    width={370}
-                    height={81}
-                  />
-                  <span className={styles.heroLogoComma}>,</span>
-                </span>{" "}I managed 25 enterprise accounts ($4M ARR), with 117% net dollar
-                retention and zero churn.
-              </span>
-              <span className={styles.heroBuilderLine}>
-                I also build useful products with AI and modern tools.
+              <span className={styles.mobileHeroProof}>
+                <span className={styles.mobileHeroFact}>
+                  <span className={styles.mobileHeroBrand}>
+                    <Image
+                      className={styles.fifaHeroLogo}
+                      src="/images/fifa-wordmark.svg"
+                      alt="FIFA"
+                      width={270}
+                      height={89}
+                    />
+                  </span>{" "}
+                  Ticketing and CRM for 30+ commercial partners across four tournaments.
+                </span>
+                <span className={styles.mobileHeroFact}>
+                  <span className={styles.mobileHeroBrand}>
+                    <Image
+                      className={styles.shibumiHeroLogo}
+                      src="/brands/shibumi-employer.png"
+                      alt="Shibumi"
+                      width={370}
+                      height={81}
+                    />
+                  </span>{" "}
+                  25 enterprise accounts ($4M ARR), with 117% net dollar retention and zero churn.
+                </span>
               </span>
             </p>
             <div className={styles.actions} data-gsap-actions>
               <Link className={styles.button} data-motion-magnet href="/work">
-                Explore work <span aria-hidden="true">↗</span>
+                Explore work <span className={styles.desktopCtaArrow} aria-hidden="true">↗</span>
+                <svg className={styles.mobileCtaArrow} viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <path d="M4.5 15.5 15.5 4.5M6.5 4.5h9v9" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </Link>
               <Link href="/contact">Get in touch</Link>
             </div>
+            <p className={styles.mobileHeroBuilder}>
+              I also build useful products with AI and modern tools.
+            </p>
           </div>
           <figure className={`${styles.portrait} motion-cinematic-scene`} data-gsap-portrait>
             <Image

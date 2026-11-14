@@ -46,7 +46,17 @@
   display: block;
 }
 .heroCopyFirstLine {
-  white-space: nowrap;
+  white-space: normal;
+}
+.heroCopySecondLine {
+  margin-top: 8px;
+}
+.heroBuilderLine {
+  display: block;
+  margin-top: 12px;
+  color: var(--color-green);
+  font-size: 0.85em;
+  line-height: 1.5;
 }
 .heroLogoPeriod {
   position: relative;

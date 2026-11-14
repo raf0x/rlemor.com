@@ -75,7 +75,7 @@ export default function Home() {
                       width={270}
                       height={89}
                     />
-                  </span>{" "}
+                  </span>
                   Ticketing and CRM for <strong>30+ commercial partners</strong> across four tournaments.
                 </span>
                 <span className={styles.mobileHeroFact}>
@@ -87,7 +87,7 @@ export default function Home() {
                       width={370}
                       height={81}
                     />
-                  </span>{" "}
+                  </span>
                   25 enterprise accounts (<strong>$4M ARR</strong>), with <strong>117% net dollar retention</strong> and zero churn.
                 </span>
               </span>

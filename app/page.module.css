@@ -1466,7 +1466,13 @@
   }
   .hero h1 .desktopHeroHeadlineLine { white-space: nowrap; }
 }
-@media (max-width: 900px) {
+@media (min-width: 641px) and (max-width: 900px) {
+  .hero h1 {
+    font-size: clamp(30px, 4vw, 36px);
+    line-height: 1.15;
+  }
+}
+@media (max-width: 640px) {
   .desktopHeroHeadline { display: none; }
   .mobileHeroHeadline { display: inline; }
 }

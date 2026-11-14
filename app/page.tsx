@@ -27,31 +27,35 @@ export default function Home() {
             <h1 id="intro-heading">
               <span className={styles.gsapHeroLine} data-gsap-hero-line>I’m Rafael.</span>
               <span className={styles.gsapHeroLine} data-gsap-hero-line>
-                I turn <span>human relationships</span>
-                <br className={styles.heroLineBreak} /> into a competitive advantage.
+                My work spans <span>World Cup operations</span>
+                <br className={styles.heroLineBreak} /> and enterprise Customer Success.
               </span>
             </h1>
             <p className={styles.heroCopy} data-gsap-copy>
               <span className={styles.heroCopyFirstLine}>
-                Managed{" "}
+                At{" "}
                 <Image
                   className={styles.fifaHeroLogo}
                   src="/images/fifa-wordmark.svg"
                   alt="FIFA"
                   width={270}
                   height={89}
-                />{" "}
-                commercial partners and a $4M SaaS portfolio at{" "}
+                />, I worked on commercial-partner ticketing and CRM across four
+                tournaments, covering 30+ partners.
+              </span>
+              <span className={styles.heroCopySecondLine}>
+                At{" "}
                 <Image
                   className={styles.shibumiHeroLogo}
                   src="/brands/shibumi-employer.png"
                   alt="Shibumi"
                   width={370}
                   height={81}
-                /><span className={styles.heroLogoPeriod}>.</span>
+                />, I managed 25 enterprise accounts representing $4M in ARR,
+                with 117% net dollar retention and zero churn.
               </span>
-              <span className={styles.heroCopySecondLine}>
-                CX leader using AI for better decisions and practical tools.
+              <span className={styles.heroBuilderLine}>
+                I also build practical products using AI and modern development tools.
               </span>
             </p>
             <div className={styles.actions} data-gsap-actions>
@@ -184,11 +188,11 @@ export default function Home() {
           aria-labelledby="projects-heading"
         >
           <p className={`${styles.eyebrow} ${styles.motionItem}`} data-motion-item>Independent projects</p>
-          <h2 id="projects-heading" className={styles.motionItem} data-motion-item>What I’ve built with AI.</h2>
+          <h2 id="projects-heading" className={styles.motionItem} data-motion-item>Products shaped by real problems.</h2>
           <p className={`${styles.projectsIntro} ${styles.motionItem}`} data-motion-item>
-            I started building because I kept finding problems I wanted to
-            solve, at work and beyond it. AI-assisted tools now help me turn
-            those questions into working products.
+            Working with customers taught me to notice friction and make tradeoffs.
+            These independent products apply that same approach, using AI and
+            modern development tools to turn specific problems into working solutions.
           </p>
           <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item data-gsap-lighthouse>
             <div className={styles.lighthouseStage} data-gsap-lighthouse-stage>

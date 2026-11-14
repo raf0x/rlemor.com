@@ -27,8 +27,18 @@ export default function Home() {
             <h1 id="intro-heading">
               <span className={styles.gsapHeroLine} data-gsap-hero-line>I’m Rafael.</span>
               <span className={styles.gsapHeroLine} data-gsap-hero-line>
-                My work spans <span>World Cup operations</span>
-                <br className={styles.heroLineBreak} /> and enterprise Customer Success.
+                <span className={styles.desktopHeroHeadline}>
+                  <span className={styles.desktopHeroHeadlineLine}>
+                    <span className={styles.desktopHeroAccent}>World Cup operations</span> and
+                  </span>
+                  <span className={styles.desktopHeroHeadlineLine}>
+                    Enterprise Customer Success.
+                  </span>
+                </span>
+                <span className={styles.mobileHeroHeadline}>
+                  My work spans <span>World Cup operations</span>
+                  <br className={styles.heroLineBreak} /> and Enterprise Customer Success.
+                </span>
               </span>
             </h1>
             <p className={styles.heroCopy} data-gsap-copy>

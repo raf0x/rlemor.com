@@ -1369,3 +1369,79 @@
   .lighthouseCurtain { display: none; }
   .lighthouseStageCaption { opacity: 1; }
 }
+
+/* Mobile hero editorial hierarchy. Desktop copy and composition remain untouched. */
+.desktopHeroProof { display: block; }
+.mobileHeroProof,
+.mobileHeroBuilder,
+.mobileCtaArrow { display: none; }
+
+@media (max-width: 640px) {
+  .hero {
+    gap: 18px;
+    padding-top: 24px;
+    padding-bottom: 34px;
+  }
+  .hero .greeting { margin-bottom: 12px; }
+  .hero h1 {
+    font-size: 35px;
+    line-height: 1.11;
+  }
+  .heroCopy {
+    margin-top: 18px;
+    font-size: 16px;
+    line-height: 1.52;
+  }
+  .desktopHeroProof { display: none; }
+  .mobileHeroProof { display: block; }
+  .mobileHeroFact {
+    display: block;
+    max-width: 37ch;
+  }
+  .mobileHeroFact + .mobileHeroFact { margin-top: 12px; }
+  .mobileHeroBrand {
+    display: inline-flex;
+    align-items: baseline;
+    vertical-align: -0.08em;
+    margin-right: 5px;
+    white-space: nowrap;
+  }
+  .mobileHeroFact .fifaHeroLogo {
+    height: 0.95em;
+    vertical-align: baseline;
+  }
+  .mobileHeroFact .shibumiHeroLogo {
+    width: 88px;
+    vertical-align: baseline;
+  }
+  .actions {
+    gap: 12px 20px;
+    margin-top: 18px;
+    font-size: 15px;
+  }
+  .button {
+    gap: 12px;
+    padding: 11px 15px;
+    min-height: 46px;
+  }
+  .desktopCtaArrow { display: none; }
+  .mobileCtaArrow {
+    display: block;
+    width: 16px;
+    height: 16px;
+    flex: none;
+  }
+  .mobileHeroBuilder {
+    display: block;
+    margin-top: 13px;
+    color: var(--color-green);
+    font-size: 14px;
+    line-height: 1.42;
+  }
+}
+@media (max-width: 360px) {
+  .hero h1 { font-size: 32px; }
+  .heroCopy { font-size: 15.5px; }
+  .actions { gap: 10px 15px; }
+  .button { gap: 10px; padding: 10px 12px; }
+}

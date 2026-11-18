@@ -109,8 +109,8 @@ export default function HomepageMotion() {
     let disposed = false;
     let disposeAnimation: (() => void) | undefined;
 
-    // Deliberately confined to two existing scenes. Other Studio effects
-    // remain untouched. Dynamic import keeps GSAP out of the server bundle.
+    // GSAP is optional and only powers the Lighthouse editorial reveal.
+    // The homepage introduction remains visible without this download.
     void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
       ([gsapModule, triggerModule]) => {
         if (disposed) return;
@@ -118,28 +118,11 @@ export default function HomepageMotion() {
         const ScrollTrigger = triggerModule.ScrollTrigger;
         gsap.registerPlugin(ScrollTrigger);
 
-        const hero = root.querySelector<HTMLElement>("[data-gsap-hero]");
         const lighthouse = root.querySelector<HTMLElement>("[data-gsap-lighthouse]");
-        if (!hero || !lighthouse) return;
+        if (!lighthouse) return;
 
         root.dataset.gsapActive = "true";
         const scope = gsap.context(() => {
-          const lines = hero.querySelectorAll("[data-gsap-hero-line]");
-          const greeting = hero.querySelector("[data-gsap-greeting]");
-          const copy = hero.querySelector("[data-gsap-copy]");
-          const actions = hero.querySelector("[data-gsap-actions]");
-          const portrait = hero.querySelector("[data-gsap-portrait]");
-
-          const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-          if (greeting) timeline.fromTo(greeting, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.7 }, 0.05);
-          if (lines[0]) timeline.fromTo(lines[0], { autoAlpha: 0, y: 42 }, { autoAlpha: 1, y: 0, duration: 1.15 }, 0.2);
-          if (lines[1]) timeline.fromTo(lines[1], { autoAlpha: 0, y: 35 }, { autoAlpha: 1, y: 0, duration: 1.25 }, 0.43);
-          if (copy) timeline.fromTo(copy, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.95 }, 0.72);
-          if (actions) timeline.fromTo(actions, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.85 }, 0.99);
-          if (portrait) timeline.fromTo(portrait, {
-            autoAlpha: 0, y: 36, scale: 0.92,
-          }, { autoAlpha: 1, y: 0, scale: 1, duration: 1.35 }, 0.42);
-
           // Editorial stage reveal: a dark cover travels off the real project
           // artwork, followed by the typographic index and narrative.
           // One deliberate entrance, no scroll scrubbing or reverse jitter.

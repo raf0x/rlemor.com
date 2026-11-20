@@ -27,8 +27,8 @@ export default function MyPepMotionArtwork({ variant = "feature" }: Props) {
     const root = ref.current;
     if (!root) return;
     if (!("IntersectionObserver" in window)) {
-      setVisible(true);
-      return;
+      const frame = requestAnimationFrame(() => setVisible(true));
+      return () => cancelAnimationFrame(frame);
     }
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(entry.isIntersecting),

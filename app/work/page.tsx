@@ -148,7 +148,8 @@ export default function WorkPage() {
               </dl>
               <p className={styles.relationship}>
                 Personally managed at <strong className={styles.fifa}>FIFA</strong>:{" "}
-                <strong>Coca-Cola</strong> and <strong>Bank of America</strong>{" "}
+                <strong>Coca-Cola</strong>, <strong>Bank of America</strong>,{" "}
+                <strong>Adidas</strong>, and <strong>Panini</strong>{" "}
                 commercial-partner accounts.
               </p>
             </article>

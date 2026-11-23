@@ -134,6 +134,7 @@ export default function HomepageMotion() {
           if (stage && media && curtain && caption && story) {
             const title = story.querySelector("h3");
             const description = story.querySelector("p");
+            const supporting = story.querySelectorAll<HTMLElement>("[data-lighthouse-support]");
             const mediaImage = media.querySelector("img");
             gsap.set(stage, { overflow: "hidden" });
             gsap.set(curtain, { xPercent: 0 });
@@ -141,6 +142,7 @@ export default function HomepageMotion() {
             gsap.set(story, { autoAlpha: 1 });
             if (title) gsap.set(title, { autoAlpha: 0, y: 28 });
             if (description) gsap.set(description, { autoAlpha: 0, y: 22 });
+            if (supporting.length) gsap.set(supporting, { autoAlpha: 0, y: 18 });
             if (mediaImage) gsap.set(mediaImage, { scale: 1.045, transformOrigin: "center" });
             const reveal = gsap.timeline({
               paused: true,
@@ -152,6 +154,7 @@ export default function HomepageMotion() {
               .to(caption, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power3.out" }, 2.35);
             if (title) reveal.to(title, { autoAlpha: 1, y: 0, duration: 1, ease: "power3.out" }, 1.45);
             if (description) reveal.to(description, { autoAlpha: 1, y: 0, duration: 1.05, ease: "power3.out" }, 1.8);
+            if (supporting.length) reveal.to(supporting, { autoAlpha: 1, y: 0, duration: .85, stagger: .12, ease: "power3.out" }, 2.05);
             ScrollTrigger.create({
               trigger: lighthouse,
               start: "top 83%",

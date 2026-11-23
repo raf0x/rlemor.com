@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ScreenshotViewer from "@/components/ScreenshotViewer";
 import LighthouseLivePreview from "@/components/LighthouseLivePreview";
-import MyPepMotionArtwork from "@/components/MyPepMotionArtwork";
+import MyPepEditorialPhone from "@/components/MyPepEditorialPhone";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./projects.module.css";
@@ -146,7 +146,7 @@ export default function ProjectsPage() {
             </div>
 
             <div className={styles.projectMedia}>
-              <MyPepMotionArtwork />
+              <MyPepEditorialPhone />
             </div>
 
             <p className={styles.statement}>

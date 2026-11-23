@@ -5,7 +5,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import HomepageMotion from "@/components/HomepageMotion";
 import LighthouseLivePreview from "@/components/LighthouseLivePreview";
-import MyPepMotionArtwork from "@/components/MyPepMotionArtwork";
+import MyPepEditorialFeature from "@/components/MyPepEditorialFeature";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -286,32 +286,7 @@ export default function Home() {
             </div>
           </article>
           <div className={styles.otherProjects}>
-            <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>
-              <div className={styles.projectStoryCopy} data-mobile-motion-item>
-                <h3>
-                  <Link href="/projects/mypepprotocol">
-                    MyPepProtocol <span aria-hidden="true">→</span>
-                  </Link>
-                </h3>
-                <p>
-                  A private health-record app that keeps treatment plans,
-                  schedules, inventory, and lab results connected so information
-                  does not have to be entered twice.
-                </p>
-              </div>
-              <figure className={styles.projectFigure} data-mobile-motion-item>
-                <Link
-                  className={`${styles.projectPreview} motion-cinematic-scene`}
-                  data-motion-tilt
-                  data-mobile-scroll-media
-                  href="/projects/mypepprotocol"
-                  aria-label="Explore MyPepProtocol case study"
-                >
-                  <MyPepMotionArtwork variant="home" />
-                </Link>
-                <figcaption>Animated MyPepProtocol promotional concept, with illustrative data.</figcaption>
-              </figure>
-            </article>
+            <MyPepEditorialFeature />
             <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>
               <div className={styles.projectStoryCopy} data-mobile-motion-item>
                 <h3>

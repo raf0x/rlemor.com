@@ -1,0 +1,60 @@
+.feature {
+ display:grid; grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr); align-items:center;
+ column-gap:clamp(26px,4vw,70px); padding:clamp(40px,6vw,76px) clamp(20px,3.8vw,54px) 28px;
+ border-bottom:1px solid var(--color-rule); background:#f8f5f0;
+}
+.copy {min-width:0}
+.eyebrow {margin:0 0 16px;color:#7059a7;font:700 12px/1.4 var(--font-dm-sans),sans-serif;letter-spacing:.15em;text-transform:uppercase}
+.title {margin:0;font-family:var(--font-lora),Georgia,serif;font-size:clamp(35px,4.6vw,64px);font-weight:500;letter-spacing:-.04em;line-height:1.12}
+.title a {color:#192338;text-decoration:none}
+.title a:hover {color:#6d52ad}
+.statement {max-width:560px!important;margin:25px 0 0!important;padding-left:18px;border-left:2px solid #a18adc;font:italic 400 clamp(21px,2.2vw,29px)/1.4 var(--font-lora),Georgia,serif!important;color:#202839}
+.details {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:25px;margin-top:28px}
+.details > div+div {border-left:1px solid #d5cbc8;padding-left:25px}
+.details h4 {font:600 17px/1.3 var(--font-lora),Georgia,serif;color:#222c3b}
+.details p {margin-top:8px!important;font:400 14px/1.65 var(--font-dm-sans),sans-serif!important;color:#485161}
+.actions {display:flex;align-items:center;flex-wrap:wrap;gap:22px;margin-top:30px}
+.primary,.secondary {display:inline-flex;align-items:center;gap:7px;min-height:44px;font:600 14px/1.3 var(--font-dm-sans),sans-serif;text-decoration:none}
+.primary {background:#1b2336;color:#fff;padding:10px 19px;border-radius:24px}
+.primary:hover {background:#44366b;color:#fff}
+.secondary {color:#7053ae;border-bottom:1px solid currentColor}
+.primary:focus-visible,.secondary:focus-visible,.title a:focus-visible {outline:2px solid #7658bf;outline-offset:5px}
+.visual {position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;margin:0;padding:12px 0 0;isolation:isolate}
+.halo {position:absolute;z-index:-1;width:min(112%,550px);aspect-ratio:1;border-radius:50%;background:#e9dded;opacity:.7}
+.device {width:min(100%,355px);padding:7px;border-radius:43px;background:linear-gradient(125deg,#596173,#131922 17%,#0e121a 85%,#6b7180);box-shadow:0 22px 38px rgba(23,23,39,.17),0 0 0 1px rgba(25,25,33,.35)}
+.screen {overflow:hidden;border-radius:36px;background:#090f15}
+.statusBar {height:26px;display:flex;justify-content:space-between;align-items:center;padding:6px 22px 0;background:#090f15;color:#fff;font:600 11px var(--font-dm-sans),sans-serif}
+.island {height:11px;width:62px;border-radius:12px;background:#030607}
+.screenshot {display:block;width:100%;height:auto}
+.caption {margin:14px 0 0;text-align:center;max-width:290px;color:#697080;font:400 12px/1.45 var(--font-dm-sans),sans-serif}
+.meta {display:flex;flex-wrap:wrap;gap:0;grid-column:1/-1;padding-top:22px;margin-top:22px;border-top:1px solid #d9d3cf}
+.meta span {display:flex;flex-direction:column;gap:4px;padding:0 24px;border-right:1px solid #d9d3cf;font:500 13px/1.35 var(--font-dm-sans),sans-serif;color:#242c3a}
+.meta span:first-child {padding-left:0}
+.meta span:last-child {border:0}
+.meta small {font-size:11px;font-weight:500;color:#737787}
+@media(max-width:900px){
+ .feature {grid-template-columns:minmax(0,1fr);row-gap:25px;padding:38px 22px 28px}
+ .title {font-size:clamp(37px,8vw,54px)}
+ .visual {grid-row:2}
+ .device {width:min(80%,355px)}
+ .meta {grid-row:3;margin-top:6px}
+}
+@media(max-width:520px){
+ .feature {padding:32px 18px 25px}
+ .statement {padding-left:13px;margin-top:20px!important}
+ .details {grid-template-columns:1fr;gap:14px;margin-top:22px}
+ .details > div+div {padding:15px 0 0;border-left:0;border-top:1px solid #d5cbc8}
+ .actions {gap:16px;margin-top:23px}
+ .device {width:min(88%,340px)}
+ .meta {justify-content:space-between}
+ .meta span {padding:0 8px;font-size:12px}
+}
+
+/* Keep this approved editorial feature above generic project-story selectors. */
+.feature .title { font-size: clamp(35px, 4.6vw, 64px); }
+.feature .title a { display: inline; min-height: 0; color: #192338; }
+.feature .eyebrow { font-size: 12px; margin: 0 0 16px; }
+.feature .details h4 { font-size: 17px; }
+@media (max-width: 900px) {
+  .feature .title { font-size: clamp(37px, 8vw, 54px); }
+}

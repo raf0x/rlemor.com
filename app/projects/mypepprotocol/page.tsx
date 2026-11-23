@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ScreenshotViewer from "@/components/ScreenshotViewer";
-import MyPepMotionArtwork from "@/components/MyPepMotionArtwork";
+import MyPepEditorialPhone from "@/components/MyPepEditorialPhone";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import styles from "./case-study.module.css";
@@ -82,7 +82,7 @@ export default function MyPepProtocolCaseStudy() {
           </header>
 
           <div className={styles.overviewFigure}>
-            <MyPepMotionArtwork />
+            <MyPepEditorialPhone priority />
           </div>
 
           <section className={styles.section}>

@@ -4,7 +4,8 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import HomepageMotion from "@/components/HomepageMotion";
-import LighthouseLivePreview from "@/components/LighthouseLivePreview";
+import LighthouseEditorialFeature from "@/components/LighthouseEditorialFeature";
+import WorldCupEditorialFeature from "@/components/WorldCupEditorialFeature";
 import MyPepEditorialFeature from "@/components/MyPepEditorialFeature";
 import styles from "./page.module.css";
 
@@ -244,80 +245,10 @@ export default function Home() {
             These independent products apply that same approach, using AI and
             modern development tools to turn specific problems into working solutions.
           </p>
-          <article className={`${styles.lighthouse} ${styles.motionItem}`} data-motion-item data-gsap-lighthouse>
-            <div className={styles.lighthouseStage} data-gsap-lighthouse-stage>
-              <Link
-                className={`${styles.lighthouseImageLink} motion-cinematic-scene`}
-                data-mobile-motion-item
-                href="/projects/lighthouse"
-                aria-label="Explore the Lighthouse case study and live dashboard"
-              >
-                <LighthouseLivePreview />
-              </Link>
-              <div className={styles.lighthouseCurtain} data-gsap-lighthouse-curtain aria-hidden="true">
-                <span>01 / SELECTED WORK</span>
-                <span>LIGHTHOUSE</span>
-              </div>
-              <div className={styles.lighthouseStageCaption} data-gsap-lighthouse-caption aria-hidden="true">
-                <span>ACCOUNT INTELLIGENCE</span>
-                <span>↗</span>
-              </div>
-            </div>
-            <div data-mobile-motion-item>
-              <h3><Link className={styles.lighthouseTitleLink} href="/projects/lighthouse">Lighthouse <span aria-hidden="true">→</span></Link></h3>
-              <p>
-                Lighthouse is an AI-assisted customer health and account
-                intelligence platform that brings customer{" "}
-                <strong className={styles.lighthouseSignal}>context</strong>,
-                renewal <strong className={styles.lighthouseSignal}>risk</strong>,
-                and account{" "}
-                <strong className={styles.lighthouseSignal}>
-                  health signals
-                </strong>{" "}
-                into one workspace. It helps Customer Success teams{" "}
-                <strong className={styles.lighthouseOutcome}>identify</strong>{" "}
-                at-risk accounts, prioritize{" "}
-                <strong className={styles.lighthouseOutcome}>action</strong>, and
-                use AI-generated executive briefs to make{" "}
-                <strong className={styles.lighthouseOutcome}>
-                  better decisions
-                </strong>.
-              </p>
-            </div>
-          </article>
+          <LighthouseEditorialFeature />
           <div className={styles.otherProjects}>
             <MyPepEditorialFeature />
-            <article className={`${styles.projectStory} ${styles.motionItem}`} data-motion-item>
-              <div className={styles.projectStoryCopy} data-mobile-motion-item>
-                <h3>
-                  <Link href="/projects#world-cup-tracker">
-                    World Cup Tracker <span aria-hidden="true">→</span>
-                  </Link>
-                </h3>
-                <p>
-                  An independent tournament tracker and predictor, now a
-                  historical reference. Not affiliated with FIFA.
-                </p>
-              </div>
-              <figure className={styles.projectFigure} data-mobile-motion-item>
-                <Link
-                  className={`${styles.projectPreview} motion-cinematic-scene`}
-                  data-motion-tilt
-                  data-mobile-scroll-media
-                  href="/projects#world-cup-tracker"
-                  aria-label="Explore World Cup Tracker project"
-                >
-                  <Image
-                    src="/projects/world-cup-tracker/world-cup-overview-desktop.png"
-                    alt="Actual World Cup Tracker interface displaying the tournament header, knockout bracket, and group stage."
-                    width={1122}
-                    height={1402}
-                    sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1244px) 42vw, 480px"
-                  />
-                </Link>
-                <figcaption>World Cup Tracker, a historical interface capture.</figcaption>
-              </figure>
-            </article>
+            <WorldCupEditorialFeature />
           </div>
         </section>
 

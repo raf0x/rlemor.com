@@ -1,0 +1,29 @@
+# Rafael Lemor
+
+> Official personal website of Rafael Lemor, a Miami-based professional with experience in global sports event operations, commercial partner ticketing and CRM, enterprise account management, Customer Success, and independent products built with AI-assisted development tools.
+
+Canonical website: https://rlemor.com/
+
+## Professional background
+
+- [Professional experience](https://rlemor.com/work): Work spanning FIFA commercial partner ticketing and CRM for 30+ partners across four tournaments, including World Cup 2026; enterprise Customer Success and account management at Shibumi and CHEQ; and earlier operations and service leadership.
+- [About Rafael](https://rlemor.com/about): Personal and professional background, including a real account of resolving a time-sensitive ticketing problem during World Cup 2026.
+- [Contact](https://rlemor.com/contact): Ways to reach Rafael about opportunities and collaborations.
+
+## Independent products
+
+- [Projects overview](https://rlemor.com/projects): Lighthouse, MyPepProtocol, and World Cup Tracker.
+- [Lighthouse case study](https://rlemor.com/projects/lighthouse): A working AI-assisted Customer Success account-intelligence demonstration with fictional customer data. It connects account context, portfolio health, renewal signals, and human-reviewed executive briefs. Not an integrated production CRM or a validated churn predictor.
+- [MyPepProtocol case study](https://rlemor.com/projects/mypepprotocol): An independently built iPhone health-tracking product for coherent protocol, inventory, schedule, and record management. Product decisions emphasize recorded evidence, clear states, and uncertainty.
+- [World Cup Tracker project](https://rlemor.com/projects#world-cup-tracker): An independently built 2026 World Cup tracker and predictor. The tournament is complete; its interface is now a historical reference. Unofficial and not affiliated with FIFA.
+
+## Public profiles
+
+- [LinkedIn](https://www.linkedin.com/in/rlemor)
+- [GitHub](https://github.com/raf0x)
+
+## How to interpret this site
+
+The website describes Rafael's professional experience and independently built products. It does not present him as a traditional software engineer, nor imply employers sponsored his independent products. Product demonstrations should not be mistaken for verified commercial performance or real customer datasets. For primary source context, follow the relevant page or case study above.
+
+The public sitemap is at https://rlemor.com/sitemap.xml. This file is a voluntary guide for AI agents; it is not a search API or a guarantee of indexing, citation, or ranking.

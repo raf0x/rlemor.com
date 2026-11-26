@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Lora, DM_Sans } from "next/font/google";
 import "./globals.css";
+import SiteStructuredData from "@/components/SiteStructuredData";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -62,6 +63,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head><SiteStructuredData /></head>
       <body className={`${lora.variable} ${dmSans.variable}`}>
         {children}
       </body>

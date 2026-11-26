@@ -60,3 +60,24 @@ test("legacy case study URL has a permanent redirect", () => {
   assert.match(config, /destination:\s*"\/projects\/mypepprotocol"/);
   assert.match(config, /permanent:\s*true/);
 });
+
+
+test("public AI discovery guide contains canonical links and no search endpoint claims", () => {
+  const guide = readFileSync(join(publicDir, "llms.txt"), "utf8");
+  assert.match(guide, /^# Rafael Lemor/m);
+  assert.match(guide, /https:\/\/rlemor\.com\/projects\/lighthouse/);
+  assert.match(guide, /https:\/\/rlemor\.com\/projects\/mypepprotocol/);
+  assert.match(guide, /https:\/\/rlemor\.com\/sitemap\.xml/);
+  assert.doesNotMatch(guide, /https:\/\/rlemor\.com\/\.well-known\/search/);
+});
+
+test("the public identity graph is present without adding search API discovery metadata", () => {
+  const schema = readFileSync(join(root, "components", "SiteStructuredData.tsx"), "utf8");
+  const layout = readFileSync(join(app, "layout.tsx"), "utf8");
+  assert.match(schema, /https:\/\/schema\.org/);
+  assert.match(schema, /"@type": "Person"/);
+  assert.match(schema, /"@type": "WebSite"/);
+  assert.match(schema, /https:\/\/rlemor\.com\/#rafael/);
+  assert.match(layout, /<SiteStructuredData \/>/);
+  assert.doesNotMatch(layout, /agent:endpoint/);
+});

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Lora, DM_Sans } from "next/font/google";
 import "./globals.css";
+import SiteStructuredData from "@/components/SiteStructuredData";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -15,7 +16,7 @@ const dmSans = DM_Sans({
 });
 
 const siteDescription =
-  "Rafael Lemor — customer success, enterprise account management, and large-event operations. Experience with FIFA, IMG Tickets, and enterprise customers.";
+  "Rafael Lemor is a Miami-based professional in global sports operations, enterprise Customer Success, and account management who also builds independent products with AI and modern tools.";
 
 export const viewport: Viewport = {
   themeColor: "#fffcf7",
@@ -62,6 +63,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head><SiteStructuredData /></head>
       <body className={`${lora.variable} ${dmSans.variable}`}>
         {children}
       </body>
